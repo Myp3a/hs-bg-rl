@@ -1,0 +1,32 @@
+from __future__ import annotations
+import random
+from typing import TYPE_CHECKING
+
+from cards.minion import Minion, MinionClass
+
+if TYPE_CHECKING:
+    from models.army import Army
+
+
+class UpbeatFrontdrake(Minion):
+    def __init__(self, army: Army) -> None:
+        super().__init__(army)
+        self.classes = [MinionClass.Dragon]
+        self.level = 1
+        self.base_attack_value = 1
+        self.base_health_value = 1
+        self.attack_value = self.base_attack_value
+        self.health_value = self.base_health_value
+        self.turns_left = 3
+        self.hooks["on_turn_end"].append(self.give_dragon)
+
+    def give_dragon(self) -> None:
+        self.turns_left -= 1
+        if self.turns_left == 0:
+            self.turns_left = 3
+            dragons = [d for d in self.army.player.tavern.cards 
+                       if MinionClass.Dragon in d.classes 
+                       and d.level <= self.army.player.level]
+            dragon = random.choice(dragons)
+            self.army.player.tavern.buy(dragon)
+            self.army.player.hand.add(dragon, len(self.army.player.hand))
