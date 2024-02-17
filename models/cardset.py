@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+import numpy as np
 from cards.minion import MinionClass, Minion
 
 if TYPE_CHECKING:
@@ -61,28 +62,28 @@ class CardSet:
             else:
                 l.append({
                     "available": 1,
-                    "type": 0 if isinstance(self.cards[i], Minion) else 1,
+                    "type": 1 if isinstance(self.cards[i], Minion) else 2,
                     "minion_id": self.cards[i].minion_id,
                     "spell_id": self.cards[i].spell_id,
                     "card_class": [
-                        MinionClass.Beast in self.cards[i].classes,
-                        MinionClass.Demon in self.cards[i].classes,
-                        MinionClass.Dragon in self.cards[i].classes,
-                        MinionClass.Elemental in self.cards[i].classes,
-                        MinionClass.Mech in self.cards[i].classes,
-                        MinionClass.Murloc in self.cards[i].classes,
-                        MinionClass.Naga in self.cards[i].classes,
-                        MinionClass.Pirate in self.cards[i].classes,
-                        MinionClass.Quilboar in self.cards[i].classes,
-                        MinionClass.Undead in self.cards[i].classes,
+                        1 if MinionClass.Beast in self.cards[i].classes else 0,
+                        1 if MinionClass.Demon in self.cards[i].classes else 0,
+                        1 if MinionClass.Dragon in self.cards[i].classes else 0,
+                        1 if MinionClass.Elemental in self.cards[i].classes else 0,
+                        1 if MinionClass.Mech in self.cards[i].classes else 0,
+                        1 if MinionClass.Murloc in self.cards[i].classes else 0,
+                        1 if MinionClass.Naga in self.cards[i].classes else 0,
+                        1 if MinionClass.Pirate in self.cards[i].classes else 0,
+                        1 if MinionClass.Quilboar in self.cards[i].classes else 0,
+                        1 if MinionClass.Undead in self.cards[i].classes else 0,
                     ] if isinstance(self[i], Minion) else [0,0,0,0,0,0,0,0,0,0],
                     "features": [
                         1 if len(self.cards[i].hooks["battlecry"]) > 0 else 0,
                         1 if len(self.cards[i].hooks["deathrattle"]) > 0 else 0,
-                        self.cards[i].taunt,
-                        self.cards[i].divine_shield,
-                        self.cards[i].toxic,
-                        self.cards[i].rebirth,
+                        1 if self.cards[i].taunt else 0,
+                        1 if self.cards[i].divine_shield else 0,
+                        1 if self.cards[i].toxic else 0,
+                        1 if self.cards[i].rebirth else 0,
                         0,
                         0,
                     ] if isinstance(self[i], Minion) else [0,0,0,0,0,0,0,0],

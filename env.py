@@ -54,7 +54,7 @@ class HSPlayer(Env):
                     "features": MultiBinary(8),
                     "health": Box(low=-10000, high=10000, dtype=np.int64),
                     "attack": Box(low=-10000, high=10000, dtype=np.int64),
-                    "level": Box(low=1, high=6)
+                    "level": Box(low=0, high=6)
                 }) for _ in range(7)
             ]),
             "tavern_data": Tuple([
@@ -67,7 +67,7 @@ class HSPlayer(Env):
                     "features": MultiBinary(8),
                     "health": Box(low=-10000, high=10000, dtype=np.int64),
                     "attack": Box(low=-10000, high=10000, dtype=np.int64),
-                    "level": Box(low=1, high=6)
+                    "level": Box(low=0, high=6)
                 }) for _ in range(6)
             ])
         })
