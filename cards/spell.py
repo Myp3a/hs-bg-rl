@@ -12,5 +12,12 @@ class Spell(Card):
     def __init__(self, player) -> None:
         self.player: Player = player
 
-    def play(self, target: Minion | None) -> None:
+    def play(self, target: None) -> None:
+        raise NotImplementedError
+    
+class TargetedSpell(Spell):
+    def __init__(self, player) -> None:
+        super().__init__(player)
+
+    def play(self, target: Minion) -> None:
         raise NotImplementedError

@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class Manasaber(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
+        self.minion_id = 7
         self.classes = [MinionClass.Beast]
         self.level = 1
         self.base_attack_value = 4

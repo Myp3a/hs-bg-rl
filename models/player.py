@@ -1,8 +1,10 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from functools import partial
+import random
+from typing import TYPE_CHECKING, Callable
 
 from cards.minion import Minion
-from cards.spell import Spell
+from cards.spell import Spell, TargetedSpell
 
 
 from .army import Army
@@ -27,10 +29,79 @@ class Player:
         self.tavern: Tavern = Tavern()
         self.tavern_discount = 0
         self.free_rolls = 0
-        self.view = self.tavern.new_view()
+        self.turn = 0
+        self.view = self.tavern.new_view(self)
 
+    @property
+    def tavern_upgrade_price(self) -> int:
+        return max(0, self.tavern.upgrade_price[self.level-1] - self.tavern_discount)
+
+    @property
+    def all_actions(self) -> list[Callable]:
+        actions = []
+        actions.append(lambda: None) # 0, nothing
+        for tavern_index in range(6): # 1-6, buy card from tavern
+            actions.append(partial(self.buy, tavern_index))
+        for inhand_index in range(10): # 7-76, play card from hand to table position
+            for table_index in range(7):
+                actions.append(partial(self.play, inhand_index, table_index))
+        for source_position in range(7): # 77-125, reorder cards on board
+            for target_position in range(7):
+                actions.append(partial(self.reorder, source_position, target_position))
+        for table_index in range(7): # 126-132, sell minion from board
+            actions.append(partial(self.sell, table_index))
+        actions.append(partial(self.roll)) # 133, roll tavern
+        actions.append(partial(self.upgrade_tavern)) # 134, upgrade tavern
+        return actions
+    
+    @property
+    def available_actions(self) -> list[bool]:
+        actions = []
+        actions.append(True) # 0, nothing
+        for tavern_index in range(6): # 1-6, buy card from tavern
+            actions.append(self.buy_possible(tavern_index))
+        for inhand_index in range(10): # 7-76, play card from hand to table position
+            for table_index in range(7):
+                actions.append(self.play_possible(inhand_index, table_index))
+        for source_position in range(7): # 77-125, reorder cards on board
+            for target_position in range(7):
+                actions.append(self.reorder_possible(source_position, target_position))
+        for table_index in range(7): # 126-132, sell minion from board
+            actions.append(self.sell_possible(table_index))
+        actions.append(self.roll_possible()) # 133, roll tavern
+        actions.append(self.upgrade_possible()) # 134, upgrade tavern
+        return actions
+
+    @property
+    def observation(self) -> dict:
+        d = {}
+        d["level"] = self.level
+        d["gold"] = self.gold
+        d["health"] = self.health
+        d["tavern_not_upgraded_for"] = self.tavern_discount
+        d["tavern_upgrade_price"] = self.tavern_upgrade_price
+        d["turn"] = self.turn
+        d["blood_gem_attack"] = self.blood_gem_attack
+        d["blood_gem_health"] = self.blood_gem_health
+        d["free_rolls"] = self.free_rolls
+        return {
+            "player_data": d, 
+            "hand_data": self.hand.observation,
+            "board_data": self.army.observation,
+            "tavern_data": self.view.observation,
+        }
+    
     def __str__(self) -> str:
         return f"Player level={self.level} health={self.health} gold={self.gold}"
+
+    def act_random(self) -> None:
+        action_id = -1
+        while action_id != 0:
+            possible = False
+            while not possible:
+                action_id = random.randint(0, len(self.all_actions)-1)
+                possible = self.available_actions[action_id]
+            self.all_actions[action_id]()
 
     def check_triplets(self) -> None:
         cards = self.army.cards + self.hand.cards
@@ -67,6 +138,7 @@ class Player:
             self.hand.add(triplet, len(self.hand))
 
     def start_turn(self) -> None:
+        self.turn += 1
         self.base_gold += 1
         self.gold = min(self.base_gold, 10)
         self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
@@ -80,16 +152,28 @@ class Player:
             for hook in card.hooks["on_turn_end"]:
                 hook()
 
+    def upgrade_possible(self) -> bool:
+        if self.level < 6:
+            if self.gold >= self.tavern_upgrade_price:
+                return True
+        return False
+
     def upgrade_tavern(self) -> bool:
-        if self.gold >= (tav_price := max(0, self.tavern.upgrade_price[self.level-1] - self.tavern_discount)):
+        if self.upgrade_possible():
+            tav_price = self.tavern_upgrade_price
             self.gold -= tav_price
             self.level += 1
             self.tavern_discount = 0
             return True
         return False
     
-    def roll(self) -> bool:
+    def roll_possible(self) -> bool:
         if self.gold >= self.roll_price or self.free_rolls > 0:
+            return True
+        return False
+    
+    def roll(self) -> bool:
+        if self.roll_possible():
             if self.free_rolls > 0:
                 self.free_rolls -= 1
             else:
@@ -98,48 +182,106 @@ class Player:
             return True
         return False
     
-    def buy(self, index: int) -> bool:
+    def buy_possible(self, index: int) -> bool:
         if index < len(self.view):
             if self.gold >= self.buy_price:
                 if len(self.hand) < self.hand.max_len:
-                    self.gold -= self.buy_price
-                    card = self.tavern.buy(self.view[index])
-                    card.army = self.army
-                    self.view.remove(card)
-                    self.hand.add(card, len(self.hand))
-                    self.check_triplets()
                     return True
         return False
     
-    def sell(self, index: int) -> bool:
+    def buy(self, index: int) -> bool:
+        if self.buy_possible(index):
+            self.gold -= self.buy_price
+            card = self.tavern.buy(self.view[index])
+            card.army = self.army
+            self.view.remove(card)
+            self.hand.add(card, len(self.hand))
+            self.check_triplets()
+            return True
+        return False
+    
+    def sell_possible(self, index: int) -> bool:
         if index < len(self.army):
+            return True
+        return False
+
+    def sell(self, index: int) -> bool:
+        if self.sell_possible(index):
             card = self.army[index]
-            card.army = None
             self.tavern.sell(card)
             for hook in card.hooks["on_sell"]:
                 hook()
+            card.army = None
             self.gold += self.sell_price
             return self.army.remove(card)
         return False
     
-    def play_minion(self, card_to_play_ind, place_to_play) -> bool:
-        if card_to_play_ind < len(self.hand):
-            if place_to_play <= len(self.army):
-                card = self.hand[card_to_play_ind]
+    def play_possible(self, index, place) -> bool:
+        if index < len(self.hand):
+            if place <= len(self.army):
+                card = self.hand[index]
                 if isinstance(card, Minion):
-                    self.army.add(card, place_to_play)
-                    for hook in card.hooks["battlecry"]:
-                        hook()
-                    for hook in self.army.hooks["on_minion_play"]:
-                        hook(card)
+                    return self.play_minion_possible(index, place)
+                if isinstance(card, Spell):
+                    return self.play_spell_possible(index, place)
+        return False
+    
+    def play(self, index, place) -> bool:
+        card = self.hand[index]
+        if isinstance(card, Minion):
+            return self.play_minion(index, place)
+        if isinstance(card, Spell):
+            return self.play_spell(index, place)
+        return False
+    
+    def play_minion_possible(self, index, place) -> bool:
+        if index < len(self.hand):
+            if len(self.army) < 7:
+                if place <= len(self.army):
                     return True
         return False
     
+    def play_minion(self, card_to_play_ind, place_to_play) -> bool:
+        if self.play_minion_possible(card_to_play_ind, place_to_play):
+            card = self.hand[card_to_play_ind]
+            if isinstance(card, Minion):
+                self.hand.remove(card)
+                self.army.add(card, place_to_play)
+                for hook in card.hooks["battlecry"]:
+                    hook()
+                for hook in self.army.hooks["on_minion_play"]:
+                    hook(card)
+                return True
+        return False
+    
+    def play_spell_possible(self, index, place) -> bool:
+        if index < len(self.hand):
+            if place < len(self.army) or not isinstance(self.hand[index], TargetedSpell):
+                return True
+        return False
+    
     def play_spell(self, card_to_play_ind, place_to_play) -> bool:
-        if card_to_play_ind < len(self.hand):
-            if place_to_play < len(self.army):
-                card = self.hand[card_to_play_ind]
-                if isinstance(card, Spell):
-                    card.play(card, place_to_play)
-                    return True
+        if self.play_spell_possible(card_to_play_ind, place_to_play):
+            card = self.hand[card_to_play_ind]
+            self.hand.remove(card)
+            if isinstance(card, Spell):
+                try:
+                    card.play(self.army[place_to_play])
+                except:
+                    card.play(None)
+                return True
+        return False
+    
+    def reorder_possible(self, source_index, target_index) -> bool:
+        if source_index < len(self.army):
+            if target_index < len(self.army):
+                return True
+        return False
+
+    def reorder(self, source_index, target_index) -> bool:
+        if self.reorder_possible(source_index, target_index):
+            card = self.army[source_index]
+            self.army.remove(card)
+            self.army.add(card, target_index)
+            return True
         return False

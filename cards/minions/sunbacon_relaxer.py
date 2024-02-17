@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class SunBaconRelaxer(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
+        self.minion_id = 21
         self.classes = [MinionClass.Quilboar]
         self.level = 1
         self.base_attack_value = 1
@@ -24,4 +25,4 @@ class SunBaconRelaxer(Minion):
         if self.triplet:
             count = 4
         for _ in range(count):
-            self.army.player.hand.add(BloodGem(self.army.player))
+            self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))

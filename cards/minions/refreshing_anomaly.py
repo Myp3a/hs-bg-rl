@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 class RefreshingAnomaly(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
+        self.minion_id = 12
         self.classes = [MinionClass.Elemental]
         self.level = 1
         self.base_attack_value = 1

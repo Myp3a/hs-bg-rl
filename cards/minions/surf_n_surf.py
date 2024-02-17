@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class SurfNSurf(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
+        self.minion_id = 22
         self.classes = [MinionClass.Beast, MinionClass.Naga]
         self.level = 1
         self.base_attack_value = 1
@@ -20,6 +21,6 @@ class SurfNSurf(Minion):
         self.hooks["on_turn_start"].append(self.give_crab)
 
     def give_crab(self) -> None:
-        self.army.player.hand.add(CrabSpell(self.army.player))
+        self.army.player.hand.add(CrabSpell(self.army.player), len(self.army.player.hand))
         if self.triplet:
-            self.army.player.hand.add(CrabSpell(self.army.player))
+            self.army.player.hand.add(CrabSpell(self.army.player), len(self.army.player.hand))

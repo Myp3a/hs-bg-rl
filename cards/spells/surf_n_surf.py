@@ -2,15 +2,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from cards.minions.crab import Crab
 
-from cards.spell import Spell
+from cards.spell import TargetedSpell
 
 if TYPE_CHECKING:
     from cards.minion import Minion
 
-class SurfNSurf(Spell):
+class SurfNSurf(TargetedSpell):
     def __init__(self, player) -> None:
         super().__init__(player)
         self.target = None
+        self.spell_id = 2
 
     def play(self, target: Minion) -> None:
         self.target = target

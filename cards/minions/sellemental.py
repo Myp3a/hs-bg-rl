@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class Sellemental(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
+        self.minion_id = 17
         self.classes = [MinionClass.Elemental]
         self.level = 1
         self.base_attack_value = 2
@@ -27,4 +28,4 @@ class Sellemental(Minion):
             drop.base_health_value *= 2
             drop.attack_value = drop.base_attack_value
             drop.health_value = drop.base_health_value
-        self.army.player.hand.add(drop)
+        self.army.player.hand.add(drop, len(self.army.player.hand))

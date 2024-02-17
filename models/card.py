@@ -4,4 +4,5 @@ from typing import TYPE_CHECKING
 
 class Card:
     def __init__(self) -> None:
-        pass
+        self.minion_id = -1
+        self.spell_id = -1
