@@ -21,6 +21,7 @@ class MinionClass(Enum):
 
 class Minion(Card):
     def __init__(self, army: Army) -> None:
+        super().__init__()
         self.army = army
         self.hooks = {
             "on_attack_pre": [],

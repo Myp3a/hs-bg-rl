@@ -90,3 +90,4 @@ class CardSet:
                     "attack": self.cards[i].attack_value if isinstance(self.cards[i], Minion) else 0,
                     "level": self.cards[i].level if isinstance(self.cards[i], Minion) else 0,
                 })
+        return l
