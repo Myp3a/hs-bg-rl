@@ -88,22 +88,23 @@ class HSPlayer(Env):
 
     def observation(self) -> dict:
         return {
-            "action_mask": np.array([1 if i else 0 for i in self.player.available_actions]),
-            "observations": spaces.flatten(self._observation_space, self.player.observation)
+            "action_mask": np.array([1 if i else 0 for i in self.player.available_actions], dtype=np.float32),
+            "observations": np.array(spaces.flatten(self._observation_space, self.player.observation),dtype=np.float32)
         }
 
     def reset(self, *, seed=None, options=None):
         self.player.tavern.del_view(self.player.view)
         self.player = Player()
         self.start_turn()
-        return self.observation(), {}
+        return self._fix_action_mask(self.observation()), {}
 
     def step(self, action):
         self.actions += 1
         if not self.valid_actions[action]:
-            raise ValueError(
-                f"Invalid action sent to env! " f"valid_actions={self.valid_actions}"
-            )
+            return self.observation(), -1, False, False, {}
+            # raise ValueError(
+            #     f"Invalid action sent to env! " f"valid_actions={self.valid_actions}" f" sent={action}"
+            # )
         self.player.all_actions[action]()
         obs = self.observation()
         rew = 0
