@@ -14,9 +14,12 @@ class Tavern:
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Tavern, cls).__new__(cls)
+            cls.instance.__initialized = False
         return cls.instance
     
     def __init__(self) -> None:
+        if(self.__initialized): return
+        self.__initialized = True
         self.base_cards: list[Minion] = \
             [AnnoyOTron(None) for _ in range(23)] + \
             [BeleagueredBattler(None) for _ in range(23)] + \
@@ -40,7 +43,7 @@ class Tavern:
             [UpbeatFrontdrake(None) for _ in range(23)] + \
             [WrathWeaver(None) for _ in range(23)]
         self.cards: list[Minion] = []
-        self.upgrade_price = [6, 7, 8, 11, 10]
+        self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
         self.views = []
         self.reset()
@@ -64,8 +67,11 @@ class Tavern:
     
     def roll(self, view: CardSet, count: int) -> list[Minion]:
         view.clear()
-        available_cards = [c for c in self.cards if not any(c in view for view in self.views)]
-        chosen = random.sample(available_cards, count)
+        available_cards = [c for c in self.cards if not any(c in view.cards for view in self.views)]
+        try:
+            chosen = random.sample(available_cards, count)
+        except:
+            assert False, self.cards
         for card in chosen:
             view.add(card, len(view))
         return view
@@ -75,4 +81,6 @@ class Tavern:
         return card
     
     def sell(self, card: Minion) -> None:
-        self.cards.append(card)
+        if card.triplet:
+            for c in card.contains:
+                self.cards.append(c)

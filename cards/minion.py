@@ -50,6 +50,7 @@ class Minion(Card):
         self.attacked_this_turn = False
         self.triplet = False
         self.immediate_attack = False
+        self.contains = []
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}{self.attack_value},{self.health_value}"

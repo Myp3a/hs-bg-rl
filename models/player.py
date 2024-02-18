@@ -114,6 +114,7 @@ class Player:
                 if cntr >= 3:
                     break
         if cntr == 3:
+            contains = []
             perm_attack = 0
             perm_health = 0
             for card in list(self.army.cards):
@@ -121,14 +122,17 @@ class Player:
                     perm_attack += card.attack_value - card.base_attack_value
                     perm_health += card.health_value - card.base_health_value
                     self.army.remove(card)
+                    contains.append(card)
             for card in list(self.hand.cards):
                 if isinstance(card, Minion):
                     if isinstance(card, card_type):
                         perm_attack += card.attack_value - card.base_attack_value
                         perm_health += card.health_value - card.base_health_value
                         self.hand.remove(card)
+                        contains.append(card)
             triplet = card_type(card.army)
             triplet.triplet = True
+            triplet.contains = contains
             triplet.base_attack_value *= 2
             triplet.base_health_value *= 2
             triplet.attack_value = triplet.base_attack_value
