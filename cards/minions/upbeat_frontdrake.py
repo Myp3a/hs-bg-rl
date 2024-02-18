@@ -29,5 +29,6 @@ class UpbeatFrontdrake(Minion):
                        if MinionClass.Dragon in d.classes 
                        and d.level <= self.army.player.level]
             dragon = random.choice(dragons)
+            dragon.army = self.army
             self.army.player.tavern.buy(dragon)
             self.army.player.hand.add(dragon, len(self.army.player.hand))
