@@ -5,7 +5,6 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - RLlib model training
 
 # TODO
- - Fix various bugs
  - Tier 2+ minions
  - Tavern spells
  - Heroes

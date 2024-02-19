@@ -21,27 +21,27 @@ class Tavern:
         if(self.__initialized): return
         self.__initialized = True
         self.base_cards: list[Minion] = \
-            [AnnoyOTron(None) for _ in range(23)] + \
-            [BeleagueredBattler(None) for _ in range(23)] + \
-            [EmeraldProtoWhelp(None) for _ in range(23)] + \
-            [HarmlessBonehead(None) for _ in range(23)] + \
-            [Imprisoner(None) for _ in range(23)] + \
-            [Manasaber(None) for _ in range(23)] + \
-            [MicroMummy(None) for _ in range(23)] + \
-            [PickyEater(None) for _ in range(23)] + \
-            [RazorfenGeomancer(None) for _ in range(23)] + \
-            [RefreshingAnomaly(None) for _ in range(23)] + \
-            [RisenRider(None) for _ in range(23)] + \
-            [RockpoolHunter(None) for _ in range(23)] + \
-            [Scallywag(None) for _ in range(23)] + \
-            [Sellemental(None) for _ in range(23)] + \
-            [ShellCollector(None) for _ in range(23)] + \
-            [SouthseaBusker(None) for _ in range(23)] + \
-            [SunBaconRelaxer(None) for _ in range(23)] + \
-            [SurfNSurf(None) for _ in range(23)] + \
-            [Swampstriker(None) for _ in range(23)] + \
-            [UpbeatFrontdrake(None) for _ in range(23)] + \
-            [WrathWeaver(None) for _ in range(23)]
+            [AnnoyOTron(None) for _ in range(18)] + \
+            [BeleagueredBattler(None) for _ in range(18)] + \
+            [EmeraldProtoWhelp(None) for _ in range(18)] + \
+            [HarmlessBonehead(None) for _ in range(18)] + \
+            [Imprisoner(None) for _ in range(18)] + \
+            [Manasaber(None) for _ in range(18)] + \
+            [MicroMummy(None) for _ in range(18)] + \
+            [PickyEater(None) for _ in range(18)] + \
+            [RazorfenGeomancer(None) for _ in range(18)] + \
+            [RefreshingAnomaly(None) for _ in range(18)] + \
+            [RisenRider(None) for _ in range(18)] + \
+            [RockpoolHunter(None) for _ in range(18)] + \
+            [Scallywag(None) for _ in range(18)] + \
+            [Sellemental(None) for _ in range(18)] + \
+            [ShellCollector(None) for _ in range(18)] + \
+            [SouthseaBusker(None) for _ in range(18)] + \
+            [SunBaconRelaxer(None) for _ in range(18)] + \
+            [SurfNSurf(None) for _ in range(18)] + \
+            [Swampstriker(None) for _ in range(18)] + \
+            [UpbeatFrontdrake(None) for _ in range(18)] + \
+            [WrathWeaver(None) for _ in range(18)]
         self.cards: list[Minion] = []
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
