@@ -68,10 +68,7 @@ class Tavern:
     def roll(self, view: CardSet, count: int) -> list[Minion]:
         view.clear()
         available_cards = [c for c in self.cards if not any(c in view.cards for view in self.views)]
-        try:
-            chosen = random.sample(available_cards, count)
-        except:
-            assert False, self.cards
+        chosen = random.sample(available_cards, count)
         for card in chosen:
             view.add(card, len(view))
         return view
@@ -84,3 +81,5 @@ class Tavern:
         if card.triplet:
             for c in card.contains:
                 self.cards.append(c)
+        else:
+            self.cards.append(card)
