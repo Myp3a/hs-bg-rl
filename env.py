@@ -23,10 +23,10 @@ class HSPlayer(Env):
             "player_data": Dict({
                 "level": Box(low=1, high=6),
                 "gold": Box(low=0, high=50, dtype=np.int64),
-                "health": Box(low=-30, high=50, dtype=np.int64),
+                "health": Box(low=-50, high=50, dtype=np.int64),
                 "tavern_not_upgraded_for": Box(low=0, high=50, dtype=np.int64),
                 "tavern_upgrade_price": Box(low=0, high=15, dtype=np.int64),
-                "turn": Box(low=0, high=50, dtype=np.int64),
+                "turn": Box(low=0, high=60, dtype=np.int64),
                 "blood_gem_attack": Box(low=1, high=30, dtype=np.int64),
                 "blood_gem_health": Box(low=1, high=30, dtype=np.int64),
                 "free_rolls": Box(low=0, high=3, dtype=np.int64),
@@ -111,10 +111,11 @@ class HSPlayer(Env):
         done = True if action == 0 else False
         truncated = False
         info = {}
-        self.valid_actions = [1 if a else 0 for a in self.player.available_actions]
+        self.valid_actions = np.array([1 if a else 0 for a in self.player.available_actions])
         if self.actions > 50:
-            self.valid_actions = [0 for a in self.player.available_actions]
+            self.valid_actions = np.array([0 for a in self.player.available_actions])
             self.valid_actions[0] = 1
+        obs["action_mask"] = self.valid_actions
         self._fix_action_mask(obs)
         return obs, rew, done, truncated, info
     
@@ -187,11 +188,11 @@ class HSEnv(ParallelEnv):
             for i in self.agents:
                 if i in self.dead:
                     continue
-                self.players[i].start_turn()
                 self.players[i].actions = 0
+                self.players[i].start_turn()
                 obs[i] = self.players[i].observation()
                 hmax = max([self.players[i].player.health for i in self.players])
-                rew[i] = self.players[i].player.health - hmax + 5
+                rew[i] = self.players[i].player.health - hmax + 15 - self.players[i].player.turn
                 terminated[i] = self.players[i].player.health <= 0
                 if terminated[i]:
                     self.dead.add(i)
