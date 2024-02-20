@@ -159,7 +159,6 @@ class Player:
             for c in card.magnited:
                 for hook in c.hooks["on_turn_start"]:
                     hook()
-        print(f"starting turn with {self.army}")
 
     def end_turn(self) -> None:
         for card in self.army.cards:
