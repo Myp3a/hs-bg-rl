@@ -18,7 +18,7 @@ class Yrel(Minion):
         self.base_health_value = 3
         self.hooks["on_attack_post"].append(self.boost_army)
 
-    def boost_army(self) -> None:
+    def boost_army(self, attack_target) -> None:
         diff_classes = set()
         for card in self.army.cards:
             diff_classes |= set(card.classes)
