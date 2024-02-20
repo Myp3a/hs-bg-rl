@@ -24,7 +24,11 @@ class SnailCavalry(Minion):
 
     def boost_health(self, casted, target) -> None:
         if self.first_cast:
-            self.health_perm_boost += 2
             self.first_cast = False
             if self.triplet:
-                self.health_perm_boost += 2
+                hlt_boost = 4
+            else:
+                hlt_boost = 2
+            self.health_perm_boost += hlt_boost
+            for hook in self.army.hooks["on_values_change_perm"]:
+                hook(self, 0, hlt_boost)

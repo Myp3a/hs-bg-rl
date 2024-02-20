@@ -21,6 +21,10 @@ class ColdlightSeer(Minion):
         for minion in self.army.cards:
             if MinionClass.Murloc in minion.classes:
                 if not minion is self:
-                    minion.health_perm_boost += 2
                     if self.triplet:
-                        minion.health_perm_boost += 2
+                        hlt_boost = 4
+                    else:
+                        hlt_boost = 2
+                    minion.health_perm_boost += hlt_boost
+                    for hook in self.army.hooks["on_values_change_perm"]:
+                        hook(minion, 0, hlt_boost)

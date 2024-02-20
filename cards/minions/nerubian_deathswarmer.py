@@ -18,4 +18,13 @@ class NerubianDeathswarmer(Minion):
         self.hooks["battlecry"].append(self.boost_undead_attack)
 
     def boost_undead_attack(self) -> None:
-        self.army.player.undead_attack_boost += 1
+        if self.triplet:
+            atk_boost = 2
+        else:
+            atk_boost = 1
+        self.army.player.undead_attack_boost += atk_boost
+        for c in self.army.cards:
+            if MinionClass.Undead in c.classes:
+                c.attack_perm_boost += atk_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(c, atk_boost, 0)

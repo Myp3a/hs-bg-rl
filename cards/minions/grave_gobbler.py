@@ -18,7 +18,7 @@ class GraveGobbler(Minion):
         self.hooks["on_turn_start"].append(self.destroy_left)
 
     def destroy_left(self) -> None:
-        # TODO: find out triplet and rebirth mechanic
+        # TODO: find out rebirth mechanic
         pos = self.army.index(self)
         if pos > 0:
             to_the_left = self.army[pos-1]
@@ -27,5 +27,13 @@ class GraveGobbler(Minion):
                     to_the_left.rebirth = False
                 else:
                     self.army.remove(to_the_left)
-                self.attack_perm_boost += 5
-                self.health_perm_boost += 5
+                if self.triplet:
+                    atk_boost = 10
+                    hlt_boost = 10
+                else:
+                    atk_boost = 5
+                    hlt_boost = 5
+                self.attack_perm_boost += atk_boost
+                self.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(self, atk_boost, hlt_boost)

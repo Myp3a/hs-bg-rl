@@ -23,8 +23,13 @@ class TwilightEmissary(Minion):
         if len(targets) == 0:
             return
         dragon = random.choice(targets)
-        dragon.attack_perm_boost += 2
-        dragon.health_perm_boost += 2
         if self.triplet:
-            dragon.attack_perm_boost += 2
-            dragon.health_perm_boost += 2
+            atk_boost = 4
+            hlt_boost = 4
+        else:
+            atk_boost = 2
+            hlt_boost = 2
+        dragon.attack_perm_boost += atk_boost
+        dragon.health_perm_boost += hlt_boost
+        for hook in self.army.hooks["on_values_change_perm"]:
+            hook(dragon, atk_boost, hlt_boost)

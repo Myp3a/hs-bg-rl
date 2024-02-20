@@ -19,7 +19,10 @@ class BeleagueredBattler(Minion):
         self.hooks["on_turn_start"].append(self.decrease_attack)
 
     def decrease_attack(self) -> None:
-        self.attack_perm_boost -= 1
+        atk_boost = -1
+        self.attack_perm_boost += atk_boost
+        for hook in self.army.hooks["on_values_change_perm"]:
+            hook(self, atk_boost, 0)
 
     def reset_attack_drop(self) -> None:
         self.attack_perm_boost = 0

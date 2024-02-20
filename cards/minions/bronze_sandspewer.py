@@ -19,8 +19,13 @@ class BronzeSandspewer(Minion):
 
     def boost_values(self) -> None:
         if len(self.army) == 7:
-            self.attack_perm_boost += 1
-            self.health_perm_boost += 1
             if self.triplet:
-                self.attack_perm_boost += 1
-                self.health_perm_boost += 1
+                atk_boost = 2
+                hlt_boost = 2
+            else:
+                atk_boost = 1
+                hlt_boost = 1
+            self.attack_perm_boost += atk_boost
+            self.health_perm_boost += hlt_boost
+            for hook in self.army.hooks["on_values_change_perm"]:
+                hook(self, atk_boost, hlt_boost)

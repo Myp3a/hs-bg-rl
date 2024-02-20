@@ -13,9 +13,14 @@ class SlimyShield(TargetedSpell):
         self.triplet = triplet
 
     def play(self, target: Minion) -> None:
-        target.attack_perm_boost += 1
-        target.health_perm_boost += 1
         target.taunt = True
         if self.triplet:
-            target.attack_perm_boost += 1
-            target.health_perm_boost += 1
+            atk_boost = 2
+            hlt_boost = 2
+        else:
+            atk_boost = 1
+            hlt_boost = 1
+        target.attack_perm_boost += atk_boost
+        target.health_perm_boost += hlt_boost
+        for hook in self.player.army.hooks["on_values_change_perm"]:
+            hook(target, atk_boost, hlt_boost)

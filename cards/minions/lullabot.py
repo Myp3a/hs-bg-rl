@@ -19,15 +19,17 @@ class Lullabot(Minion):
         self.hooks["on_turn_end"].append(self.boost_values)
         
     def boost_values(self) -> None:
-        if self.magnited_to is None:
-            self.attack_perm_boost += 1
-            self.health_perm_boost += 1
-            if self.triplet:
-                self.attack_perm_boost += 1
-                self.health_perm_boost += 1
+        if self.triplet:
+            atk_boost = 2
+            hlt_boost = 2
         else:
-            self.magnited_to.attack_perm_boost += 1
-            self.magnited_to.health_perm_boost += 1
-            if self.triplet:
-                self.magnited_to.attack_perm_boost += 1
-                self.magnited_to.health_perm_boost += 1
+            atk_boost = 1
+            hlt_boost = 1
+        if self.magnited_to is None:
+            target = self
+        else:
+            target = self.magnited_to
+        target.attack_perm_boost += atk_boost
+        target.health_perm_boost += hlt_boost
+        for hook in self.army.hooks["on_values_change_perm"]:
+            hook(target, atk_boost, hlt_boost)

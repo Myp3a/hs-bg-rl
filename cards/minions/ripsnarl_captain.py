@@ -19,4 +19,10 @@ class RipsnarlCaptain(Minion):
 
     def boost_pirate_attack(self, attacker: Minion, target) -> None:
         if MinionClass.Pirate in attacker.classes:
-            attacker.attack_temp_boost += 3
+            if self.triplet:
+                atk_boost = 6
+            else:
+                atk_boost = 3
+            attacker.attack_temp_boost += atk_boost
+            for hook in self.army.hooks["on_values_change_temp"]:
+                hook(attacker, atk_boost, 0)

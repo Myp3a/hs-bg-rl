@@ -23,6 +23,10 @@ class MicroMummy(Minion):
         if len(available_targets) == 0:
             return
         target = random.choice(available_targets)
-        target.attack_perm_boost += 1
         if self.triplet:
-            target.attack_perm_boost += 1
+            atk_boost = 2
+        else:
+            atk_boost = 1
+        target.attack_perm_boost += atk_boost
+        for hook in self.army.hooks["on_values_change_perm"]:
+            hook(target, atk_boost, 0)

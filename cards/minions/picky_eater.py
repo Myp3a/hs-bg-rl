@@ -25,8 +25,13 @@ class PickyEater(Minion):
         target = random.choice(available_targets)
         card = self.army.player.tavern.buy(target)
         self.army.player.view.remove(card)
-        self.attack_perm_boost += card.attack_value
-        self.health_perm_boost += card.health_value
         if self.triplet:
-            self.attack_perm_boost += card.attack_value
-            self.health_perm_boost += card.health_value
+            atk_boost = card.attack_value * 2
+            hlt_boost = card.health_value * 2
+        else:
+            atk_boost = card.attack_value
+            hlt_boost = card.health_value
+        self.attack_perm_boost += atk_boost
+        self.health_perm_boost += hlt_boost
+        for hook in self.army.hooks["on_values_change_perm"]:
+            hook(self, atk_boost, hlt_boost)

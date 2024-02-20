@@ -15,3 +15,5 @@ class BloodGem(TargetedSpell):
     def play(self, target: Minion) -> None:
         target.attack_perm_boost += self.player.blood_gem_attack
         target.health_perm_boost += self.player.blood_gem_health
+        for hook in self.player.army.hooks["on_values_change_perm"]:
+            hook(target, self.player.blood_gem_attack, self.player.blood_gem_health)

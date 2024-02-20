@@ -26,6 +26,10 @@ class Swampstriker(Minion):
 
     def boost_attack(self, played: Minion) -> None:
         if MinionClass.Murloc in played.classes:
-            self.attack_perm_boost += 1
             if self.triplet:
-                self.attack_perm_boost += 1
+                atk_boost = 2
+            else:
+                atk_boost = 1
+            self.attack_perm_boost += atk_boost
+            for hook in self.army.hooks["on_values_change_perm"]:
+                hook(self, atk_boost, 0)

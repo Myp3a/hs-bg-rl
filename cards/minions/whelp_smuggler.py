@@ -21,9 +21,21 @@ class WhelpSmuggler(Minion):
     def boost_dragon(self, target: Minion, attack_boost, health_boost) -> None:
         if MinionClass.Dragon in target.classes:
             if attack_boost > 0:
-                target.health_perm_boost += 1
+                if self.triplet:
+                    hlt_boost = 2
+                else:
+                    hlt_boost = 1
+                target.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(target, 0, hlt_boost)
 
     def boost_dragon_temp(self, target: Minion, attack_boost, health_boost) -> None:
         if MinionClass.Dragon in target.classes:
             if attack_boost > 0:
-                target.health_temp_boost += 1
+                if self.triplet:
+                    hlt_boost = 2
+                else:
+                    hlt_boost = 1
+                target.health_temp_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_temp"]:
+                    hook(self, 0, hlt_boost)

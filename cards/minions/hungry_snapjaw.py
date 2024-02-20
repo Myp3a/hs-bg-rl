@@ -26,6 +26,10 @@ class HungrySnapjaw(Minion):
         
     def boost_health(self, played) -> None:
         if MinionClass.Beast in played.classes:
-            self.health_perm_boost += 1
             if self.triplet:
-                self.health_perm_boost += 1
+                hlt_boost = 2
+            else:
+                hlt_boost = 1
+            self.health_perm_boost += hlt_boost
+            for hook in self.army.hooks["on_values_change_perm"]:
+                hook(self, 0, hlt_boost)

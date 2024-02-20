@@ -13,9 +13,14 @@ class SickRiffs(TargetedSpell):
         self.triplet = triplet
 
     def play(self, target: Minion) -> None:
-        target.attack_temp_boost += self.player.level
-        target.health_temp_boost += self.player.level
         if self.triplet:
-            target.attack_temp_boost += self.player.level
-            target.health_temp_boost += self.player.level
+            atk_boost = self.player.level * 2
+            hlt_boost = self.player.level * 2
+        else:
+            atk_boost = self.player.level
+            hlt_boost = self.player.level
+        target.attack_temp_boost += atk_boost
+        target.health_temp_boost += hlt_boost
+        for hook in self.player.army.hooks["on_values_change_temp"]:
+            hook(target, atk_boost, hlt_boost)
     

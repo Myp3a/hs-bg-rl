@@ -24,8 +24,12 @@ class AnglersLure(TargetedSpell):
         self.target = target
         self.had_taunt = target.taunt
         target.taunt = True
-        target.health_temp_boost += 4
         if self.triplet:
-            target.health_temp_boost += 4
+            hlt_boost = 8
+        else:
+            hlt_boost = 4
+        target.health_temp_boost += hlt_boost
+        for hook in self.player.army.hooks["on_values_change_temp"]:
+            hook(target, 0, hlt_boost)
         target.hooks["on_turn_start"].append(self.restore)
     
