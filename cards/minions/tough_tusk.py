@@ -16,8 +16,15 @@ class ToughTusk(Minion):
         self.level = 2
         self.base_attack_value = 5
         self.base_health_value = 3
-        self.army.hooks["on_spell_cast"].append(self.add_divine_shield)
         self.hooks["on_turn_start"].append(self.remove_divine_shield)
+        self.hooks["on_play"].append(self.put_hook)
+        self.hooks["on_sell"].append(self.remove_hook)
+
+    def put_hook(self) -> None:
+        self.army.hooks["on_spell_cast"].append(self.add_divine_shield)
+
+    def remove_hook(self) -> None:
+        self.army.hooks["on_spell_cast"].remove(self.add_divine_shield)
 
     def add_divine_shield(self, casted, target) -> None:
         if target is self:

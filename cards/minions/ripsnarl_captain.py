@@ -15,7 +15,14 @@ class RipsnarlCaptain(Minion):
         self.level = 2
         self.base_attack_value = 2
         self.base_health_value = 4
+        self.hooks["on_play"].append(self.put_hook)
+        self.hooks["on_sell"].append(self.remove_hook)
+
+    def put_hook(self) -> None:
         self.army.hooks["on_attack"].append(self.boost_pirate_attack)
+
+    def remove_hook(self) -> None:
+        self.army.hooks["on_attack"].remove(self.boost_pirate_attack)
 
     def boost_pirate_attack(self, attacker: Minion, target) -> None:
         if MinionClass.Pirate in attacker.classes:

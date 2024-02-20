@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion
-from spells.slimy_shield import SlimyShield
+from cards.spells.slimy_shield import SlimyShield
 
 if TYPE_CHECKING:
     from models.army import Army

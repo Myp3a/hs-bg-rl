@@ -16,8 +16,15 @@ class SnailCavalry(Minion):
         self.base_attack_value = 5
         self.base_health_value = 2
         self.first_cast = True
-        self.army.hooks["on_spell_cast"].append(self.boost_health)
         self.hooks["on_turn_start"].append(self.reset_first_cast)
+        self.hooks["on_play"].append(self.put_hook)
+        self.hooks["on_sell"].append(self.remove_hook)
+
+    def put_hook(self) -> None:
+        self.army.hooks["on_spell_cast"].append(self.boost_health)
+
+    def remove_hook(self) -> None:
+        self.army.hooks["on_spell_cast"].remove(self.boost_health)
 
     def reset_first_cast(self) -> None:
         self.first_cast = True

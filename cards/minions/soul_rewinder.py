@@ -15,7 +15,14 @@ class SoulRewinder(Minion):
         self.level = 2
         self.base_attack_value = 3
         self.base_health_value = 1
+        self.hooks["on_play"].append(self.put_hook)
+        self.hooks["on_sell"].append(self.remove_hook)
+
+    def put_hook(self) -> None:
         self.army.hooks["on_hero_damage"].append(self.rewind_damage)
+
+    def remove_hook(self) -> None:
+        self.army.hooks["on_hero_damage"].remove(self.rewind_damage)
 
     def rewind_damage(self, damage) -> None:
         self.army.player.health += damage

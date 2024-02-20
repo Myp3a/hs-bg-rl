@@ -15,8 +15,16 @@ class WhelpSmuggler(Minion):
         self.level = 2
         self.base_attack_value = 2
         self.base_health_value = 3
+        self.hooks["on_play"].append(self.put_hook)
+        self.hooks["on_sell"].append(self.remove_hook)
+
+    def put_hook(self) -> None:
         self.army.hooks["on_values_change_perm"].append(self.boost_dragon)
         self.army.hooks["on_values_change_temp"].append(self.boost_dragon_temp)
+
+    def remove_hook(self) -> None:
+        self.army.hooks["on_values_change_perm"].remove(self.boost_dragon)
+        self.army.hooks["on_values_change_temp"].remove(self.boost_dragon_temp)
 
     def boost_dragon(self, target: Minion, attack_boost, health_boost) -> None:
         if MinionClass.Dragon in target.classes:
