@@ -35,6 +35,7 @@ class Minion(Card):
             "on_play": [],
             "on_death": [],
             "on_temp_values_change": [],
+            "on_kill": [],
             "battlecry": [],
             "deathrattle": [],
             "rebirth": [],
@@ -125,8 +126,12 @@ class Minion(Card):
     def reset_temp_bonuses(self) -> None:
         self.attack_temp_boost = 0
         self.health_temp_boost = 0
+        self.is_dead = False
 
     def death(self) -> None:
+        if self.is_dead:
+            return
+        self.is_dead = True
         position = self.army.index(self)
         for hook in self.army.hooks["on_minion_death"]:
             hook(self)
@@ -159,6 +164,8 @@ class Minion(Card):
             self.health_temp_boost -= target.attack_value + target.humming_bird_boost
             if target.toxic:
                 target.toxic = False
+                for hook in target.hooks["on_kill"]:
+                    hook()
                 self.death()
         else:
             if target.attack_value > 0:
@@ -169,6 +176,8 @@ class Minion(Card):
             target.health_temp_boost -= self.attack_value + self.humming_bird_boost
             if self.toxic:
                 self.toxic = False
+                for hook in self.hooks["on_kill"]:
+                    hook()
                 target.death()
         else:
             if self.attack_value > 0:
@@ -179,9 +188,13 @@ class Minion(Card):
             hook(target)
         for hook in self.hooks["on_defence_post"]:
             hook(target)
-        if self.health_value <= 0:
+        if self.health_value <= 0 and not self.is_dead:
+            for hook in target.hooks["on_kill"]:
+                hook()
             self.death()
-        if target.health_value <= 0:
+        if target.health_value <= 0 and not target.is_dead:
+            for hook in self.hooks["on_kill"]:
+                hook()
             target.death()
 
     def magnet(self, target: Minion) -> None:
