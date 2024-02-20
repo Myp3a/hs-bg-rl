@@ -47,6 +47,9 @@ class Army(CardSet):
         target = other.get_target()
 
         attacker.attack(target)
+        if attacker.windfury:
+            target = other.get_target()
+            attacker.attack(target)
     
     def get_target(self) -> Card | None:
         if len(self) == 0:
