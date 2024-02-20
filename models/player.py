@@ -30,6 +30,9 @@ class Player:
         self.tavern_discount = 0
         self.free_rolls = 0
         self.turn = 0
+        self.tavern_elemental_boost = 0
+        self.knights_died = 0
+        self.undead_attack_boost = 0
         self.view = self.tavern.new_view(self)
 
     @property
@@ -84,6 +87,9 @@ class Player:
         d["blood_gem_attack"] = self.blood_gem_attack
         d["blood_gem_health"] = self.blood_gem_health
         d["free_rolls"] = self.free_rolls
+        d["tavern_elemental_boost"] = self.tavern_elemental_boost
+        d["knights_died"] = self.knights_died
+        d["undead_attack_boost"] = self.undead_attack_boost
         return {
             "player_data": d, 
             "hand_data": self.hand.observation,
