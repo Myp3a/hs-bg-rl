@@ -27,10 +27,6 @@ class SurfNSurf(TargetedSpell):
     def summon_crab(self, position) -> None:
         crab = Crab(self.player.army)
         if self.triplet:
-            crab.base_attack_value *= 2
-            crab.base_health_value *= 2
-            crab.attack_value = crab.base_attack_value
-            crab.health_value = crab.base_health_value
             crab.triplet = True
         self.player.army.add(crab, position)
     

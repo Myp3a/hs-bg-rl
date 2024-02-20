@@ -16,8 +16,6 @@ class MicroMummy(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 2
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_turn_end"].append(self.boost_attack)
 
     def boost_attack(self) -> None:
@@ -25,6 +23,6 @@ class MicroMummy(Minion):
         if len(available_targets) == 0:
             return
         target = random.choice(available_targets)
-        target.attack_value += 1
+        target.attack_perm_boost += 1
         if self.triplet:
-            target.attack_value += 1
+            target.attack_perm_boost += 1

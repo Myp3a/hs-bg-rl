@@ -16,5 +16,3 @@ class Cubling(Minion):
         self.taunt = True
         self.base_attack_value = 0
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value

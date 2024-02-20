@@ -16,8 +16,6 @@ class UpbeatFrontdrake(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.turns_left = 3
         self.hooks["on_turn_end"].append(self.give_dragon)
 

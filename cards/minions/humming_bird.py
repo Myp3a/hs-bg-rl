@@ -16,8 +16,6 @@ class HummingBird(Minion):
         self.level = 2
         self.base_attack_value = 2
         self.base_health_value = 4
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_play"].append(self.put_hook_existing)
         self.army.hooks["on_minion_play"].append(self.put_hook_new)
         self.hooks["on_death"].append(self.decrease_boost)

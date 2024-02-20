@@ -16,8 +16,6 @@ class RockpoolHunter(Minion):
         self.level = 1
         self.base_attack_value = 2
         self.base_health_value = 3
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["battlecry"].append(self.boost_murloc_values)
 
     def boost_murloc_values(self) -> None:
@@ -25,8 +23,8 @@ class RockpoolHunter(Minion):
         if len(available_targets) == 0:
             return
         target = random.choice(available_targets)
-        target.attack_value += 1
-        target.health_value += 1
+        target.attack_perm_boost += 1
+        target.health_perm_boost += 1
         if self.triplet:
-            target.attack_value += 1
-            target.health_value += 1
+            target.attack_perm_boost += 1
+            target.health_perm_boost += 1

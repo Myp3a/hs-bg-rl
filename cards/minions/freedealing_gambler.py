@@ -15,8 +15,6 @@ class FreedealingGambler(Minion):
         self.level = 2
         self.base_attack_value = 3
         self.base_health_value = 3
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_sell"].append(self.give_gold)
 
     def give_gold(self) -> None:

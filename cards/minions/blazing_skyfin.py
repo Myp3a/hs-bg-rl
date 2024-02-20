@@ -15,8 +15,6 @@ class BlazingSkyfin(Minion):
         self.level = 2
         self.base_attack_value = 1
         self.base_health_value = 3
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_sell"].append(self.remove_hook)
 
@@ -28,8 +26,8 @@ class BlazingSkyfin(Minion):
 
     def boost_values(self, played: Minion) -> None:
         if len(played.hooks["battlecry"] > 0):
-            self.attack_value += 1
-            self.health_value += 1
+            self.attack_perm_boost += 1
+            self.health_perm_boost += 1
             if self.triplet:
-                self.attack_value += 1
-                self.health_value += 1
+                self.attack_perm_boost += 1
+                self.health_perm_boost += 1

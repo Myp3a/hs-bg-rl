@@ -125,26 +125,22 @@ class Player:
             perm_health = 0
             for card in list(self.army.cards):
                 if isinstance(card, card_type):
-                    perm_attack += card.attack_value - card.base_attack_value
-                    perm_health += card.health_value - card.base_health_value
+                    perm_attack += card.attack_perm_boost
+                    perm_health += card.health_perm_boost
                     self.army.remove(card)
                     contains.append(card)
             for card in list(self.hand.cards):
                 if isinstance(card, Minion):
                     if isinstance(card, card_type):
-                        perm_attack += card.attack_value - card.base_attack_value
-                        perm_health += card.health_value - card.base_health_value
+                        perm_attack += card.attack_perm_boost
+                        perm_health += card.health_perm_boost
                         self.hand.remove(card)
                         contains.append(card)
             triplet = card_type(card.army)
             triplet.triplet = True
             triplet.contains = contains
-            triplet.base_attack_value *= 2
-            triplet.base_health_value *= 2
-            triplet.attack_value = triplet.base_attack_value
-            triplet.health_value = triplet.base_health_value
-            triplet.attack_value += perm_attack
-            triplet.health_value += perm_health
+            triplet.attack_perm_boost += perm_attack
+            triplet.health_perm_boost += perm_health
             self.hand.add(triplet, len(self.hand))
 
     def start_turn(self) -> None:

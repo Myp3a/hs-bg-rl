@@ -16,8 +16,6 @@ class HarmlessBonehead(Minion):
         self.level = 1
         self.base_attack_value = 0
         self.base_health_value = 2
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["deathrattle"].append(self.summon_skeletons)
 
     def summon_skeletons(self, position) -> None:
@@ -25,8 +23,4 @@ class HarmlessBonehead(Minion):
             skel = Skeleton(self.army)
             if self.triplet:
                 skel.triplet = True
-                skel.base_attack_value *= 2
-                skel.base_health_value *= 2
-                skel.attack_value = skel.base_attack_value
-                skel.health_value = skel.base_health_value
             self.army.add(skel, position)

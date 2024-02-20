@@ -16,8 +16,6 @@ class PickyEater(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["battlecry"].append(self.eat_minion)
 
     def eat_minion(self) -> None:
@@ -27,8 +25,8 @@ class PickyEater(Minion):
         target = random.choice(available_targets)
         card = self.army.player.tavern.buy(target)
         self.army.player.view.remove(card)
-        self.attack_value += card.attack_value
-        self.health_value += card.health_value
+        self.attack_perm_boost += card.attack_value
+        self.health_perm_boost += card.health_value
         if self.triplet:
-            self.attack_value += card.attack_value
-            self.health_value += card.health_value
+            self.attack_perm_boost += card.attack_value
+            self.health_perm_boost += card.health_value

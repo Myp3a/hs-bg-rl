@@ -15,8 +15,6 @@ class CorpseRefiner(Minion):
         self.level = 2
         self.base_attack_value = 2
         self.base_health_value = 3
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.avenge_cntr = 4
         self.additional_gold = 0
         self.hooks["on_sell"].append(self.give_add_gold)

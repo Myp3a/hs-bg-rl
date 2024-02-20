@@ -15,11 +15,9 @@ class EmeraldProtoWhelp(Minion):
         self.level = 1
         self.base_attack_value = 0
         self.base_health_value = 4
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_turn_end"].append(self.increase_attack)
 
     def increase_attack(self) -> None:
-        self.attack_value += 1
+        self.attack_perm_boost += 1
         if self.triplet:
-            self.attack_value += 1
+            self.attack_perm_boost += 1

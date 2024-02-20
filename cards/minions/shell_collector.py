@@ -16,8 +16,6 @@ class ShellCollector(Minion):
         self.level = 1
         self.base_attack_value = 2
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["battlecry"].append(self.give_gold_coin)
 
     def give_gold_coin(self) -> None:

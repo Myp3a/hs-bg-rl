@@ -16,8 +16,6 @@ class SurfNSurf(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_turn_start"].append(self.give_crab)
 
     def give_crab(self) -> None:

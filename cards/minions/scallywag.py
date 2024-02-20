@@ -16,16 +16,10 @@ class Scallywag(Minion):
         self.level = 1
         self.base_attack_value = 3
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["deathrattle"].append(self.summon_sky_pirate)
 
     def summon_sky_pirate(self, position) -> None:
         pirate = SkyPirate(self.army)
         if self.triplet:
             pirate.triplet = True
-            pirate.base_attack_value *= 2
-            pirate.base_health_value *= 2
-            pirate.attack_value = pirate.base_attack_value
-            pirate.health_value = pirate.base_health_value
         self.army.add(pirate, position)

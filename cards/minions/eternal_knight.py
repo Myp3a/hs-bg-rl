@@ -15,8 +15,6 @@ class EternalKnight(Minion):
         self.level = 2
         self.base_attack_value = 4
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_death"].append(self.boost_knights)
         self.hooks["on_play"].append(self.get_boost)
         self.hooks["on_sell"].append(self.drop_boost)
@@ -30,11 +28,7 @@ class EternalKnight(Minion):
         if self.triplet:
             self.base_attack_value += self.army.player.knights_died
             self.base_health_value += self.army.player.knights_died
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
 
     def drop_boost(self) -> None:
         self.base_attack_value = 2
         self.base_health_value = 2
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value

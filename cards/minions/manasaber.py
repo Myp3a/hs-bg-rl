@@ -16,8 +16,6 @@ class Manasaber(Minion):
         self.level = 1
         self.base_attack_value = 4
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["deathrattle"].append(self.summon_cublings)
 
     def summon_cublings(self, position) -> None:
@@ -25,8 +23,4 @@ class Manasaber(Minion):
             cub = Cubling(self.army)
             if self.triplet:
                 cub.triplet = True
-                cub.base_attack_value *= 2
-                cub.base_health_value *= 2
-                cub.attack_value = cub.base_attack_value
-                cub.health_value = cub.base_health_value
             self.army.add(cub, position)

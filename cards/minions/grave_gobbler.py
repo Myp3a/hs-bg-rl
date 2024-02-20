@@ -15,8 +15,6 @@ class GraveGobbler(Minion):
         self.level = 2
         self.base_attack_value = 4
         self.base_health_value = 3
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_turn_start"].append(self.destroy_left)
 
     def destroy_left(self) -> None:
@@ -29,5 +27,5 @@ class GraveGobbler(Minion):
                     to_the_left.rebirth = False
                 else:
                     self.army.remove(to_the_left)
-                self.attack_value += 5
-                self.health_value += 5
+                self.attack_perm_boost += 5
+                self.health_perm_boost += 5

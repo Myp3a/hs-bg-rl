@@ -16,8 +16,6 @@ class CogworkCopter(Minion):
         self.level = 2
         self.base_attack_value = 1
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_sell"].append(self.remove_hook)
 
@@ -31,8 +29,8 @@ class CogworkCopter(Minion):
         hand_minions = [m for m in self.army.player.hand if isinstance(m, Minion)]
         if len(hand_minions) > 0:
             rnd = random.choice(hand_minions)
-            rnd.attack_value += 1
-            rnd.attack_value += 1
+            rnd.attack_perm_boost += 1
+            rnd.health_perm_boost += 1
             if self.triplet:
-                rnd.attack_value += 1
-                rnd.attack_value += 1
+                rnd.attack_perm_boost += 1
+                rnd.health_perm_boost += 1

@@ -16,8 +16,6 @@ class SunBaconRelaxer(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 2
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_sell"].append(self.give_blood_gem)
 
     def give_blood_gem(self) -> None:

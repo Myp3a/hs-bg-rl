@@ -13,5 +13,5 @@ class BloodGem(TargetedSpell):
         self.spell_id = 0
 
     def play(self, target: Minion) -> None:
-        target.attack_value += self.player.blood_gem_attack
-        target.health_value += self.player.blood_gem_health
+        target.attack_perm_boost += self.player.blood_gem_attack
+        target.health_perm_boost += self.player.blood_gem_health

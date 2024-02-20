@@ -16,16 +16,10 @@ class Imprisoner(Minion):
         self.level = 1
         self.base_attack_value = 3
         self.base_health_value = 2
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["deathrattle"].append(self.summon_imp)
 
     def summon_imp(self, position) -> None:
         imp = Imp(self.army)
         if self.triplet:
             imp.triplet = True
-            imp.base_attack_value *= 2
-            imp.base_health_value *= 2
-            imp.attack_value = imp.base_attack_value
-            imp.health_value = imp.base_health_value
         self.army.add(imp, position)

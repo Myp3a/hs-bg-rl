@@ -17,9 +17,6 @@ class AnglersLure(TargetedSpell):
 
     def restore(self) -> None:
         self.target.taunt = self.had_taunt
-        self.target.health_value -= 4
-        if self.triplet:
-            self.target.health_value -= 4
         self.target.hooks["on_turn_start"].remove(self.restore)
         
 
@@ -27,8 +24,8 @@ class AnglersLure(TargetedSpell):
         self.target = target
         self.had_taunt = target.taunt
         target.taunt = True
-        target.health_value += 4
+        target.health_temp_boost += 4
         if self.triplet:
-            target.health_value += 4
+            target.health_temp_boost += 4
         target.hooks["on_turn_start"].append(self.restore)
     

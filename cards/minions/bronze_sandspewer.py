@@ -15,14 +15,12 @@ class BronzeSandspewer(Minion):
         self.level = 2
         self.base_attack_value = 1
         self.base_health_value = 1
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_turn_end"].append(self.boost_values)
 
     def boost_values(self) -> None:
         if len(self.army) == 7:
-            self.attack_value += 1
-            self.health_value += 1
+            self.attack_perm_boost += 1
+            self.health_perm_boost += 1
             if self.triplet:
-                self.attack_value += 1
-                self.health_value += 1
+                self.attack_perm_boost += 1
+                self.health_perm_boost += 1

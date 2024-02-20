@@ -1,5 +1,4 @@
 from __future__ import annotations
-import random
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
@@ -16,14 +15,12 @@ class ColdlightSeer(Minion):
         self.level = 2
         self.base_attack_value = 2
         self.base_health_value = 3
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["battlecry"].append(self.boost_murloc)
 
     def boost_murloc(self) -> None:
         for minion in self.army.cards:
             if MinionClass.Murloc in minion.classes:
                 if not minion is self:
-                    minion.health_value += 2
+                    minion.health_perm_boost += 2
                     if self.triplet:
-                        minion.health_value += 2
+                        minion.health_perm_boost += 2

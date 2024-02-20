@@ -29,7 +29,7 @@ class Minion(Card):
             "on_defence_pre": [],
             "on_defence_post": [],
             "on_fight_start": [],
-            "on_turn_start": [],
+            "on_turn_start": [self.reset_temp_bonuses,],
             "on_turn_end": [],
             "on_sell": [],
             "on_play": [],
@@ -42,10 +42,9 @@ class Minion(Card):
         self.level = 0
         self.base_attack_value = 0
         self.base_health_value = 0
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.is_dead = False
         self.rebirth = False
+        self.reborn = False
         self.divine_shield = False
         self.toxic = False
         self.taunt = False
@@ -54,6 +53,10 @@ class Minion(Card):
         self.immediate_attack = False
         self.contains = []
         self.humming_bird_boost = 0
+        self.attack_temp_boost = 0
+        self.health_temp_boost = 0
+        self.attack_perm_boost = 0
+        self.health_perm_boost = 0
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}{self.attack_value},{self.health_value}"
@@ -70,6 +73,32 @@ class Minion(Card):
             name = f"!{name}!"
         return name
 
+    @property
+    def attack_value(self) -> int:
+        if self.reborn:
+            val = self.base_attack_value
+        else:
+            val = self.base_attack_value + self.attack_perm_boost
+        if self.triplet:
+            val += self.base_attack_value
+        val += self.attack_temp_boost
+        return val
+    
+    @property
+    def health_value(self) -> int:
+        if self.reborn:
+            val = self.base_health_value
+        else:
+            val = self.base_health_value + self.health_perm_boost
+        if self.triplet:
+            val += self.base_health_value
+        val += self.health_temp_boost
+        return val
+
+    def reset_temp_bonuses(self) -> None:
+        self.attack_temp_boost = 0
+        self.health_temp_boost = 0
+
     def death(self) -> None:
         position = self.army.index(self)
         for hook in self.army.hooks["on_minion_death"]:
@@ -81,9 +110,10 @@ class Minion(Card):
             hook(position)
         if self.rebirth:
             self.rebirth = False
-            self.attack_value = self.base_attack_value
-            self.health_value = self.base_health_value
+            self.reborn = True
             self.army.add(self, position)
+            for hook in self.hooks["on_play"]:
+                hook()
         else:
             self.is_dead = True
 
@@ -97,9 +127,9 @@ class Minion(Card):
         for hook in self.army.hooks["on_defence"]:
             hook(target)
         for hook in self.hooks["on_defence_pre"]:
-            hook(target)
+            hook(target)        
         if not self.divine_shield:
-            self.health_value -= target.attack_value + target.humming_bird_boost
+            self.health_temp_boost -= target.attack_value + target.humming_bird_boost
             if target.toxic:
                 target.toxic = False
                 self.death()
@@ -109,10 +139,10 @@ class Minion(Card):
                 for hook in self.army.hooks["on_divine_shield_lost"]:
                     hook(self)
         if not target.divine_shield:
-            target.health_value -= self.attack_value + self.humming_bird_boost
+            target.health_temp_boost -= self.attack_value + self.humming_bird_boost
             if self.toxic:
                 self.toxic = False
-                self.death()
+                target.death()
         else:
             if self.attack_value > 0:
                 target.divine_shield = False

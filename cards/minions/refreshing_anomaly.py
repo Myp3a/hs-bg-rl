@@ -15,8 +15,6 @@ class RefreshingAnomaly(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 4
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["battlecry"].append(self.give_free_roll)
 
     def give_free_roll(self) -> None:

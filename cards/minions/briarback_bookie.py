@@ -16,8 +16,6 @@ class BriarbackBookie(Minion):
         self.level = 2
         self.base_attack_value = 3
         self.base_health_value = 4
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_turn_end"].append(self.give_blood_gem)
 
     def give_blood_gem(self) -> None:

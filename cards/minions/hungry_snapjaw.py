@@ -15,8 +15,6 @@ class HungrySnapjaw(Minion):
         self.level = 2
         self.base_attack_value = 5
         self.base_health_value = 2
-        self.attack_value = self.base_attack_value
-        self.health_value = self.base_health_value
         self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_sell"].append(self.remove_hook)
 
@@ -28,6 +26,6 @@ class HungrySnapjaw(Minion):
         
     def boost_health(self, played) -> None:
         if MinionClass.Beast in played.classes:
-            self.health_value += 1
+            self.health_perm_boost += 1
             if self.triplet:
-                self.health_value += 1
+                self.health_perm_boost += 1
