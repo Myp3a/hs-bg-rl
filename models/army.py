@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 import random
 
-from cards.minion import Minion
+from cards.minion import Minion, MinionClass
 
 from .cardset import CardSet
 if TYPE_CHECKING:
@@ -22,6 +22,7 @@ class Army(CardSet):
             "on_hero_damage": [],  # (self), damage
             "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
             "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
+            "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values],  # (self), bought
         }
         self.max_len = 7
         self.cards: list[Minion] = []
@@ -34,6 +35,15 @@ class Army(CardSet):
     def attack_power(self) -> int:
         return sum([c.attack_value for c in self.cards])
     
+    def boost_undead_attack(self, bought: Minion) -> None:
+        if MinionClass.Undead in bought.classes:
+            bought.attack_perm_boost += self.player.undead_attack_boost
+    
+    def boost_elemental_values(self, bought: Minion) -> None:
+        if MinionClass.Undead in bought.classes:
+            bought.attack_perm_boost += self.player.tavern_elemental_boost
+            bought.health_perm_boost += self.player.tavern_elemental_boost
+
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]
         if len(available_attackers) == 0:

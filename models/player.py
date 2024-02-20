@@ -208,6 +208,8 @@ class Player:
             card.army = self.army
             self.view.remove(card)
             self.hand.add(card, len(self.hand))
+            for hook in self.army.hooks["on_minion_buy"]:
+                hook(card)
             self.check_triplets()
             return True
         return False
