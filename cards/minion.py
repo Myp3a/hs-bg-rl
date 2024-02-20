@@ -34,6 +34,7 @@ class Minion(Card):
             "on_sell": [],
             "on_play": [],
             "on_death": [],
+            "on_temp_values_change": [],
             "battlecry": [],
             "deathrattle": [],
             "rebirth": [],
@@ -53,8 +54,8 @@ class Minion(Card):
         self.immediate_attack = False
         self.contains = []
         self.humming_bird_boost = 0
-        self.attack_temp_boost = 0
-        self.health_temp_boost = 0
+        self._attack_temp_boost = 0
+        self._health_temp_boost = 0
         self.attack_perm_boost = 0
         self.health_perm_boost = 0
 
@@ -94,6 +95,26 @@ class Minion(Card):
             val += self.base_health_value
         val += self.health_temp_boost
         return val
+
+    @property
+    def attack_temp_boost(self) -> int:
+        return self._attack_temp_boost
+
+    @attack_temp_boost.setter
+    def attack_temp_boost(self, new_value) -> None:
+        self._attack_temp_boost = new_value
+        for hook in self.hooks["on_temp_values_change"]:
+            hook()
+
+    @property
+    def health_temp_boost(self) -> int:
+        return self._health_temp_boost
+
+    @health_temp_boost.setter
+    def health_temp_boost(self, new_value) -> None:
+        self._health_temp_boost = new_value
+        for hook in self.hooks["on_temp_values_change"]:
+            hook()
 
     def reset_temp_bonuses(self) -> None:
         self.attack_temp_boost = 0
