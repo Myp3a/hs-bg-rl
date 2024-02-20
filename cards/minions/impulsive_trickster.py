@@ -28,7 +28,7 @@ class ImpulsiveTrickster(Minion):
             for hook in self.army.hooks["on_values_change_perm"]:
                 hook(chosen, 0, hlt_boost)
         
-    def boost_health(self) -> None:
+    def boost_health(self, position) -> None:
         # TODO: check if boosted ingame health counts
         self.choose_and_boost_health()
         if self.triplet:

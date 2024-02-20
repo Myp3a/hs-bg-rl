@@ -20,9 +20,9 @@ class HummingBird(Minion):
         self.hooks["on_death"].append(self.decrease_boost)
         self.hooks["on_turn_start"].append(self.reset_boost)
         
-    def count_hummingbirds(self, beast) -> None:
+    def count_hummingbirds(self, target, beast) -> None:
         boost = 0
-        for c in self.army.cards:
+        for c in beast.army.cards:
             if isinstance(c, HummingBird) and not c is self:
                 boost += 2
                 if c.triplet:

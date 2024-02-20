@@ -33,4 +33,5 @@ class PatientScout(Minion):
             return
         discovered = random.choice(available_cards)
         card = self.army.player.tavern.buy(discovered)
+        card.army = self.army
         self.army.player.hand.add(card, len(self.army.player.hand))

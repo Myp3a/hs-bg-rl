@@ -220,9 +220,9 @@ class Player:
     def sell(self, index: int) -> bool:
         if self.sell_possible(index):
             card = self.army[index]
-            self.tavern.sell(card)
             for hook in card.hooks["on_sell"]:
                 hook()
+            self.tavern.sell(card)
             card.army = None
             self.gold += self.sell_price
             return self.army.remove(card)

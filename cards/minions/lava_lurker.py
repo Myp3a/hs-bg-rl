@@ -24,8 +24,9 @@ class LavaLurker(Minion):
         self.first_change = True
 
     def permanent_bonus(self) -> None:
-        self.attack_perm_boost += self.attack_temp_boost
-        self.health_perm_boost += self.health_temp_boost
-        self.attack_temp_boost = 0
-        self.health_temp_boost = 0
-        self.first_change = False
+        if self.first_change:
+            self.first_change = False
+            self.attack_perm_boost += self.attack_temp_boost
+            self.health_perm_boost += self.health_temp_boost
+            self.attack_temp_boost = 0
+            self.health_temp_boost = 0

@@ -18,7 +18,7 @@ class Thorncaller(Minion):
         self.base_health_value = 2
         self.hooks["deathrattle"].append(self.give_blood_gem)
 
-    def give_blood_gem(self) -> None:
+    def give_blood_gem(self, position) -> None:
         self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))
         if self.triplet:
             self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))

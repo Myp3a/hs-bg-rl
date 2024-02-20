@@ -23,23 +23,6 @@ class Minion(Card):
     def __init__(self, army: Army) -> None:
         super().__init__()
         self.army = army
-        self.hooks = {
-            "on_attack_pre": [],  # (self), target
-            "on_attack_post": [],  # (self), target
-            "on_defence_pre": [],  # (self), target
-            "on_defence_post": [],  # (self), target
-            "on_fight_start": [],  # (self)
-            "on_turn_start": [self.reset_temp_bonuses,],  # (self)
-            "on_turn_end": [],  # (self)
-            "on_sell": [],  # (self)
-            "on_play": [],  # (self)
-            "on_death": [],  # (self)
-            "on_temp_values_change": [],  # (self)
-            "on_kill": [],  # (self)
-            "battlecry": [],  # (self)
-            "deathrattle": [],  # (self)
-            "rebirth": [],  # (self)
-        }
         self.classes = []
         self.level = 0
         self.base_attack_value = 0
@@ -63,6 +46,7 @@ class Minion(Card):
         self._health_temp_boost = 0
         self.attack_perm_boost = 0
         self.health_perm_boost = 0
+        self.clear_hooks()
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}{self.attack_value},{self.health_value}"
@@ -122,6 +106,25 @@ class Minion(Card):
         self._health_temp_boost = new_value
         for hook in self.hooks["on_temp_values_change"]:
             hook()
+    
+    def clear_hooks(self) -> None:
+        self.hooks = {
+            "on_attack_pre": [],  # (self), target
+            "on_attack_post": [],  # (self), target
+            "on_defence_pre": [],  # (self), target
+            "on_defence_post": [],  # (self), target
+            "on_fight_start": [],  # (self)
+            "on_turn_start": [self.reset_temp_bonuses,],  # (self)
+            "on_turn_end": [],  # (self)
+            "on_sell": [],  # (self)
+            "on_play": [],  # (self)
+            "on_death": [],  # (self)
+            "on_temp_values_change": [],  # (self)
+            "on_kill": [],  # (self)
+            "battlecry": [],  # (self)
+            "deathrattle": [],  # (self)
+            "rebirth": [],  # (self)
+        }
 
     def reset_temp_bonuses(self) -> None:
         self.attack_temp_boost = 0
@@ -143,6 +146,7 @@ class Minion(Card):
         if self.rebirth:
             self.rebirth = False
             self.reborn = True
+            self.is_dead = False
             self.army.add(self, position)
             for hook in self.hooks["on_play"]:
                 hook()

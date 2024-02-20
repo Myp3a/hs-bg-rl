@@ -25,7 +25,7 @@ class CogworkCopter(Minion):
     def remove_hook(self) -> None:
         self.army.hooks["on_divine_shield_lost"].remove(self.boost_hand_values)
 
-    def boost_hand_values(self) -> None:
+    def boost_hand_values(self, lost) -> None:
         hand_minions = [m for m in self.army.player.hand if isinstance(m, Minion)]
         if len(hand_minions) > 0:
             rnd = random.choice(hand_minions)

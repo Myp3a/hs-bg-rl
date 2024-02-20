@@ -122,6 +122,11 @@ class Tavern:
         return card
     
     def sell(self, card: Minion) -> None:
+        card.attack_perm_boost = 0
+        card.health_perm_boost = 0
+        card.attack_temp_boost = 0
+        card.health_temp_boost = 0
+        card.clear_hooks()
         if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
             return
         if card.triplet:

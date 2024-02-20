@@ -25,7 +25,7 @@ class BlazingSkyfin(Minion):
         self.army.hooks["on_minion_play"].remove(self.boost_values)
 
     def boost_values(self, played: Minion) -> None:
-        if len(played.hooks["battlecry"] > 0):
+        if len(played.hooks["battlecry"]) > 0:
             if self.triplet:
                 atk_boost = 2
                 hlt_boost = 2
