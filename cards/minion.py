@@ -53,6 +53,7 @@ class Minion(Card):
         self.triplet = False
         self.immediate_attack = False
         self.contains = []
+        self.humming_bird_boost = 0
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}{self.attack_value},{self.health_value}"
@@ -98,7 +99,7 @@ class Minion(Card):
         for hook in self.hooks["on_defence_pre"]:
             hook(target)
         if not self.divine_shield:
-            self.health_value -= target.attack_value
+            self.health_value -= target.attack_value + target.humming_bird_boost
             if target.toxic:
                 target.toxic = False
                 self.death()
@@ -108,7 +109,7 @@ class Minion(Card):
                 for hook in self.army.hooks["on_divine_shield_lost"]:
                     hook(self)
         if not target.divine_shield:
-            target.health_value -= self.attack_value
+            target.health_value -= self.attack_value + self.humming_bird_boost
             if self.toxic:
                 self.toxic = False
                 self.death()
