@@ -144,17 +144,22 @@ class Player:
             self.hand.add(triplet, len(self.hand))
 
     def start_turn(self) -> None:
-        self.turn += 1
-        self.base_gold += 1
-        self.gold = min(self.base_gold, 10)
-        self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
-        self.tavern_discount += 1
+        if self.health > 0:
+            self.turn += 1
+            self.base_gold += 1
+            self.gold = min(self.base_gold, 10)
+            self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
+            self.tavern_discount += 1
+        else:
+            for card in self.army.cards:
+                card.clear_hooks()
         for card in self.army.cards:
             for hook in card.hooks["on_turn_start"]:
                 hook()
             for c in card.magnited:
                 for hook in c.hooks["on_turn_start"]:
                     hook()
+        print(f"starting turn with {self.army}")
 
     def end_turn(self) -> None:
         for card in self.army.cards:

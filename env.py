@@ -189,10 +189,10 @@ class HSEnv(ParallelEnv):
             g = Game([self.players[e].player for e in self.players])
             g.battle()
             for i in self.agents:
-                if i in self.dead:
-                    continue
                 self.players[i].actions = 0
                 self.players[i].start_turn()
+                if i in self.dead:
+                    continue
                 obs[i] = self.players[i].observation()
                 hmax = max([self.players[i].player.health for i in self.players])
                 rew[i] = self.players[i].player.health - hmax + 15 - self.players[i].player.turn

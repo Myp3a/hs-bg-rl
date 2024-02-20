@@ -18,8 +18,8 @@ class Game:
 
     def prepare(self) -> None:
         for p in self.players:
+            p.start_turn()
             if p.health > 0:
-                p.start_turn()
                 p.act_random()
 
     def battle(self) -> None:

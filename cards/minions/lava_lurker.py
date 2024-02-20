@@ -17,9 +17,17 @@ class LavaLurker(Minion):
         self.base_attack_value = 2
         self.base_health_value = 5
         self.first_change = True
-        self.hooks["on_temp_values_change"].append(self.permanent_bonus)
         self.hooks["on_turn_start"].append(self.reset_first)
+        self.hooks["on_turn_start"].append(self.put_hook)
+        self.hooks["on_turn_end"].append(self.remove_hook)
+        self.hooks["on_play"].append(self.put_hook)
         
+    def put_hook(self) -> None:
+        self.hooks["on_temp_values_change"].append(self.permanent_bonus)
+
+    def remove_hook(self) -> None:
+        self.hooks["on_temp_values_change"].remove(self.permanent_bonus)
+
     def reset_first(self) -> None:
         self.first_change = True
 
