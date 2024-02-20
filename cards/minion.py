@@ -27,6 +27,9 @@ class Minion(Card):
         self.level = 0
         self.base_attack_value = 0
         self.base_health_value = 0
+        self.base_divine_shield = False
+        self.base_toxic = False
+        self.base_rebirth = False
         self.is_dead = False
         self.rebirth = False
         self.reborn = False
@@ -114,8 +117,8 @@ class Minion(Card):
             "on_defence_pre": [],  # (self), target
             "on_defence_post": [],  # (self), target
             "on_fight_start": [],  # (self)
-            "on_turn_start": [self.reset_temp_bonuses,],  # (self)
-            "on_turn_end": [],  # (self)
+            "on_turn_start": [self.reset_temp_bonuses, self.restore_features],  # (self)
+            "on_turn_end": [self.snapshot_features],  # (self)
             "on_sell": [],  # (self)
             "on_play": [],  # (self)
             "on_death": [],  # (self)
@@ -123,8 +126,18 @@ class Minion(Card):
             "on_kill": [],  # (self)
             "battlecry": [],  # (self)
             "deathrattle": [],  # (self)
-            "rebirth": [],  # (self)
+            "rebirth": [self.restore_features],  # (self)
         }
+
+    def snapshot_features(self) -> None:
+        self.base_divine_shield = self.divine_shield
+        self.base_toxic = self.toxic
+        self.base_rebirth = self.rebirth
+    
+    def restore_features(self) -> None:
+        self.divine_shield = self.base_divine_shield
+        self.toxic = self.base_toxic
+        self.rebirth = self.base_rebirth
 
     def reset_temp_bonuses(self) -> None:
         self.attack_temp_boost = 0
