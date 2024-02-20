@@ -130,6 +130,9 @@ class Minion(Card):
         self.attack_temp_boost = 0
         self.health_temp_boost = 0
         self.is_dead = False
+        if self.reborn:
+            self.rebirth = True
+            self.reborn = False
 
     def death(self) -> None:
         if self.is_dead:
