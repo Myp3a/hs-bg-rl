@@ -49,7 +49,39 @@ class Tavern:
             [SurfNSurf(None) for _ in range(18)] + \
             [Swampstriker(None) for _ in range(18)] + \
             [UpbeatFrontdrake(None) for _ in range(18)] + \
-            [WrathWeaver(None) for _ in range(18)]
+            [WrathWeaver(None) for _ in range(18)] + \
+            [BlazingSkyfin(None) for _ in range(15)] + \
+            [BriarbackBookie(None) for _ in range(15)] + \
+            [BronzeSandspewer(None) for _ in range(15)] + \
+            [CogworkCopter(None) for _ in range(15)] + \
+            [ColdlightSeer(None) for _ in range(15)] + \
+            [CorpseRefiner(None) for _ in range(15)] + \
+            [DancingBarnstormer(None) for _ in range(15)] + \
+            [DeepSeaAngler(None) for _ in range(15)] + \
+            [EternalKnight(None) for _ in range(15)] + \
+            [FreedealingGambler(None) for _ in range(15)] + \
+            [GraveGobbler(None) for _ in range(15)] + \
+            [HummingBird(None) for _ in range(15)] + \
+            [ImpulsiveTrickster(None) for _ in range(15)] + \
+            [LavaLurker(None) for _ in range(15)] + \
+            [Lullabot(None) for _ in range(15)] + \
+            [MindMuck(None) for _ in range(15)] + \
+            [MoonBaconJazzer(None) for _ in range(15)] + \
+            [Murcules(None) for _ in range(15)] + \
+            [NerubianDeathswarmer(None) for _ in range(15)] + \
+            [OozelingGladiator(None) for _ in range(15)] + \
+            [PatientScout(None) for _ in range(15)] + \
+            [ReefRiffer(None) for _ in range(15)] + \
+            [RipsnarlCaptain(None) for _ in range(15)] + \
+            [SewerRat(None) for _ in range(15)] + \
+            [SnailCavalry(None) for _ in range(15)] + \
+            [SoulRewinder(None) for _ in range(15)] + \
+            [Tad(None) for _ in range(15)] + \
+            [Thorncaller(None) for _ in range(15)] + \
+            [ToughTusk(None) for _ in range(15)] + \
+            [TwilightEmissary(None) for _ in range(15)] + \
+            [WhelpSmuggler(None) for _ in range(15)] + \
+            [Yrel(None) for _ in range(15)]
         self.cards: list[Minion] = []
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
