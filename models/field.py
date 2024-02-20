@@ -23,6 +23,17 @@ class Field:
 | {first_army:^{field_width}} |
 +-{'-'*field_width}-+
 """
+    
+    def check_battle_end(self) -> bool:
+        if len(self.first.army) == 0:
+            self.first.health -= self.second.army.power + self.second.level
+            return True
+        if len(self.second.army) == 0:
+            self.second.health -= self.first.army.power + self.first.level
+            return True
+        if len(self.first.army) == 0 and len(self.second.army) == 0 or self.first.army.attack_power == 0 and self.second.army.attack_power == 0:
+            return True
+        return False
 
     def fight(self) -> None:
         while len(self.first.army) > 0 and len(self.second.army) > 0:
@@ -32,17 +43,18 @@ class Field:
                     self.first.army.attack(self.second.army)
                 case 1:
                     self.second.army.attack(self.first.army)
-            for card in self.first.army.cards:
-                if card.immediate_attack:
-                    card.attack(self.second.army.get_target())
-            for card in self.second.army.cards:
-                if card.immediate_attack:
-                    card.attack(self.first.army.get_target())
-            if len(self.first.army) == 0:
-                self.first.health -= self.second.army.power + self.second.level
-                return
-            if len(self.second.army) == 0:
-                self.second.health -= self.first.army.power + self.first.level
-                return
-            if len(self.first.army) == 0 and len(self.second.army) == 0 or self.first.army.attack_power == 0 and self.second.army.attack_power == 0:
+            immediate_attacks = True
+            while immediate_attacks:
+                if self.check_battle_end():
+                    return
+                immediate_attacks = False
+                for card in self.first.army.cards:
+                    if card.immediate_attack:
+                        immediate_attacks = True
+                        card.attack(self.second.army.get_target())
+                for card in self.second.army.cards:
+                    if card.immediate_attack:
+                        immediate_attacks = True
+                        card.attack(self.first.army.get_target())
+            if self.check_battle_end():
                 return
