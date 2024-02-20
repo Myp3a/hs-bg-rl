@@ -3,7 +3,7 @@ from functools import partial
 import random
 from typing import TYPE_CHECKING, Callable
 
-from cards.minion import Minion
+from cards.minion import Minion, MinionClass
 from cards.spell import Spell, TargetedSpell
 
 
@@ -152,11 +152,17 @@ class Player:
         for card in self.army.cards:
             for hook in card.hooks["on_turn_start"]:
                 hook()
+            for c in card.magnited:
+                for hook in c.hooks["on_turn_start"]:
+                    hook()
 
     def end_turn(self) -> None:
         for card in self.army.cards:
             for hook in card.hooks["on_turn_end"]:
                 hook()
+            for c in card.magnited:
+                for hook in c.hooks["on_turn_end"]:
+                    hook()
 
     def upgrade_possible(self) -> bool:
         if self.level < 6:
@@ -242,7 +248,7 @@ class Player:
     
     def play_minion_possible(self, index, place) -> bool:
         if index < len(self.hand):
-            if len(self.army) < 7:
+            if len(self.army) < 7 or self.hand[index].magnetic:
                 if place <= len(self.army):
                     return True
         return False
@@ -252,6 +258,16 @@ class Player:
             card = self.hand[card_to_play_ind]
             if isinstance(card, Minion):
                 self.hand.remove(card)
+                if card.magnetic:
+                    if place_to_play < len(self.army):
+                        if MinionClass.Mech in self.army[place_to_play].classes:
+                            for hook in card.hooks["on_play"]:
+                                hook()
+                            for hook in card.hooks["battlecry"]:
+                                hook()
+                            for hook in self.army.hooks["on_minion_play"]:
+                                hook(card)
+                            return card.magnet(self.army[place_to_play])
                 self.army.add(card, place_to_play)
                 for hook in card.hooks["on_play"]:
                     hook()

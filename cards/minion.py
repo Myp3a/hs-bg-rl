@@ -49,6 +49,10 @@ class Minion(Card):
         self.divine_shield = False
         self.toxic = False
         self.taunt = False
+        self.magnetic = False
+        self.windfury = False
+        self.magnited_to = None
+        self.magnited = []
         self.attacked_this_turn = False
         self.triplet = False
         self.immediate_attack = False
@@ -72,6 +76,8 @@ class Minion(Card):
             name = f"({name})"
         if self.toxic:
             name = f"!{name}!"
+        if self.windfury:
+            name = f"W{name}W"
         return name
 
     @property
@@ -177,3 +183,19 @@ class Minion(Card):
             self.death()
         if target.health_value <= 0:
             target.death()
+
+    def magnet(self, target: Minion) -> None:
+        self.magnited_to = target
+        target.attack_perm_boost += self.attack_value
+        target.health_perm_boost += self.health_value
+        if self.taunt:
+            target.taunt = True
+        if self.divine_shield:
+            target.divine_shield = True
+        if self.rebirth:
+            target.rebirth = True
+        if self.windfury:
+            target.windfury = True
+        if self.toxic:
+            target.toxic = True
+        target.magnited.append(self)

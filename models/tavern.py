@@ -20,6 +20,14 @@ class Tavern:
     def __init__(self) -> None:
         if(self.__initialized): return
         self.__initialized = True
+        self.NOT_SELLABLE = [
+            Skeleton,
+            Imp,
+            Cubling,
+            SkyPirate,
+            WaterDroplet,
+            Crab,
+        ]
         self.base_cards: list[Minion] = \
             [AnnoyOTron(None) for _ in range(18)] + \
             [BeleagueredBattler(None) for _ in range(18)] + \
@@ -78,8 +86,12 @@ class Tavern:
         return card
     
     def sell(self, card: Minion) -> None:
+        if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
+            return
         if card.triplet:
             for c in card.contains:
                 self.cards.append(c)
         else:
             self.cards.append(card)
+        for c in card.magnited:
+            self.cards.append(c)
