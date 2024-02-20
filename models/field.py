@@ -27,8 +27,8 @@ class Field:
 """
     
     def snapshot(self) -> None:
-        self.first_snapshot = self.first.army.cards
-        self.second_snapshot = self.second.army.cards
+        self.first_snapshot = list(self.first.army.cards)
+        self.second_snapshot = list(self.second.army.cards)
 
     def restore(self) -> None:
         self.first.army.cards = self.first_snapshot
