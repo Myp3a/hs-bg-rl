@@ -89,8 +89,8 @@ class Tavern:
         self.reset()
 
     def reset(self) -> None:
-        available_types = random.sample(list(MinionClass), 10)
-        self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes)]
+        available_types = random.sample(list(MinionClass), 5)
+        self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes) or len(c.classes) == 0]
         self.views = []
         
     def new_view(self, player) -> list[Minion]:
