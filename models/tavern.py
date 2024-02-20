@@ -73,9 +73,13 @@ class Tavern:
             return True
         return False
     
+    def available_cards(self) -> list[Minion]:
+        available_cards = [c for c in self.cards if not any(c in view.cards for view in self.views)]
+        return available_cards
+    
     def roll(self, view: CardSet, count: int) -> list[Minion]:
         view.clear()
-        available_cards = [c for c in self.cards if not any(c in view.cards for view in self.views)]
+        available_cards = self.available_cards()
         chosen = random.sample(available_cards, count)
         for card in chosen:
             view.add(card, len(view))
