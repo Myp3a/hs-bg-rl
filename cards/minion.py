@@ -33,6 +33,7 @@ class Minion(Card):
             "on_turn_end": [],
             "on_sell": [],
             "on_play": [],
+            "on_death": [],
             "battlecry": [],
             "deathrattle": [],
             "rebirth": [],
@@ -70,6 +71,10 @@ class Minion(Card):
 
     def death(self) -> None:
         position = self.army.index(self)
+        for hook in self.army.hooks["on_minion_death"]:
+            hook(self)
+        for hook in self.hooks["on_death"]:
+            hook()
         self.army.remove(self)
         for hook in self.hooks["deathrattle"]:
             hook(position)
