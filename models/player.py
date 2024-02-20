@@ -289,12 +289,12 @@ class Player:
             card = self.hand[card_to_play_ind]
             self.hand.remove(card)
             if isinstance(card, Spell):
-                try:
-                    card.play(self.army[place_to_play])
-                except:
-                    card.play(None)
+                if place_to_play < len(self.army):
+                    target = self.army[place_to_play]
+                else:
+                    target = None
                 for hook in self.army.hooks["on_spell_cast"]:
-                    hook(card)
+                    hook(card, target)
                 return True
         return False
     

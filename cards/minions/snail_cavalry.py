@@ -22,7 +22,7 @@ class SnailCavalry(Minion):
     def reset_first_cast(self) -> None:
         self.first_cast = True
 
-    def boost_health(self, casted) -> None:
+    def boost_health(self, casted, target) -> None:
         if self.first_cast:
             self.health_perm_boost += 2
             self.first_cast = False
