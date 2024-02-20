@@ -18,6 +18,7 @@ class Army(CardSet):
             "on_minion_play": [],
             "on_divine_shield_lost": [],
             "on_minion_death": [],
+            "on_spell_cast": [],
         }
         self.max_len = 7
         self.cards: list[Minion] = []

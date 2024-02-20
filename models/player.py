@@ -293,6 +293,8 @@ class Player:
                     card.play(self.army[place_to_play])
                 except:
                     card.play(None)
+                for hook in self.army.hooks["on_spell_cast"]:
+                    hook(card)
                 return True
         return False
     
