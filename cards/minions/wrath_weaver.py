@@ -25,7 +25,10 @@ class WrathWeaver(Minion):
 
     def boost_values(self, played: Minion) -> None:
         if MinionClass.Demon in played.classes:
-            self.army.player.health -= 1
+            hero_damage = 1
+            self.army.player.health -= hero_damage
+            for hook in self.army.hooks["on_hero_damage"]:
+                hook(hero_damage)
             self.attack_perm_boost += 2
             self.health_perm_boost += 1
             if self.triplet:
