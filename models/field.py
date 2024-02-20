@@ -11,6 +11,8 @@ class Field:
     def __init__(self, first: Player, second: Player) -> None:
         self.first = first
         self.second = second
+        self.first_snapshot = None
+        self.second_snapshot = None
         self.turn_flag = random.randint(0, 1)
 
     def __str__(self) -> str:
@@ -24,6 +26,14 @@ class Field:
 +-{'-'*field_width}-+
 """
     
+    def snapshot(self) -> None:
+        self.first_snapshot = self.first.army.cards
+        self.second_snapshot = self.second.army.cards
+
+    def restore(self) -> None:
+        self.first.army.cards = self.first_snapshot
+        self.second.army.cards = self.second_snapshot
+
     def check_battle_end(self) -> bool:
         if len(self.first.army) == 0:
             self.first.health -= self.second.army.power + self.second.level
@@ -36,6 +46,7 @@ class Field:
         return False
 
     def fight(self) -> None:
+        self.snapshot()
         while len(self.first.army) > 0 and len(self.second.army) > 0:
             self.turn_flag = (self.turn_flag + 1) % 2
             match self.turn_flag:
@@ -46,6 +57,7 @@ class Field:
             immediate_attacks = True
             while immediate_attacks:
                 if self.check_battle_end():
+                    self.restore()
                     return
                 immediate_attacks = False
                 for card in self.first.army.cards:
@@ -57,4 +69,5 @@ class Field:
                         immediate_attacks = True
                         card.attack(self.first.army.get_target())
             if self.check_battle_end():
+                self.restore()
                 return
