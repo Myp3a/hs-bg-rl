@@ -13,13 +13,15 @@ class Army(CardSet):
     def __init__(self, player) -> None:
         super().__init__(player)
         self.hooks = {
-            "on_attack": [],
-            "on_defence": [],
-            "on_minion_play": [],
-            "on_divine_shield_lost": [],
-            "on_minion_death": [],
-            "on_spell_cast": [],
-            "on_hero_damage": [],
+            "on_attack": [],  # (self), attacker, defender
+            "on_defence": [],  # (self), defender, attacker
+            "on_minion_play": [],  # (self), played
+            "on_divine_shield_lost": [],  # (self), lost
+            "on_minion_death": [],  # (self), dead
+            "on_spell_cast": [],  # (self), casted, target
+            "on_hero_damage": [],  # (self), damage
+            "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
+            "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
         }
         self.max_len = 7
         self.cards: list[Minion] = []

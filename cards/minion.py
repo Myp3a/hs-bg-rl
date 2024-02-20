@@ -24,21 +24,21 @@ class Minion(Card):
         super().__init__()
         self.army = army
         self.hooks = {
-            "on_attack_pre": [],
-            "on_attack_post": [],
-            "on_defence_pre": [],
-            "on_defence_post": [],
-            "on_fight_start": [],
-            "on_turn_start": [self.reset_temp_bonuses,],
-            "on_turn_end": [],
-            "on_sell": [],
-            "on_play": [],
-            "on_death": [],
-            "on_temp_values_change": [],
-            "on_kill": [],
-            "battlecry": [],
-            "deathrattle": [],
-            "rebirth": [],
+            "on_attack_pre": [],  # (self), target
+            "on_attack_post": [],  # (self), target
+            "on_defence_pre": [],  # (self), target
+            "on_defence_post": [],  # (self), target
+            "on_fight_start": [],  # (self)
+            "on_turn_start": [self.reset_temp_bonuses,],  # (self)
+            "on_turn_end": [],  # (self)
+            "on_sell": [],  # (self)
+            "on_play": [],  # (self)
+            "on_death": [],  # (self)
+            "on_temp_values_change": [],  # (self)
+            "on_kill": [],  # (self)
+            "battlecry": [],  # (self)
+            "deathrattle": [],  # (self)
+            "rebirth": [],  # (self)
         }
         self.classes = []
         self.level = 0
