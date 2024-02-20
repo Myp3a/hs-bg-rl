@@ -251,6 +251,8 @@ class Player:
             if isinstance(card, Minion):
                 self.hand.remove(card)
                 self.army.add(card, place_to_play)
+                for hook in card.hooks["on_play"]:
+                    hook()
                 for hook in card.hooks["battlecry"]:
                     hook()
                 for hook in self.army.hooks["on_minion_play"]:

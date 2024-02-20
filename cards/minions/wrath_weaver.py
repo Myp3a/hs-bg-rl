@@ -16,7 +16,7 @@ class WrathWeaver(Minion):
         self.base_health_value = 4
         self.attack_value = self.base_attack_value
         self.health_value = self.base_health_value
-        self.hooks["battlecry"].append(self.put_hook)
+        self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_sell"].append(self.remove_hook)
 
     def put_hook(self) -> None:

@@ -32,6 +32,7 @@ class Minion(Card):
             "on_turn_start": [],
             "on_turn_end": [],
             "on_sell": [],
+            "on_play": [],
             "battlecry": [],
             "deathrattle": [],
             "rebirth": [],
@@ -99,6 +100,8 @@ class Minion(Card):
         else:
             if target.attack_value > 0:
                 self.divine_shield = False
+                for hook in self.army.hooks["on_divine_shield_lost"]:
+                    hook(self)
         if not target.divine_shield:
             target.health_value -= self.attack_value
             if self.toxic:
@@ -107,6 +110,8 @@ class Minion(Card):
         else:
             if self.attack_value > 0:
                 target.divine_shield = False
+                for hook in target.army.hooks["on_divine_shield_lost"]:
+                    hook(target)
         for hook in self.hooks["on_attack_post"]:
             hook(target)
         for hook in self.hooks["on_defence_post"]:
