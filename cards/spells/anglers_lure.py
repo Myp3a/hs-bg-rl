@@ -20,6 +20,8 @@ class AnglersLure(TargetedSpell):
         self.target.health_value -= 4
         if self.triplet:
             self.target.health_value -= 4
+        self.target.hooks["on_turn_start"].remove(self.restore)
+        
 
     def play(self, target: Minion) -> None:
         self.target = target

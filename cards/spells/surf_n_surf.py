@@ -16,6 +16,8 @@ class SurfNSurf(TargetedSpell):
 
     def remove_hook(self) -> None:
         self.target.hooks["deathrattle"].remove(self.summon_crab)
+        self.target.hooks["on_turn_start"].remove(self.remove_hook)
+
 
     def play(self, target: Minion) -> None:
         self.target = target
