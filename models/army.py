@@ -21,7 +21,7 @@ class Army(CardSet):
             "on_defence": [],  # (self), defender, attacker
             "on_minion_play": [],  # (self), played
             "on_divine_shield_lost": [],  # (self), lost
-            "on_minion_death": [],  # (self), dead
+            "on_minion_death": [self.summon_feathermane],  # (self), dead, position
             "on_spell_cast": [],  # (self), casted, target
             "on_hero_damage": [],  # (self), damage
             "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
@@ -40,6 +40,14 @@ class Army(CardSet):
     def attack_power(self) -> int:
         return sum([c.attack_value for c in self.cards])
     
+    def summon_feathermane(self, dead: Minion, position) -> None:
+        if MinionClass.Beast in dead.classes:
+            feathermanes = [f for f in self.player.hand if isinstance(f, Minion) and not f.summoned]
+            if len(feathermanes) > 0:
+                feathermane = feathermanes[0]
+                feathermane.summoned = True
+                self.add(feathermane, position)
+
     def boost_undead_attack(self, bought: Minion) -> None:
         if MinionClass.Undead in bought.classes:
             bought.attack_perm_boost += self.player.undead_attack_boost

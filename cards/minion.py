@@ -154,7 +154,7 @@ class Minion(Card):
         self.is_dead = True
         position = self.army.index(self)
         for hook in self.army.hooks["on_minion_death"]:
-            hook(self)
+            hook(self, position)
         for hook in self.hooks["on_death"]:
             hook()
         self.army.remove(self)

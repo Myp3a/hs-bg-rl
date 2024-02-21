@@ -28,7 +28,7 @@ class CorpseRefiner(Minion):
     def remove_hook(self) -> None:
         self.army.hooks["on_minion_death"].remove(self.on_another_death)
 
-    def on_another_death(self, died) -> None:
+    def on_another_death(self, died, position) -> None:
         if not died is self:
             self.avenge_cntr -= 1
         if self.avenge_cntr == 0:
