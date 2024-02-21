@@ -79,5 +79,4 @@ class Army(CardSet):
         if len(targets) == 0:
             targets = [t for t in self.cards]
         target = random.choice(targets)
-        self.log.debug(f"{target} chosen from {target.army}")
         return target
