@@ -44,6 +44,7 @@ class Minion(Card):
         self.triplet = False
         self.immediate_attack = False
         self.contains = []
+        self.summoned = False
         self.humming_bird_boost = 0
         self._attack_temp_boost = 0
         self._health_temp_boost = 0

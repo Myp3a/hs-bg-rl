@@ -167,6 +167,8 @@ class Player:
             for c in card.magnited:
                 for hook in c.hooks["on_turn_start"]:
                     hook()
+        for hook in self.hand.hooks["on_turn_start"]:
+            hook()
 
     def end_turn(self) -> None:
         self.log.debug(f"{self} turn end")

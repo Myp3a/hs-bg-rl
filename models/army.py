@@ -27,6 +27,7 @@ class Army(CardSet):
             "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
             "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
             "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values],  # (self), bought
+            "on_minion_summon": [],  # (self), summoned
         }
         self.max_len = 7
         self.cards: list[Minion] = []
@@ -64,7 +65,8 @@ class Army(CardSet):
         self.log.debug(f"atk: {attacker} chosen from {attacker.army}")
         
         target = other.get_target()
-        self.log.debug(f"def: {attacker} attacks {target}")
+        self.log.debug(f"def: {target} chosen from {target.army}")
+        self.log.debug(f"{attacker} attacks {target}")
         attacker.attack(target)
         if attacker.windfury:
             target = other.get_target()
