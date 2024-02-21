@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from cards.minion import Minion
 
 class Tavern:
+    # TODO: find out why logs not working
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Tavern, cls).__new__(cls)

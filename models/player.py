@@ -239,6 +239,7 @@ class Player:
             for hook in card.hooks["on_sell"]:
                 hook()
             self.tavern.sell(card)
+            self.log.debug(f"{self} sold {card}, army = {self.army}")
             card.army = None
             self.gold += self.sell_price
             return self.army.remove(card)
