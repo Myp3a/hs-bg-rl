@@ -38,6 +38,8 @@ class Player:
         self.tavern_elemental_boost = 0
         self.knights_died = 0
         self.undead_attack_boost = 0
+        self.tavern_attack_boost = 0
+        self.tavern_health_boost = 0
         self.view = self.tavern.new_view(self)
 
     @property
@@ -95,6 +97,8 @@ class Player:
         d["tavern_elemental_boost"] = self.tavern_elemental_boost
         d["knights_died"] = self.knights_died
         d["undead_attack_boost"] = self.undead_attack_boost
+        d["tavern_attack_boost"] = self.tavern_attack_boost
+        d["tavern_health_boost"] = self.tavern_health_boost
         return {
             "player_data": d, 
             "hand_data": self.hand.observation,
@@ -241,10 +245,11 @@ class Player:
             for hook in card.hooks["on_sell"]:
                 hook()
             self.tavern.sell(card)
-            self.log.debug(f"{self} sold {card}, army = {self.army}")
             card.army = None
             self.gold += self.sell_price
-            return self.army.remove(card)
+            self.army.remove(card)
+            self.log.debug(f"{self} sold {card}, army = {self.army}")
+            return True
         return False
     
     def play_possible(self, index, place) -> bool:

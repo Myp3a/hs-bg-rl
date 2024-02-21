@@ -26,7 +26,7 @@ class Army(CardSet):
             "on_hero_damage": [],  # (self), damage
             "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
             "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
-            "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values],  # (self), bought
+            "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion],  # (self), bought
             "on_minion_summon": [],  # (self), summoned
         }
         self.max_len = 7
@@ -48,6 +48,10 @@ class Army(CardSet):
         if MinionClass.Undead in bought.classes:
             bought.attack_perm_boost += self.player.tavern_elemental_boost
             bought.health_perm_boost += self.player.tavern_elemental_boost
+
+    def boost_tavern_minion(self, bought: Minion) -> None:
+        bought.attack_perm_boost += self.player.tavern_attack_boost
+        bought.attack_perm_boost += self.player.tavern_health_boost
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]
