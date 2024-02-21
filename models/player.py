@@ -8,6 +8,9 @@ from typing import TYPE_CHECKING, Callable
 from cards.minion import Minion, MinionClass
 from cards.spell import Spell, TargetedSpell
 
+if TYPE_CHECKING:
+    from models.card import Card
+
 
 from .army import Army
 from .hand import Hand
@@ -109,6 +112,10 @@ class Player:
     def __str__(self) -> str:
         return f"Player {self.player_id} L={self.level} H={self.health} G={self.gold}"
 
+    def all_visible_cards(self) -> list[Card]:
+        l = self.army.cards + self.hand.cards + self.view.cards
+        return l
+
     def act_random(self) -> None:
         action_id = -1
         while action_id != 0:
@@ -173,6 +180,11 @@ class Player:
                     hook()
         for hook in self.hand.hooks["on_turn_start"]:
             hook()
+        for c in self.army.cards:
+            assert c.health_value > 0, "Army minion found dead at turn start! " + str(c)
+        for c in self.hand.cards:
+            if isinstance(c, Minion):
+                assert c.health_value > 0, "Hand minion found dead at turn start! " + str(c)
 
     def end_turn(self) -> None:
         self.log.debug(f"{self} turn end")

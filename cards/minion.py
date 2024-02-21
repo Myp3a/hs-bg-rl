@@ -171,6 +171,7 @@ class Minion(Card):
             self.is_dead = True
 
     def attack(self, target: Minion | None) -> None:
+        assert self.health_value > 0, "Dead trying to attack! " + str(self)
         if target is None:
             return
         if self.is_dead:

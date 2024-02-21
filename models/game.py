@@ -1,6 +1,8 @@
 import logging
 import random
 
+from .tavern import Tavern
+
 from .field import Field
 from .player import Player
 
@@ -27,6 +29,7 @@ class Game:
                 p.act_random()
 
     def battle(self) -> None:
+        self.check_duplicates()
         player_ids = [self.players.index(p) for p in self.alive_players]
         random.shuffle(player_ids)
         if len(player_ids) % 2 == 1:
@@ -52,3 +55,11 @@ class Game:
             self.log.debug("turn end")
             self.log.info(f"alive: {[p for p in self.alive_players]}")
             self.log.info(f"dead: {[p for p in self.dead_players]}")
+
+    def check_duplicates(self) -> None:
+        l = []
+        t = Tavern(self.loglevel)
+        for p in self.players:
+            l += p.all_visible_cards()
+        l += t.available_cards()
+        assert len(set(l)) == len(l)
