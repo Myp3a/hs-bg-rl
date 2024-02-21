@@ -172,6 +172,8 @@ class Minion(Card):
     def attack(self, target: Minion | None) -> None:
         if target is None:
             return
+        if self.is_dead:
+            return
         for hook in self.army.hooks["on_attack"]:
             hook(self, target)
         for hook in self.hooks["on_attack_pre"]:
