@@ -37,6 +37,7 @@ class CorpseRefiner(Minion):
 
     def reset_avenge(self) -> None:
         self.avenge_cntr = 4
+        self.hooks["on_death"] = []
 
     def give_add_gold(self) -> None:
         self.army.player.gold += self.additional_gold
