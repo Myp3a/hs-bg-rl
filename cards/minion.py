@@ -161,6 +161,8 @@ class Minion(Card):
         for hook in self.hooks["deathrattle"]:
             hook(position)
         if self.rebirth:
+            self.attack_temp_boost = 0
+            self.health_temp_boost = 0
             self.rebirth = False
             self.reborn = True
             self.is_dead = False
