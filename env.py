@@ -15,9 +15,10 @@ class HSPlayer(Env):
         "name": "hearthstone_player_environment_v0",
     }
 
-    def __init__(self) -> None:
+    def __init__(self, loglevel) -> None:
         super().__init__()
-        self.player = Player()
+        self.loglevel = loglevel
+        self.player = Player(loglevel)
         self.actions = 0
         self._observation_space = Dict({
             "player_data": Dict({
@@ -97,7 +98,7 @@ class HSPlayer(Env):
 
     def reset(self, *, seed=None, options=None):
         self.player.tavern.del_view(self.player.view)
-        self.player = Player()
+        self.player = Player(self.loglevel)
         self.start_turn()
         return self._fix_action_mask(self.observation()), {}
 
@@ -132,9 +133,10 @@ class HSEnv(ParallelEnv):
         "name": "hearthstone_environment_v0",
     }
 
-    def __init__(self):
+    def __init__(self, loglevel):
         self.player_count = 8
-        self.players = {f"player_{i}": HSPlayer() for i in range(self.player_count)}
+        self.loglevel = loglevel
+        self.players = {f"player_{i}": HSPlayer(loglevel) for i in range(self.player_count)}
         self.agents = list(self.players.keys())
         self._agent_ids = self.agents
         self.possible_agents = set(self.agents)
@@ -159,7 +161,7 @@ class HSEnv(ParallelEnv):
 
     def reset(self, *, seed=None, return_info=True, options=None):
         d = {}
-        tav = Tavern()
+        tav = Tavern(self.loglevel)
         tav.reset()
         self.truncateds = set()
         self.terminateds = set()
@@ -186,7 +188,7 @@ class HSEnv(ParallelEnv):
         truncated["__all__"] = len(self.truncateds) == len(self.agents)
         if terminated["__all__"]:
             terminated["__all__"] = False
-            g = Game([self.players[e].player for e in self.players])
+            g = Game([self.players[e].player for e in self.players], self.loglevel)
             g.battle()
             for i in self.agents:
                 self.players[i].actions = 0

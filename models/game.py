@@ -1,14 +1,18 @@
+import logging
 import random
 
 from .field import Field
 from .player import Player
 
-
 class Game:
     players: list[Player]
     alive_players: list[Player]
     dead_players: list[Player]
-    def __init__(self,players) -> None:
+    def __init__(self, players, loglevel) -> None:
+        self.loglevel = loglevel
+        self.log = logging.getLogger("game")
+        self.log.setLevel(loglevel)
+        logging.basicConfig()
         self.players = players
         self.sort()
 
@@ -32,14 +36,19 @@ class Game:
             p2 = self.players[player_ids[i*2+1]]
             p1.end_turn()
             p2.end_turn()
-            b = Field(p1, p2)
+            b = Field(p1, p2, self.loglevel)
             b.fight()
                 
         # for i in range(len(self.players)):
         #     print(f"player {i}: {self.players[i].health} hp")
 
     def run(self) -> None:
+        self.log.info("starting new game")
         while len(self.alive_players) > 1:
+            self.log.debug("starting turn")
             self.prepare()
             self.battle()
             self.sort()
+            self.log.debug("turn end")
+            self.log.info(f"alive: {[p for p in self.alive_players]}")
+            self.log.info(f"dead: {[p for p in self.dead_players]}")

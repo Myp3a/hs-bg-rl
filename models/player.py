@@ -1,6 +1,8 @@
 from __future__ import annotations
 from functools import partial
 import random
+import logging
+import string
 from typing import TYPE_CHECKING, Callable
 
 from cards.minion import Minion, MinionClass
@@ -11,11 +13,14 @@ from .army import Army
 from .hand import Hand
 from .tavern import Tavern
 
-
 class Player:
-    def __init__(self) -> None:
-        self.army: Army = Army(self)
+    def __init__(self, loglevel) -> None:
+        self.log = logging.getLogger("player")
+        self.log.setLevel(loglevel)
+        logging.basicConfig()
+        self.army: Army = Army(self, loglevel)
         self.hand: Hand = Hand(self)
+        self.player_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
         self.level = 1
         self.health = 30
         self.armor = 0
@@ -26,7 +31,7 @@ class Player:
         self.sell_price = 1
         self.blood_gem_attack = 1
         self.blood_gem_health = 1
-        self.tavern: Tavern = Tavern()
+        self.tavern: Tavern = Tavern(loglevel)
         self.tavern_discount = 0
         self.free_rolls = 0
         self.turn = 0
@@ -98,7 +103,7 @@ class Player:
         }
     
     def __str__(self) -> str:
-        return f"Player level={self.level} health={self.health} gold={self.gold}"
+        return f"Player {self.player_id} L={self.level} H={self.health} G={self.gold}"
 
     def act_random(self) -> None:
         action_id = -1
@@ -107,6 +112,7 @@ class Player:
             while not possible:
                 action_id = random.randint(0, len(self.all_actions)-1)
                 possible = self.available_actions[action_id]
+            self.log.debug(f"{self} doing action {self.all_actions[action_id]}")
             self.all_actions[action_id]()
 
     def check_triplets(self) -> None:
@@ -137,6 +143,7 @@ class Player:
                         self.hand.remove(card)
                         contains.append(card)
             triplet = card_type(card.army)
+            self.log.debug(f"{self} tripleted {triplet}")
             triplet.triplet = True
             triplet.contains = contains
             triplet.attack_perm_boost += perm_attack
@@ -144,6 +151,7 @@ class Player:
             self.hand.add(triplet, len(self.hand))
 
     def start_turn(self) -> None:
+        self.log.debug(f"{self} turn start")
         if self.health > 0:
             self.turn += 1
             self.base_gold += 1
@@ -161,6 +169,7 @@ class Player:
                     hook()
 
     def end_turn(self) -> None:
+        self.log.debug(f"{self} turn end")
         for card in self.army.cards:
             for hook in card.hooks["on_turn_end"]:
                 hook()
@@ -212,6 +221,7 @@ class Player:
             card.army = self.army
             self.view.remove(card)
             self.hand.add(card, len(self.hand))
+            self.log.debug(f"{self} bought {card}, hand = {self.hand}")
             for hook in self.army.hooks["on_minion_buy"]:
                 hook(card)
             self.check_triplets()
@@ -273,8 +283,10 @@ class Player:
                                 hook()
                             for hook in self.army.hooks["on_minion_play"]:
                                 hook(card)
+                            self.log.debug(f"{self} played {card}, magnited to {self.army[place_to_play]}")
                             return card.magnet(self.army[place_to_play])
                 self.army.add(card, place_to_play)
+                self.log.debug(f"{self} played {card}, army = {self.army}")
                 for hook in card.hooks["on_play"]:
                     hook()
                 for hook in card.hooks["battlecry"]:
@@ -299,6 +311,7 @@ class Player:
                     target = self.army[place_to_play]
                 else:
                     target = None
+                self.log.debug(f"{self} played {card}, target = {target}")
                 for hook in self.army.hooks["on_spell_cast"]:
                     hook(card, target)
                 return True

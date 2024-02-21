@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 from typing import TYPE_CHECKING
 
 import random
@@ -10,8 +11,11 @@ if TYPE_CHECKING:
     from .card import Card
 
 class Army(CardSet):
-    def __init__(self, player) -> None:
+    def __init__(self, player, loglevel) -> None:
         super().__init__(player)
+        self.log = logging.getLogger("army")
+        self.log.setLevel(loglevel)
+        logging.basicConfig()
         self.hooks = {
             "on_attack": [],  # (self), attacker, defender
             "on_defence": [],  # (self), defender, attacker
@@ -57,9 +61,10 @@ class Army(CardSet):
             for attacker in available_attackers:
                 attacker.attacked_this_turn = False
             attacker = available_attackers[0]
+        self.log.debug(f"atk: {attacker} chosen from {attacker.army}")
         
         target = other.get_target()
-
+        self.log.debug(f"def: {attacker} attacks {target}")
         attacker.attack(target)
         if attacker.windfury:
             target = other.get_target()
@@ -72,4 +77,5 @@ class Army(CardSet):
         if len(targets) == 0:
             targets = [t for t in self.cards]
         target = random.choice(targets)
+        self.log.debug(f"{target} chosen from {target.army}")
         return target

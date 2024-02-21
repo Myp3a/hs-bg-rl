@@ -1,4 +1,5 @@
 import os
+import logging
 
 import ray
 from ray.rllib.algorithms.ppo import PPOConfig
@@ -9,10 +10,10 @@ from ray.rllib.models import ModelCatalog
 
 from env import HSEnv
 from model import TorchActionMaskModel
-from ray.rllib.core.rl_module.rl_module import SingleAgentRLModuleSpec
 
 ray.init()
-env = HSEnv()
+
+env = HSEnv(logging.DEBUG)
 env_name = "hs_env"
 register_env(env_name, lambda config: ParallelPettingZooEnv(env))
 ModelCatalog.register_custom_model("HSModel", TorchActionMaskModel)
@@ -37,7 +38,7 @@ config = (
                 "custom_model": "HSModel"
             }
         )
-        .debugging(log_level="INFO")
+        .debugging(log_level="DEBUG")
         .framework(framework="torch")
         .resources(num_gpus=0)
     )

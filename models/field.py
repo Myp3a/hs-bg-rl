@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 from typing import TYPE_CHECKING
 
 import random
@@ -6,9 +7,11 @@ import random
 if TYPE_CHECKING:
     from .player import Player
 
-
 class Field:
-    def __init__(self, first: Player, second: Player) -> None:
+    def __init__(self, first: Player, second: Player, loglevel) -> None:
+        self.log = logging.getLogger("field")
+        self.log.setLevel(loglevel)
+        logging.basicConfig()
         self.first = first
         self.second = second
         self.first_snapshot = None
@@ -47,6 +50,8 @@ class Field:
 
     def fight(self) -> None:
         self.snapshot()
+        self.log.debug(f"starting fight between {self.first}(v) and {self.second}(^)")
+        self.log.debug("\n" + str(self))
         while len(self.first.army) > 0 and len(self.second.army) > 0:
             self.turn_flag = (self.turn_flag + 1) % 2
             match self.turn_flag:
@@ -57,6 +62,8 @@ class Field:
             immediate_attacks = True
             while immediate_attacks:
                 if self.check_battle_end():
+                    self.log.debug(f"fight end between {self.first}(v) and {self.second}(^)")
+                    self.log.debug("\n" + str(self))
                     self.restore()
                     return
                 immediate_attacks = False
@@ -69,5 +76,7 @@ class Field:
                         immediate_attacks = True
                         card.attack(self.first.army.get_target())
             if self.check_battle_end():
+                self.log.debug(f"fight end between {self.first}(v) and {self.second}(^)")
+                self.log.debug("\n" + str(self))
                 self.restore()
                 return

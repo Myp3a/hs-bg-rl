@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 from typing import TYPE_CHECKING
 
 import random
@@ -11,14 +12,17 @@ if TYPE_CHECKING:
     from cards.minion import Minion
 
 class Tavern:
-    def __new__(cls):
+    def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Tavern, cls).__new__(cls)
             cls.instance.__initialized = False
         return cls.instance
     
-    def __init__(self) -> None:
+    def __init__(self, loglevel) -> None:
         if(self.__initialized): return
+        self.log = logging.getLogger("tavern")
+        self.log.setLevel(loglevel)
+        logging.basicConfig()
         self.__initialized = True
         self.NOT_SELLABLE = [
             Skeleton,
@@ -89,7 +93,9 @@ class Tavern:
         self.reset()
 
     def reset(self) -> None:
+        self.log.info("tavern reset")
         available_types = random.sample(list(MinionClass), 5)
+        self.log.info(f"available types: {[t.value for t in available_types]}")
         self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes) or len(c.classes) == 0]
         self.views = []
         
@@ -119,9 +125,11 @@ class Tavern:
     
     def buy(self, card: Minion) -> Minion:
         self.cards.remove(card)
+        self.log.debug(f"bought {card}")
         return card
     
     def sell(self, card: Minion) -> None:
+        self.log.debug(f"sold {card}")
         card.attack_perm_boost = 0
         card.health_perm_boost = 0
         card.attack_temp_boost = 0
