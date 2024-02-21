@@ -93,6 +93,16 @@ class Tavern:
         self.views = []
         self.reset()
 
+    def check_duplicates(self) -> None:
+        seen = set()
+        dupes = []
+        for x in self.cards:
+            if x in seen:
+                dupes.append(x)
+            else:
+                seen.add(x)
+        assert len(self.cards) == len(set(self.cards)), "Duplicate card in tavern! " + str(dupes)
+
     def reset(self) -> None:
         self.log.info("tavern reset")
         available_types = random.sample(list(MinionClass), 5)
@@ -117,6 +127,7 @@ class Tavern:
         return available_cards
     
     def roll(self, view: CardSet, count: int) -> list[Minion]:
+        self.check_duplicates()
         view.clear()
         available_cards = self.available_cards()
         chosen = random.sample(available_cards, count)
@@ -136,6 +147,7 @@ class Tavern:
         card.attack_temp_boost = 0
         card.health_temp_boost = 0
         card.clear_hooks()
+        card.restore_features()
         if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
             return
         if card.triplet:
@@ -145,3 +157,4 @@ class Tavern:
             self.cards.append(card)
         for c in card.magnited:
             self.cards.append(c)
+        card.magnited = []
