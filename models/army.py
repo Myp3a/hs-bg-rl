@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import random
 
 from cards.minion import Minion, MinionClass
+from cards.minions.free_flying_feathermane import FreeFlyingFeathermane
 
 from .cardset import CardSet
 if TYPE_CHECKING:
@@ -42,7 +43,7 @@ class Army(CardSet):
     
     def summon_feathermane(self, dead: Minion, position) -> None:
         if MinionClass.Beast in dead.classes:
-            feathermanes = [f for f in self.player.hand if isinstance(f, Minion) and not f.summoned]
+            feathermanes = [f for f in self.player.hand if isinstance(f, FreeFlyingFeathermane) and not f.summoned]
             if len(feathermanes) > 0:
                 feathermane = feathermanes[0]
                 feathermane.summoned = True
