@@ -127,7 +127,7 @@ class Player:
             self.all_actions[action_id]()
 
     def check_triplets(self) -> None:
-        cards = self.army.cards + self.hand.cards
+        cards = [c for c in self.army.cards + self.hand.cards if isinstance(c, Minion) and not c.triplet]
         for card in cards:
             card_type = type(card)
             cntr = 0
@@ -141,14 +141,14 @@ class Player:
             perm_attack = 0
             perm_health = 0
             for card in list(self.army.cards):
-                if isinstance(card, card_type):
+                if isinstance(card, card_type) and not card.triplet:
                     perm_attack += card.attack_perm_boost
                     perm_health += card.health_perm_boost
                     self.army.remove(card)
                     contains.append(card)
             for card in list(self.hand.cards):
                 if isinstance(card, Minion):
-                    if isinstance(card, card_type):
+                    if isinstance(card, card_type) and not card.triplet:
                         perm_attack += card.attack_perm_boost
                         perm_health += card.health_perm_boost
                         self.hand.remove(card)
