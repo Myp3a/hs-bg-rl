@@ -108,6 +108,15 @@ class Tavern:
         available_types = random.sample(list(MinionClass), 5)
         self.log.info(f"available types: {[t.value for t in available_types]}")
         self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes) or len(c.classes) == 0]
+        for c in self.cards:
+            c.attack_perm_boost = 0
+            c.health_perm_boost = 0
+            c.attack_temp_boost = 0
+            c.health_temp_boost = 0
+            c.clear_hooks()
+            c.restore_features()
+            c.magnited_to = None
+            c.magnited = []
         self.views = []
         
     def new_view(self, player) -> list[Minion]:
@@ -152,9 +161,11 @@ class Tavern:
             return
         if card.triplet:
             for c in card.contains:
-                self.cards.append(c)
+                self.sell(c)
         else:
             self.cards.append(card)
         for c in card.magnited:
-            self.cards.append(c)
+            c.magnited_to = None
+            self.sell(c)
         card.magnited = []
+        self.check_duplicates()
