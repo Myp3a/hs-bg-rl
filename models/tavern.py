@@ -3,6 +3,8 @@ import logging
 from typing import TYPE_CHECKING
 
 import random
+import sys
+
 from cards.minion import MinionClass
 from cards.minions import *
 from models.cardset import CardSet
@@ -104,9 +106,9 @@ class Tavern:
         assert len(self.cards) == len(set(self.cards)), "Duplicate card in tavern! " + str(dupes)
 
     def reset(self) -> None:
-        self.log.info("tavern reset")
+        print("INFO:tavern:tavern reset", file=sys.stderr)
         available_types = random.sample(list(MinionClass), 5)
-        self.log.info(f"available types: {[t.value for t in available_types]}")
+        print(f"INFO:tavern:available types: {[t.value for t in available_types]}", file=sys.stderr)
         self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes) or len(c.classes) == 0]
         for c in self.cards:
             c.attack_perm_boost = 0
@@ -146,11 +148,11 @@ class Tavern:
     
     def buy(self, card: Minion) -> Minion:
         self.cards.remove(card)
-        self.log.debug(f"bought {card}")
+        print(f"DEBUG:tavern:bought {card}", file=sys.stderr)
         return card
     
     def sell(self, card: Minion) -> None:
-        self.log.debug(f"sold {card}")
+        print(f"DEBUG:tavern:sold {card}", file=sys.stderr)
         card.attack_perm_boost = 0
         card.health_perm_boost = 0
         card.attack_temp_boost = 0
