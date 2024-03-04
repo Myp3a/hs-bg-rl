@@ -221,6 +221,8 @@ class Player:
                 self.free_rolls -= 1
             else:
                 self.gold -= self.roll_price
+                for hook in self.army.hooks["on_gold_spent"]:
+                    hook(self.roll_price)
             self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
             return True
         return False
@@ -235,6 +237,8 @@ class Player:
     def buy(self, index: int) -> bool:
         if self.buy_possible(index):
             self.gold -= self.buy_price
+            for hook in self.army.hooks["on_gold_spent"]:
+                hook(self.buy_price)
             card = self.tavern.buy(self.view[index])
             card.army = self.army
             self.view.remove(card)

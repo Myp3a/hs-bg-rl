@@ -29,6 +29,7 @@ class Army(CardSet):
             "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
             "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion],  # (self), bought
             "on_minion_summon": [],  # (self), summoned
+            "on_gold_spent": [],  # (self), spent
         }
         self.max_len = 7
         self.cards: list[Minion] = []
