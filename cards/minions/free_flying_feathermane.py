@@ -11,7 +11,7 @@ class FreeFlyingFeathermane(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
         self.minion_id = 71
-        self.classes = []
+        self.classes = [MinionClass.Beast]
         self.level = 3
         self.base_attack_value = 5
         self.base_health_value = 5
