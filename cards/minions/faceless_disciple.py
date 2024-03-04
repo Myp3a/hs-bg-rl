@@ -27,5 +27,7 @@ class FacelessDisciple(Minion):
         new_minion = random.choice([m for m in self.army.player.tavern.available_cards() if m.level == minion_level])
         position = self.army.index(target)
         self.army.remove(target)
+        self.army.player.tavern.sell(target)
+        self.army.player.tavern.buy(new_minion)
         self.army.add(new_minion, position)
 
