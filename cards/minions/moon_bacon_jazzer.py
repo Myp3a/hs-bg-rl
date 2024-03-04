@@ -12,9 +12,9 @@ class MoonBaconJazzer(Minion):
         super().__init__(army)
         self.minion_id = 43
         self.classes = [MinionClass.Quilboar]
-        self.level = 2
+        self.level = 3
         self.base_attack_value = 2
-        self.base_health_value = 3
+        self.base_health_value = 5
         self.hooks["battlecry"].append(self.boost_blood_gem_health)
 
     def boost_blood_gem_health(self) -> None:

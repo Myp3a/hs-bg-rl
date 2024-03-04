@@ -12,7 +12,7 @@ class CracklingCyclone(Minion):
         super().__init__(army)
         self.minion_id = 63
         self.classes = [MinionClass.Elemental]
-        self.level = 3
-        self.base_attack_value = 4
+        self.level = 2
+        self.base_attack_value = 3
         self.base_health_value = 1
         self.windfury = True
