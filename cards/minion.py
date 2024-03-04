@@ -230,11 +230,14 @@ class Minion(Card):
         if self.taunt:
             target.taunt = True
         if self.divine_shield:
+            target.base_divine_shield = True
             target.divine_shield = True
         if self.rebirth:
+            target.base_rebirth = True
             target.rebirth = True
         if self.windfury:
             target.windfury = True
         if self.toxic:
+            target.base_toxic = True
             target.toxic = True
         target.magnited.append(self)
