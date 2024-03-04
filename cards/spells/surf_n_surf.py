@@ -12,6 +12,7 @@ class SurfNSurf(TargetedSpell):
         super().__init__(player)
         self.target = None
         self.spell_id = 2
+        self.level = 1
         self.triplet = triplet
 
     def remove_hook(self) -> None:

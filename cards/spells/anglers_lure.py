@@ -12,6 +12,7 @@ class AnglersLure(TargetedSpell):
         super().__init__(player)
         self.target = None
         self.spell_id = 3
+        self.level = 2
         self.triplet = triplet
         self.had_taunt = None
 

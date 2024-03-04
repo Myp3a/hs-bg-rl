@@ -12,6 +12,7 @@ class Spell(Card):
     def __init__(self, player) -> None:
         super().__init__()
         self.player: Player = player
+        self.level = 0
 
     def play(self, target: None) -> None:
         raise NotImplementedError
