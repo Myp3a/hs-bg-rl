@@ -34,6 +34,8 @@ class Tavern:
             SkyPirate,
             WaterDroplet,
             Crab,
+            HalfShell,
+            HelpingHand,
         ]
         self.base_cards: list[Minion] = \
             [AnnoyOTron(None) for _ in range(18)] + \

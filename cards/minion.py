@@ -126,7 +126,7 @@ class Minion(Card):
             "on_temp_values_change": [],  # (self)
             "on_kill": [],  # (self)
             "battlecry": [],  # (self)
-            "deathrattle": [],  # (self)
+            "deathrattle": [],  # (self), position
             "rebirth": [self.restore_features],  # (self)
         }
 
