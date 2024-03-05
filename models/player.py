@@ -177,7 +177,7 @@ class Player:
             self.turn += 1
             self.base_gold += 1
             self.gold = min(self.base_gold, 10)
-            self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
+            self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1], self.level)
             self.tavern_discount += 1
             self.rolls_on_turn = 0
             self.gold_spent_on_turn = 0
@@ -239,7 +239,7 @@ class Player:
                 for hook in self.army.hooks["on_gold_spent"]:
                     hook(self.roll_price)
                 self.gold_spent_on_turn += self.roll_price
-            self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
+            self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1], self.level)
             for c in self.army.cards:
                 for hook in c.hooks["on_roll"]:
                     hook()

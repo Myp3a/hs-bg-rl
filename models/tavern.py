@@ -173,10 +173,10 @@ class Tavern:
         available_cards = [c for c in self.cards if not any(c in view.cards for view in self.views)]
         return available_cards
     
-    def roll(self, view: CardSet, count: int) -> list[Minion]:
+    def roll(self, view: CardSet, count: int, level: int) -> list[Minion]:
         self.check_duplicates()
         view.clear()
-        available_cards = self.available_cards()
+        available_cards = [c for c in self.available_cards() if c.level <= level]
         chosen = random.sample(available_cards, count)
         for card in chosen:
             view.add(card, len(view))
