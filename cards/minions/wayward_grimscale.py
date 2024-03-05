@@ -17,5 +17,5 @@ class WaywardGrimscale(Minion):
         self.base_health_value = 5
         self.hooks["on_defence_pre"].append(self.get_toxic)
 
-    def get_toxic(self):
+    def get_toxic(self, attacker):
         self.toxic = True
