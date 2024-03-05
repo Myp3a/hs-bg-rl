@@ -24,9 +24,9 @@ class SoreLoser(Minion):
         boost = 0
         for c in undead.army.cards:
             if isinstance(c, SoreLoser) and not c is self:
-                boost += self.army.player.level
+                boost += undead.army.player.level
                 if c.triplet:
-                    boost += self.army.player.level
+                    boost += undead.army.player.level
         if MinionClass.Undead in undead.classes:
             undead.sore_loser_boost = boost
                 
