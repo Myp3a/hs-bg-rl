@@ -20,7 +20,7 @@ class PhaerixWrathOfTheSun(Minion):
         self.divine_shield = True
         self.hooks["on_sell"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_avenge)
-        self.hooks["on_turn_end"].append(self.put_hook)
+        self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
         self.army.hooks["on_minion_death"].append(self.on_another_death)
