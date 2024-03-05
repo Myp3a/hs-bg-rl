@@ -193,7 +193,7 @@ class Minion(Card):
             hook(target)
         for hook in self.hooks["on_attack_mid"]:
             hook(target)
-        for hook in self.hooks["on_defence_mid"]:
+        for hook in target.hooks["on_defence_mid"]:
             hook(target)
         if not self.divine_shield:
             self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
