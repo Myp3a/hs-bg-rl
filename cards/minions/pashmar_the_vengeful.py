@@ -45,7 +45,8 @@ class PashmarTheVengeful(Minion):
         spells = [
             AnglersLure(self.army.player),
             SickRiffs(self.army.player),
-            SurfNSurf(self.army.player)
+            SurfNSurf(self.army.player),
+            DefendToTheDeath(self.army.player)
         ]
         available = [s for s in spells if s.level <= self.army.player.level]
         if len(available) == 0:
