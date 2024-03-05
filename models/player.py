@@ -148,6 +148,7 @@ class Player:
                     for hook in card.hooks["on_sell"]:
                         # Proper release of all army hooks
                         # Might have some side-effects like +6 gold when tripleting Freedealing Gambler
+                        # TODO: split "on sell" when selling by hand and "on lose" when lost by any means (selling, triplet, destruction)
                         hook()
                     contains.append(card)
             for card in list(self.hand.cards):
