@@ -31,7 +31,6 @@ class Minion(Card):
         self.base_toxic = False
         self.base_rebirth = False
         self.base_taunt = False
-        self.is_dead = False
         self.rebirth = False
         self.reborn = False
         self.divine_shield = False
@@ -155,15 +154,11 @@ class Minion(Card):
     def reset_temp_bonuses(self) -> None:
         self.attack_temp_boost = 0
         self.health_temp_boost = 0
-        self.is_dead = False
         if self.reborn:
             self.rebirth = True
             self.reborn = False
 
     def death(self) -> None:
-        if self.is_dead:
-            return
-        self.is_dead = True
         position = self.army.index(self)
         for hook in self.army.hooks["on_minion_death"]:
             hook(self, position)
@@ -177,18 +172,13 @@ class Minion(Card):
             self.health_temp_boost = 0
             self.rebirth = False
             self.reborn = True
-            self.is_dead = False
             self.army.add(self, position)
             for hook in self.hooks["on_play"]:
                 hook()
-        else:
-            self.is_dead = True
 
     def attack(self, target: Minion | None) -> None:
         assert self.health_value > 0, "Dead trying to attack! " + str(self)
         if target is None:
-            return
-        if self.is_dead:
             return
         if self.stealth:
             self.revealed = True
@@ -232,11 +222,11 @@ class Minion(Card):
             hook(target)
         for hook in self.hooks["on_defence_post"]:
             hook(target)
-        if self.health_value <= 0 and not self.is_dead:
+        if self.health_value <= 0:
             for hook in target.hooks["on_kill"]:
                 hook()
             self.death()
-        if target.health_value <= 0 and not target.is_dead:
+        if target.health_value <= 0:
             for hook in self.hooks["on_kill"]:
                 hook()
             target.death()
