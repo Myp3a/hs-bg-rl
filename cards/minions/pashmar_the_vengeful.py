@@ -3,7 +3,7 @@ import random
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
-from spells import *
+from cards.spells import *
 
 if TYPE_CHECKING:
     from models.army import Army
