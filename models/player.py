@@ -145,6 +145,10 @@ class Player:
                     perm_attack += card.attack_perm_boost
                     perm_health += card.health_perm_boost
                     self.army.remove(card)
+                    for hook in card.hooks["on_sell"]:
+                        # Proper release of all army hooks
+                        # Might have some side-effects like +6 gold when tripleting Freedealing Gambler
+                        hook()
                     contains.append(card)
             for card in list(self.hand.cards):
                 if isinstance(card, Minion):
@@ -156,7 +160,7 @@ class Player:
             triplet = card_type(card.army)
             self.log.debug(f"{self} tripleted {triplet}")
             triplet.triplet = True
-            triplet.contains = contains
+            triplet.contains = contains                
             triplet.attack_perm_boost += perm_attack
             triplet.health_perm_boost += perm_health
             self.hand.add(triplet, len(self.hand))
