@@ -1,6 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+import random
+import string
+
 from enum import Enum
 from models.card import Card
 
@@ -44,6 +47,7 @@ class Minion(Card):
             "deathrattle": [],  # (self), position
             "rebirth": [self.restore_features],  # (self)
         }
+        self.random_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         self.classes = []
         self.level = 0
         self.base_attack_value = 0
@@ -76,7 +80,7 @@ class Minion(Card):
         self.health_perm_boost = 0
 
     def __str__(self) -> str:
-        basename = f"{type(self).__name__}{self.attack_value},{self.health_value}"
+        basename = f"{type(self).__name__}:{self.random_id}:{self.attack_value},{self.health_value}"
         name = basename
         if self.triplet:
             name = f"G{name}G"
