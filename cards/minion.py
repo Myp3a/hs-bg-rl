@@ -46,6 +46,7 @@ class Minion(Card):
         self.contains = []
         self.summoned = False
         self.humming_bird_boost = 0
+        self.sore_loser_boost = 0
         self._attack_temp_boost = 0
         self._health_temp_boost = 0
         self.attack_perm_boost = 0
@@ -187,7 +188,7 @@ class Minion(Card):
         for hook in target.hooks["on_defence_pre"]:
             hook(target)        
         if not self.divine_shield:
-            self.health_temp_boost -= target.attack_value + target.humming_bird_boost
+            self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
             if target.toxic:
                 target.toxic = False
                 for hook in target.hooks["on_kill"]:
@@ -199,7 +200,7 @@ class Minion(Card):
                 for hook in self.army.hooks["on_divine_shield_lost"]:
                     hook(self)
         if not target.divine_shield:
-            target.health_temp_boost -= self.attack_value + self.humming_bird_boost
+            target.health_temp_boost -= self.attack_value + self.humming_bird_boost + self.sore_loser_boost
             if self.toxic:
                 self.toxic = False
                 for hook in self.hooks["on_kill"]:
