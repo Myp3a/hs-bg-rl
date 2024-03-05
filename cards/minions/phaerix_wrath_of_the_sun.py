@@ -18,10 +18,9 @@ class PhaerixWrathOfTheSun(Minion):
         self.base_health_value = 1
         self.avenge_cntr = 4
         self.divine_shield = True
-        self.hooks["on_sell"].append(self.give_shield)
+        self.hooks["on_sell"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_avenge)
         self.hooks["on_turn_end"].append(self.put_hook)
-        self.hooks["on_death"].append(self.remove_hook)
 
     def put_hook(self) -> None:
         self.army.hooks["on_minion_death"].append(self.on_another_death)
@@ -30,15 +29,15 @@ class PhaerixWrathOfTheSun(Minion):
         self.army.hooks["on_minion_death"].remove(self.on_another_death)
 
     def on_another_death(self, died, position) -> None:
-        if not died is self:
-            self.avenge_cntr -= 1
-        if self.avenge_cntr == 0:
-            self.give_shield()
-            self.reset_avenge()
+        if self.health_value > 0:
+            if not died is self:
+                self.avenge_cntr -= 1
+            if self.avenge_cntr == 0:
+                self.give_shield()
+                self.reset_avenge()
 
     def reset_avenge(self) -> None:
         self.avenge_cntr = 4
-        self.hooks["on_death"] = [self.remove_hook]
 
     def choose_and_give_shield(self) -> None:
         targets = [t for t in self.army.cards if not t.divine_shield]
