@@ -24,6 +24,7 @@ class Bassgill(Minion):
         if len(to_summon) == 0:
             return
         summon = sorted(to_summon, key=lambda summ: summ.health_value, reverse=True)[0]
+        summon.summoned = True
         self.army.add(summon, position)
         for hook in self.army.hooks["on_minion_summon"]:
             hook(summon)
