@@ -46,6 +46,7 @@ class Player:
         self.blues_boost = 1
         self.rolls_on_turn = 0
         self.elementals_played = 0
+        self.gold_spent_on_turn = 0
         self.view = self.tavern.new_view(self)
 
     @property
@@ -178,6 +179,7 @@ class Player:
             self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
             self.tavern_discount += 1
             self.rolls_on_turn = 0
+            self.gold_spent_on_turn = 0
         else:
             for card in self.army.cards:
                 card.clear_hooks()
@@ -214,6 +216,9 @@ class Player:
         if self.upgrade_possible():
             tav_price = self.tavern_upgrade_price
             self.gold -= tav_price
+            for hook in self.army.hooks["on_gold_spent"]:
+                hook(tav_price)
+            self.gold_spent_on_turn += tav_price
             self.level += 1
             self.tavern_discount = 0
             return True
@@ -232,6 +237,7 @@ class Player:
                 self.gold -= self.roll_price
                 for hook in self.army.hooks["on_gold_spent"]:
                     hook(self.roll_price)
+                self.gold_spent_on_turn += self.roll_price
             self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
             self.rolls_on_turn += 1
             return True
@@ -249,6 +255,7 @@ class Player:
             self.gold -= self.buy_price
             for hook in self.army.hooks["on_gold_spent"]:
                 hook(self.buy_price)
+            self.gold_spent_on_turn += self.buy_price
             card = self.tavern.buy(self.view[index])
             card.army = self.army
             self.view.remove(card)
