@@ -19,7 +19,7 @@ class MonstrousMacaw(Minion):
         self.hooks["on_attack_mid"].append(self.trigger_deathrattle)
 
     def trigger_deathrattle(self, position):
-        targets = [t for t in self.army.cards if len(t.hooks["deathrattle"] > 0)]
+        targets = [t for t in self.army.cards if len(t.hooks["deathrattle"]) > 0]
         if len(targets) == 0:
             return
         target = random.choice(targets)
