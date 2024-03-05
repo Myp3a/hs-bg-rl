@@ -23,6 +23,27 @@ class Minion(Card):
     def __init__(self, army: Army) -> None:
         super().__init__()
         self.army = army
+        self.hooks = {
+            "on_attack_pre": [],  # (self), target
+            "on_attack_post": [],  # (self), target
+            "on_defence_pre": [],  # (self), target
+            "on_defence_post": [],  # (self), target
+            "on_attack_mid": [],  # (self), target
+            "on_defence_mid": [],  # (self), target
+            "on_fight_start": [],  # (self)
+            "on_turn_start": [self.reset_temp_bonuses, self.restore_features],  # (self)
+            "on_turn_end": [self.snapshot_features],  # (self)
+            "on_sell": [],  # (self)
+            "on_play": [],  # (self)
+            "on_death": [],  # (self)
+            "on_buy": [],  # (self)
+            "on_temp_values_change": [],  # (self)
+            "on_kill": [],  # (self)
+            "on_roll": [],  # (self)
+            "battlecry": [],  # (self)
+            "deathrattle": [],  # (self), position
+            "rebirth": [self.restore_features],  # (self)
+        }
         self.classes = []
         self.level = 0
         self.base_attack_value = 0
@@ -53,7 +74,6 @@ class Minion(Card):
         self._health_temp_boost = 0
         self.attack_perm_boost = 0
         self.health_perm_boost = 0
-        self.clear_hooks()
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}{self.attack_value},{self.health_value}"
@@ -113,29 +133,6 @@ class Minion(Card):
         self._health_temp_boost = new_value
         for hook in self.hooks["on_temp_values_change"]:
             hook()
-    
-    def clear_hooks(self) -> None:
-        self.hooks = {
-            "on_attack_pre": [],  # (self), target
-            "on_attack_post": [],  # (self), target
-            "on_defence_pre": [],  # (self), target
-            "on_defence_post": [],  # (self), target
-            "on_attack_mid": [],  # (self), target
-            "on_defence_mid": [],  # (self), target
-            "on_fight_start": [],  # (self)
-            "on_turn_start": [self.reset_temp_bonuses, self.restore_features],  # (self)
-            "on_turn_end": [self.snapshot_features],  # (self)
-            "on_sell": [],  # (self)
-            "on_play": [],  # (self)
-            "on_death": [],  # (self)
-            "on_buy": [],  # (self)
-            "on_temp_values_change": [],  # (self)
-            "on_kill": [],  # (self)
-            "on_roll": [],  # (self)
-            "battlecry": [],  # (self)
-            "deathrattle": [],  # (self), position
-            "rebirth": [self.restore_features],  # (self)
-        }
 
     def snapshot_features(self) -> None:
         self.base_divine_shield = self.divine_shield

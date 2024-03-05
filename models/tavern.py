@@ -190,7 +190,6 @@ class Tavern:
         card.health_perm_boost = 0
         card.attack_temp_boost = 0
         card.health_temp_boost = 0
-        card.clear_hooks()
         card.restore_features()
         if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
             return
