@@ -163,7 +163,7 @@ class Player:
                         perm_health += card.health_perm_boost
                         self.hand.remove(card)
                         contains.append(card)
-            triplet = card_type(card.army)
+            triplet = card_type(contains[0].army)
             self.log.debug(f"{self} tripleted {triplet}")
             triplet.triplet = True
             triplet.contains = contains                
