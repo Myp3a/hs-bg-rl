@@ -36,6 +36,6 @@ class GeomagusRoogug(Minion):
                 target = random.choice(targets)
                 if self.triplet:
                     bg = BloodGem(self.army.player)
-                    self.army.player.play_spell(bg, self.army.index(target))
+                    self.army.player.play_spell_minion(bg, self.army.index(target))
                 bg = BloodGem(self.army.player)
-                self.army.player.play_spell(bg, self.army.index(target))
+                self.army.player.play_spell_minion(bg, self.army.index(target))
