@@ -30,4 +30,5 @@ class SurfNSurf(TargetedSpell):
         if self.triplet:
             crab.triplet = True
         self.player.army.add(crab, position)
-    
+        for hook in self.player.army.hooks["on_minion_summon"]:
+            hook(crab)

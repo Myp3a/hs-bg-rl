@@ -23,3 +23,5 @@ class Scallywag(Minion):
         if self.triplet:
             pirate.triplet = True
         self.army.add(pirate, position)
+        for hook in self.army.hooks["on_minion_summon"]:
+            hook(pirate)

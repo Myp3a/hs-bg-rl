@@ -30,4 +30,5 @@ class FacelessDisciple(Minion):
         self.army.player.tavern.sell(target)
         self.army.player.tavern.buy(new_minion)
         self.army.add(new_minion, position)
-
+        for hook in self.army.hooks["on_minion_summon"]:
+            hook(new_minion)

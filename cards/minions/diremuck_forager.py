@@ -38,3 +38,5 @@ class DiremuckForager(Minion):
         summon.summoned = True
         position = self.army.index(self) + 1
         self.army.add(summon, position)
+        for hook in self.army.hooks["on_minion_summon"]:
+            hook(summon)

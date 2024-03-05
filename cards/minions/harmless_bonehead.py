@@ -24,3 +24,5 @@ class HarmlessBonehead(Minion):
             if self.triplet:
                 skel.triplet = True
             self.army.add(skel, position)
+            for hook in self.army.hooks["on_minion_summon"]:
+                hook(skel)

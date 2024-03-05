@@ -52,6 +52,8 @@ class Army(CardSet):
                 feathermane = feathermanes[0]
                 feathermane.summoned = True
                 self.add(feathermane, position)
+                for hook in self.hooks["on_minion_summon"]:
+                    hook(feathermane)
 
     def boost_undead_attack(self, bought: Minion) -> None:
         if MinionClass.Undead in bought.classes:

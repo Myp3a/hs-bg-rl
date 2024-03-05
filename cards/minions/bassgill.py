@@ -25,6 +25,8 @@ class Bassgill(Minion):
             return
         summon = sorted(to_summon, key=lambda summ: summ.health_value, reverse=True)[0]
         self.army.add(summon, position)
+        for hook in self.army.hooks["on_minion_summon"]:
+            hook(summon)
 
     def summon_from_hand(self, position) -> None:
         if self.triplet:
