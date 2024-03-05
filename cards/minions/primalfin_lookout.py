@@ -27,6 +27,8 @@ class PrimalfinLookout(Minion):
             return
         card = random.choice(cards)
         self.army.player.tavern.buy(card)
+        for hook in card.hooks["on_buy"]:
+            hook()
         card.army = self.army
         self.army.player.hand.add(card, len(self.army.player.hand))
 

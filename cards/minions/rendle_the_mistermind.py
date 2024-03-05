@@ -26,6 +26,8 @@ class RendleTheMistermind(Minion):
         self.army.player.tavern.buy(targets[0])
         targets[0].army = self.army
         self.army.player.view.remove(targets[0])
+        for hook in targets[0].hooks["on_buy"]:
+            hook()
         self.army.player.hand.add(targets[0], len(self.army.player.hand.cards))
 
     def steal_tavern(self):
