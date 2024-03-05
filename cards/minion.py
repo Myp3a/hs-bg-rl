@@ -94,6 +94,8 @@ class Minion(Card):
             name = f"!{name}!"
         if self.windfury:
             name = f"W{name}W"
+        if not self.revealed:
+            name = f".{name}."
         return name
 
     @property
