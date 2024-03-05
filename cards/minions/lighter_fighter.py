@@ -16,7 +16,7 @@ class LighterFighter(Minion):
         self.base_attack_value = 4
         self.base_health_value = 1
         self.enemy_army = None
-        self.hooks["on_defend_pre"].append(self.put_army)
+        self.hooks["on_defence_pre"].append(self.put_army)
         self.hooks["deathrattle"].append(self.damage_enemies)
 
     def put_army(self, attacker):

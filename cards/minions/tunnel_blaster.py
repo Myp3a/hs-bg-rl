@@ -17,7 +17,7 @@ class TunnelBlaster(Minion):
         self.base_health_value = 7
         self.taunt = True
         self.enemy = None
-        self.hooks["on_defend_pre"].append(self.save_enemy)
+        self.hooks["on_defence_pre"].append(self.save_enemy)
         self.hooks["deathrattle"].append(self.damage_on_death)
 
     def save_enemy(self, attacker):
