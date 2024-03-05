@@ -30,7 +30,7 @@ class HSPlayer(Env):
                 "turn": Box(low=0, high=60, dtype=np.int64),
                 "blood_gem_attack": Box(low=1, high=30, dtype=np.int64),
                 "blood_gem_health": Box(low=1, high=30, dtype=np.int64),
-                "free_rolls": Box(low=0, high=3, dtype=np.int64),
+                "free_rolls": Box(low=0, high=10, dtype=np.int64),
                 "tavern_elemental_boost": Box(low=0, high=100, dtype=np.int64),
                 "knights_died": Box(low=0, high=100, dtype=np.int64),
                 "undead_attack_boost": Box(low=0, high=100, dtype=np.int64),
