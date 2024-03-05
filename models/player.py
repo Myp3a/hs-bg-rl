@@ -370,10 +370,19 @@ class Player:
                 else:
                     target = None
                 self.log.debug(f"{self} played {card}, target = {target}")
+                card.play(target)
                 for hook in self.army.hooks["on_spell_cast"]:
                     hook(card, target)
                 return True
         return False
+    
+    def play_spell_minion(self, card, place_to_play) -> bool:
+        if isinstance(card, Spell):
+            target = self.army[place_to_play]
+            self.log.debug(f"{self} minion played {card}, target = {target}")
+            card.play(target)
+            for hook in self.army.hooks["on_spell_cast"]:
+                hook(card, target)
     
     def reorder_possible(self, source_index, target_index) -> bool:
         if source_index < len(self.army):
