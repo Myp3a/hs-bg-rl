@@ -27,9 +27,13 @@ class FacelessDisciple(Minion):
         new_minion = random.choice([m for m in self.army.player.tavern.available_cards() if m.level == minion_level])
         position = self.army.index(target)
         self.army.remove(target)
+        for hook in target.hooks["on_sell"]:
+            hook()
         self.army.player.tavern.sell(target)
         self.army.player.tavern.buy(new_minion)
         new_minion.army = self.army
         self.army.add(new_minion, position)
+        for hook in new_minion.hooks["on_play"]:
+            hook()
         for hook in self.army.hooks["on_minion_summon"]:
             hook(new_minion)
