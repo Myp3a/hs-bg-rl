@@ -23,7 +23,7 @@ class FacelessDisciple(Minion):
         if len(targets) == 0:
             return
         target = random.choice(targets)
-        minion_level = min(target.level + 1, 3)
+        minion_level = min(target.level + 1, 4)
         new_minion = random.choice([m for m in self.army.player.tavern.available_cards() if m.level == minion_level])
         position = self.army.index(target)
         self.army.remove(target)

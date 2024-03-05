@@ -36,7 +36,9 @@ class Tavern:
             Crab,
             HalfShell,
             HelpingHand,
-            Microbot
+            Microbot,
+            Smolderwing,
+            GoldenMonkey
         ]
         self.base_cards: list[Minion] = \
             [AnnoyOTron(None) for _ in range(18)] + \
@@ -124,7 +126,48 @@ class Tavern:
             [TheGladIator(None) for _ in range(13)] + \
             [VengefulSlitherer(None) for _ in range(13)] + \
             [WildfireElemental(None) for _ in range(13)] + \
-            [ZestyShaker(None) for _ in range(13)]
+            [ZestyShaker(None) for _ in range(13)] + \
+            [AnnoyOModule(None) for _ in range(11)] + \
+            [AnubarakNerubianKing(None) for _ in range(11)] + \
+            [AudaciousAnchor(None) for _ in range(11)] + \
+            [Bannerboar(None) for _ in range(11)] + \
+            [Bassgill(None) for _ in range(11)] + \
+            [BazaarDealer(None) for _ in range(11)] + \
+            [BladeCollector(None) for _ in range(11)] + \
+            [BreamCounter(None) for _ in range(11)] + \
+            [DaggerspineThrasher(None) for _ in range(11)] + \
+            [DeepBlueCrooner(None) for _ in range(11)] + \
+            [DisguisedRobber(None) for _ in range(11)] + \
+            [EmergentFlame(None) for _ in range(11)] + \
+            [FloatingWatcher(None) for _ in range(11)] + \
+            [FlourishingFrostling(None) for _ in range(11)] + \
+            [GeomagusRoogug(None) for _ in range(11)] + \
+            [LandLubber(None) for _ in range(11)] + \
+            [LighterFighter(None) for _ in range(11)] + \
+            [LivingAzerite(None) for _ in range(11)] + \
+            [LovesickBalladist(None) for _ in range(11)] + \
+            [MalchezaarPrinceOfDance(None) for _ in range(11)] + \
+            [MamaBear(None) for _ in range(11)] + \
+            [MenagerieJug(None) for _ in range(11)] + \
+            [MysticSporebat(None) for _ in range(11)] + \
+            [OutbackSmolderer(None) for _ in range(11)] + \
+            [PeckishFeldrake(None) for _ in range(11)] + \
+            [PeggySturdybone(None) for _ in range(11)] + \
+            [PrimalfinLookout(None) for _ in range(11)] + \
+            [RazorgoreTheUntamed(None) for _ in range(11)] + \
+            [RendleTheMistermind(None) for _ in range(11)] + \
+            [RylakMetalhead(None) for _ in range(11)] + \
+            [SaloonDancer(None) for _ in range(11)] + \
+            [SilentSwimmer(None) for _ in range(11)] + \
+            [SindoreiStraightShot(None) for _ in range(11)] + \
+            [SlyRaptor(None) for _ in range(11)] + \
+            [SnarlingConductor(None) for _ in range(11)] + \
+            [SteadfastSpirit(None) for _ in range(11)] + \
+            [StrongshellScavenger(None) for _ in range(11)] + \
+            [TreasureSeekerElise(None) for _ in range(11)] + \
+            [TunnelBlaster(None) for _ in range(11)] + \
+            [UtilityDrone(None) for _ in range(11)] + \
+            [WaywardGrimscale(None) for _ in range(11)]
         self.cards: list[Minion] = []
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
