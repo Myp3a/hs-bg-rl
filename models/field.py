@@ -84,3 +84,5 @@ class Field:
                 self.log.debug("\n" + str(self))
                 self.restore()
                 return
+        assert self.check_battle_end()
+        self.restore()

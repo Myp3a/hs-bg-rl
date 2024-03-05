@@ -62,4 +62,11 @@ class Game:
         for p in self.players:
             l += p.all_visible_cards()
         l += t.available_cards()
-        assert len(set(l)) == len(l)
+        seen = set()
+        dupes = []
+        for x in l:
+            if x in seen:
+                dupes.append(x)
+            else:
+                seen.add(x)
+        assert len(set(l)) == len(l), "Duplicate card found! " + str(dupes)
