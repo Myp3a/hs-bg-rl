@@ -32,7 +32,7 @@ class Army(CardSet):
             "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion, self.boost_frostling],  # (self), bought
             "on_minion_summon": [],  # (self), summoned
             "on_gold_spent": [],  # (self), spent
-            "on_fight_start": [self.audacious_anchor_fight], # (self), friendly_army, enemy_army
+            "on_fight_start": [self.start_fight_all, self.audacious_anchor_fight], # (self), friendly_army, enemy_army
         }
         self.max_len = 7
         self.cards: list[Minion] = []
@@ -92,6 +92,11 @@ class Army(CardSet):
     def elemental_play(self, played):
         if MinionClass.Elemental in played.classes:
             self.player.elementals_played += 1
+
+    def start_fight_all(self, friendly: Army, enemy: Army):
+        for c in self.cards:
+            for hook in c.hooks["on_fight_start"]:
+                hook()
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]
