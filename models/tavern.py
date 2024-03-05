@@ -36,6 +36,7 @@ class Tavern:
             Crab,
             HalfShell,
             HelpingHand,
+            Microbot
         ]
         self.base_cards: list[Minion] = \
             [AnnoyOTron(None) for _ in range(18)] + \
@@ -65,6 +66,7 @@ class Tavern:
             [CogworkCopter(None) for _ in range(15)] + \
             [ColdlightSeer(None) for _ in range(15)] + \
             [CorpseRefiner(None) for _ in range(15)] + \
+            [CracklingCyclone(None) for _ in range(15)] + \
             [DancingBarnstormer(None) for _ in range(15)] + \
             [DeepSeaAngler(None) for _ in range(15)] + \
             [EternalKnight(None) for _ in range(15)] + \
@@ -75,7 +77,6 @@ class Tavern:
             [LavaLurker(None) for _ in range(15)] + \
             [Lullabot(None) for _ in range(15)] + \
             [MindMuck(None) for _ in range(15)] + \
-            [MoonBaconJazzer(None) for _ in range(15)] + \
             [Murcules(None) for _ in range(15)] + \
             [NerubianDeathswarmer(None) for _ in range(15)] + \
             [OozelingGladiator(None) for _ in range(15)] + \
@@ -90,7 +91,40 @@ class Tavern:
             [ToughTusk(None) for _ in range(15)] + \
             [TwilightEmissary(None) for _ in range(15)] + \
             [WhelpSmuggler(None) for _ in range(15)] + \
-            [Yrel(None) for _ in range(15)]
+            [Yrel(None) for _ in range(15)] + \
+            [AccordOTron(None) for _ in range(13)] + \
+            [AmberGuardian(None) for _ in range(13)] + \
+            [BloodsailCannoneer(None) for _ in range(13)] + \
+            [DeflectOBot(None) for _ in range(13)] + \
+            [DiremuckForager(None) for _ in range(13)] + \
+            [Dreadbeard(None) for _ in range(13)] + \
+            [Eagill(None) for _ in range(13)] + \
+            [ElectricSynthesizer(None) for _ in range(13)] + \
+            [FacelessDisciple(None) for _ in range(13)] + \
+            [Felemental(None) for _ in range(13)] + \
+            [FreeFlyingFeathermane(None) for _ in range(13)] + \
+            [GunpowderCourier(None) for _ in range(13)] + \
+            [HandlessForsaken(None) for _ in range(13)] + \
+            [LegionOverseer(None) for _ in range(13)] + \
+            [LivingConstellation(None) for _ in range(13)] + \
+            [MangledBandit(None) for _ in range(13)] + \
+            [MonstrousMacaw(None) for _ in range(13)] + \
+            [MoonBaconJazzer(None) for _ in range(13)] + \
+            [Mummifier(None) for _ in range(13)] + \
+            [NetherDrake(None) for _ in range(13)] + \
+            [PaintSmudger(None) for _ in range(13)] + \
+            [PartyElemental(None) for _ in range(13)] + \
+            [PashmarTheVengeful(None) for _ in range(13)] + \
+            [PhaerixWrathOfTheSun(None) for _ in range(13)] + \
+            [PricklyPiper(None) for _ in range(13)] + \
+            [RecyclingWraith(None) for _ in range(13)] + \
+            [ReplicatingMenace(None) for _ in range(13)] + \
+            [SoreLoser(None) for _ in range(13)] + \
+            [SprightlyScarab(None) for _ in range(13)] + \
+            [TheGladIator(None) for _ in range(13)] + \
+            [VengefulSlitherer(None) for _ in range(13)] + \
+            [WildfireElemental(None) for _ in range(13)] + \
+            [ZestyShaker(None) for _ in range(13)]
         self.cards: list[Minion] = []
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
