@@ -107,6 +107,10 @@ class Player:
         d["undead_attack_boost"] = self.undead_attack_boost
         d["tavern_attack_boost"] = self.tavern_attack_boost
         d["tavern_health_boost"] = self.tavern_health_boost
+        d["blues_boost"] = self.blues_boost
+        d["rolls_on_turn"] = self.rolls_on_turn
+        d["elementals_played"] = self.elementals_played
+        d["gold_spent_on_turn"] = self.gold_spent_on_turn
         return {
             "player_data": d, 
             "hand_data": self.hand.observation,
