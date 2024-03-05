@@ -13,4 +13,7 @@ class Hand(CardSet):
     def reset_summons(self) -> None:
         for c in self.cards:
             if isinstance(c, Minion):
-                c.summoned = False
+                if c.summoned:
+                    c.summoned = False
+                    c.attack_temp_boost = 0
+                    c.health_temp_boost = 0
