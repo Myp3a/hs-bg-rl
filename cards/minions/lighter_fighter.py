@@ -28,7 +28,7 @@ class LighterFighter(Minion):
         else:
             damage = 4
         for _ in range(2):
-            targets = sorted(self.enemy_army.cards, key=lambda targ: targ.health_value)
+            targets: list[Minion] = sorted(self.enemy_army.cards, key=lambda targ: targ.health_value)
             if len(targets) == 0:
                 return
-            targets[0].health_temp_value -= damage
+            targets[0].health_temp_boost -= damage
