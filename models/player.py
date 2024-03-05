@@ -249,6 +249,8 @@ class Player:
             self.view.remove(card)
             self.hand.add(card, len(self.hand))
             self.log.debug(f"{self} bought {card}, hand = {self.hand}")
+            for hook in card.hooks["on_buy"]:
+                hook()
             for hook in self.army.hooks["on_minion_buy"]:
                 hook(card)
             self.check_triplets()

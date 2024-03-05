@@ -126,6 +126,7 @@ class Minion(Card):
             "on_sell": [],  # (self)
             "on_play": [],  # (self)
             "on_death": [],  # (self)
+            "on_buy": [],  # (self)
             "on_temp_values_change": [],  # (self)
             "on_kill": [],  # (self)
             "battlecry": [],  # (self)
