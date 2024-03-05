@@ -146,15 +146,12 @@ class Tavern:
         available_types = random.sample(list(MinionClass), 5)
         print(f"INFO:tavern:available types: {[t.value for t in available_types]}", file=sys.stderr)
         self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes) or len(c.classes) == 0]
+        self.new_cards = []
+        # For proper hook reinstall
         for c in self.cards:
-            c.attack_perm_boost = 0
-            c.health_perm_boost = 0
-            c.attack_temp_boost = 0
-            c.health_temp_boost = 0
-            c.clear_hooks()
-            c.restore_features()
-            c.magnited_to = None
-            c.magnited = []
+            card = type(c)(None)
+            self.new_cards.append(card)
+        self.cards = self.new_cards
         self.views = []
         
     def new_view(self, player) -> list[Minion]:
