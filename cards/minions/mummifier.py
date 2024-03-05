@@ -26,7 +26,7 @@ class Mummifier(Minion):
         target.rebirth = True
         target.reborn = False
 
-    def give_rebirth(self):
+    def give_rebirth(self, position):
         if self.triplet:
             self.choose_and_give_rebirth()
         self.choose_and_give_rebirth()

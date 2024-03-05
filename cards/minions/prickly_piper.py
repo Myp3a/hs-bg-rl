@@ -17,7 +17,7 @@ class PricklyPiper(Minion):
         self.base_health_value = 1
         self.hooks["deathrattle"].append(self.boost_blood_gem_attack)
 
-    def boost_blood_gem_attack(self) -> None:
+    def boost_blood_gem_attack(self, position) -> None:
         self.army.player.blood_gem_attack += 1
         if self.triplet:
             self.army.player.blood_gem_attack += 1
