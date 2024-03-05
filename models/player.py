@@ -45,6 +45,7 @@ class Player:
         self.tavern_health_boost = 0
         self.blues_boost = 1
         self.rolls_on_turn = 0
+        self.elementals_played = 0
         self.view = self.tavern.new_view(self)
 
     @property

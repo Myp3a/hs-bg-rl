@@ -6,6 +6,7 @@ import random
 
 from cards.minion import Minion, MinionClass
 from cards.minions.audacious_anchor import AudaciousAnchor
+from cards.minions.flourishing_frostling import FlourishingFrostling
 from cards.minions.free_flying_feathermane import FreeFlyingFeathermane
 
 from .cardset import CardSet
@@ -21,14 +22,14 @@ class Army(CardSet):
         self.hooks = {
             "on_attack": [],  # (self), attacker, defender
             "on_defence": [],  # (self), defender, attacker
-            "on_minion_play": [],  # (self), played
+            "on_minion_play": [self.elemental_play],  # (self), played
             "on_divine_shield_lost": [],  # (self), lost
             "on_minion_death": [self.summon_feathermane],  # (self), dead, position
             "on_spell_cast": [],  # (self), casted, target
             "on_hero_damage": [],  # (self), damage
             "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
             "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
-            "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion],  # (self), bought
+            "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion, self.boost_frostling],  # (self), bought
             "on_minion_summon": [],  # (self), summoned
             "on_gold_spent": [],  # (self), spent
             "on_fight_start": [self.audacious_anchor_fight], # (self), friendly_army, enemy_army
@@ -57,9 +58,16 @@ class Army(CardSet):
             bought.attack_perm_boost += self.player.undead_attack_boost
     
     def boost_elemental_values(self, bought: Minion) -> None:
-        if MinionClass.Undead in bought.classes:
+        if MinionClass.Elemental in bought.classes:
             bought.attack_perm_boost += self.player.tavern_elemental_boost
             bought.health_perm_boost += self.player.tavern_elemental_boost
+
+    def boost_frostling(self, bought: Minion) -> None:
+        if isinstance(bought, FlourishingFrostling):
+            atk_boost = self.player.elementals_played
+            hlt_boost = self.player.elementals_played
+            bought.attack_perm_boost += atk_boost
+            bought.health_perm_boost += hlt_boost
 
     def boost_tavern_minion(self, bought: Minion) -> None:
         bought.attack_perm_boost += self.player.tavern_attack_boost
@@ -78,6 +86,10 @@ class Army(CardSet):
                         anchor.attack(target)
                     if target.health_value > 0:
                         target.attack(anchor)
+
+    def elemental_play(self, played):
+        if MinionClass.Elemental in played.classes:
+            self.player.elementals_played += 1
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]
