@@ -117,9 +117,13 @@ class Army(CardSet):
         self.log.debug(f"def: {target} chosen from {target.army}")
         self.log.debug(f"{attacker} attacks {target}")
         attacker.attack(target)
+        self.clean_dead()
+        other.clean_dead()
         if attacker.windfury and attacker.health_value > 0:
             target = other.get_target()
             attacker.attack(target)
+            self.clean_dead()
+            other.clean_dead()
     
     def get_target(self) -> Card | None:
         if len(self) == 0:
@@ -129,3 +133,8 @@ class Army(CardSet):
             targets = [t for t in self.cards if t.revealed]
         target = random.choice(targets)
         return target
+    
+    def clean_dead(self):
+        for c in list(self.cards):
+            if c.health_value <= 0:
+                self.cards.remove(c)
