@@ -139,7 +139,7 @@ class Tavern:
                 dupes.append(x)
             else:
                 seen.add(x)
-        assert len(self.cards) == len(set(self.cards)), "Duplicate card in tavern! " + str(dupes)
+        assert len(self.cards) == len(set(self.cards)), "Duplicate card in tavern! " + str([str(obj) for obj in dupes])
 
     def reset(self) -> None:
         print("INFO:tavern:tavern reset", file=sys.stderr)

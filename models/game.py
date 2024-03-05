@@ -69,4 +69,4 @@ class Game:
                 dupes.append(x)
             else:
                 seen.add(x)
-        assert len(set(l)) == len(l), "Duplicate card found! " + str(dupes)
+        assert len(set(l)) == len(l), "Duplicate card found! " + str([str(obj) for obj in dupes])

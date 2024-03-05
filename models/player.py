@@ -182,7 +182,7 @@ class Player:
             self.rolls_on_turn = 0
             self.gold_spent_on_turn = 0
             self.free_rolls = 0
-            for card in self.army.cards:
+            for card in list(self.army.cards):
                 for hook in card.hooks["on_turn_start"]:
                     hook()
                 for c in card.magnited:
