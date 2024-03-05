@@ -12,7 +12,7 @@ class UtilityDrone(Minion):
         super().__init__(army)
         self.minion_id = 136
         self.classes = [MinionClass.Mech]
-        self.level = 1
+        self.level = 4
         self.base_attack_value = 3
         self.base_health_value = 4
         self.hooks["on_turn_end"].append(self.boost_magnited)
