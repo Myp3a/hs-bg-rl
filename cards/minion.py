@@ -118,6 +118,8 @@ class Minion(Card):
             "on_attack_post": [],  # (self), target
             "on_defence_pre": [],  # (self), target
             "on_defence_post": [],  # (self), target
+            "on_attack_mid": [],  # (self), target
+            "on_defence_mid": [],  # (self), target
             "on_fight_start": [],  # (self)
             "on_turn_start": [self.reset_temp_bonuses, self.restore_features],  # (self)
             "on_turn_end": [self.snapshot_features],  # (self)
@@ -186,7 +188,11 @@ class Minion(Card):
         for hook in target.army.hooks["on_defence"]:
             hook(target, self)
         for hook in target.hooks["on_defence_pre"]:
-            hook(target)        
+            hook(target)
+        for hook in self.hooks["on_attack_mid"]:
+            hook(target)
+        for hook in self.hooks["on_defence_mid"]:
+            hook(target)
         if not self.divine_shield:
             self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
             if target.toxic:

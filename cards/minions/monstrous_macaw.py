@@ -16,7 +16,7 @@ class MonstrousMacaw(Minion):
         self.level = 3
         self.base_attack_value = 5
         self.base_health_value = 3
-        self.hooks["on_attack_post"].append(self.trigger_deathrattle)
+        self.hooks["on_attack_mid"].append(self.trigger_deathrattle)
 
     def trigger_deathrattle(self):
         targets = [t for t in self.army.cards if len(t.hooks["deathrattle"] > 0)]
