@@ -24,6 +24,7 @@ class RendleTheMistermind(Minion):
         if len(self.army.player.hand) == 10:
             return
         self.army.player.tavern.buy(targets[0])
+        targets[0].army = self.army
         self.army.player.view.remove(targets[0])
         self.army.player.hand.add(targets[0], len(self.army.player.hand.cards))
 
