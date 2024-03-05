@@ -210,12 +210,13 @@ class Player:
 
     def end_turn(self) -> None:
         self.log.debug(f"{self} turn end")
-        for card in self.army.cards:
-            for hook in card.hooks["on_turn_end"]:
-                hook()
-            for c in card.magnited:
-                for hook in c.hooks["on_turn_end"]:
+        if self.health > 0:
+            for card in self.army.cards:
+                for hook in card.hooks["on_turn_end"]:
                     hook()
+                for c in card.magnited:
+                    for hook in c.hooks["on_turn_end"]:
+                        hook()
 
     def upgrade_possible(self) -> bool:
         if self.level < 6:
