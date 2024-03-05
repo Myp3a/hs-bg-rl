@@ -34,4 +34,6 @@ class PatientScout(Minion):
         discovered = random.choice(available_cards)
         card = self.army.player.tavern.buy(discovered)
         card.army = self.army
+        for hook in card.hooks["on_buy"]:
+            hook()
         self.army.player.hand.add(card, len(self.army.player.hand))
