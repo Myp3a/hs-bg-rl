@@ -18,7 +18,7 @@ class SteadfastSpirit(Minion):
         self.rebirth = True
         self.hooks["deathrattle"].append(self.boost_minions)
 
-    def boost_minions(self):
+    def boost_minions(self, position):
         targets = [t for t in self.army.cards if not t is self]
         for t in targets:
             if self.triplet:
