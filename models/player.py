@@ -182,14 +182,22 @@ class Player:
             self.rolls_on_turn = 0
             self.gold_spent_on_turn = 0
             self.free_rolls = 0
-        for card in self.army.cards:
-            for hook in card.hooks["on_turn_start"]:
-                hook()
-            for c in card.magnited:
-                for hook in c.hooks["on_turn_start"]:
+            for card in self.army.cards:
+                for hook in card.hooks["on_turn_start"]:
                     hook()
-        for hook in self.hand.hooks["on_turn_start"]:
-            hook()
+                for c in card.magnited:
+                    for hook in c.hooks["on_turn_start"]:
+                        hook()
+            for hook in self.hand.hooks["on_turn_start"]:
+                hook()
+        else:
+            for c in self.army.cards:
+                c.reset_temp_bonuses()
+                c.restore_features()
+            for c in self.hand.cards:
+                if isinstance(c, Minion):
+                    c.reset_temp_bonuses()
+                    c.restore_features()
         for c in self.army.cards:
             assert c.health_value > 0, "Army minion found dead at turn start! " + str(c)
         for c in self.hand.cards:
