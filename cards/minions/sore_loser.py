@@ -34,13 +34,13 @@ class SoreLoser(Minion):
         self.army.hooks["on_minion_play"].append(self.put_hook_new)
         for m in self.army.cards:
             if MinionClass.Undead in m.classes:
-                m.hooks["on_attack_pre"].append(partial(self.count_sore_losers, beast=m))
-                m.hooks["on_defence_pre"].append(partial(self.count_sore_losers, beast=m))
+                m.hooks["on_attack_pre"].append(partial(self.count_sore_losers, undead=m))
+                m.hooks["on_defence_pre"].append(partial(self.count_sore_losers, undead=m))
 
     def put_hook_new(self, played) -> None:
         if MinionClass.Undead in played.classes:
-            played.hooks["on_attack_pre"].append(partial(self.count_sore_losers, beast=played))
-            played.hooks["on_defence_pre"].append(partial(self.count_sore_losers, beast=played))
+            played.hooks["on_attack_pre"].append(partial(self.count_sore_losers, undead=played))
+            played.hooks["on_defence_pre"].append(partial(self.count_sore_losers, undead=played))
 
     def decrease_boost(self) -> None:
         for m in self.army.cards:
