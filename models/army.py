@@ -119,8 +119,8 @@ class Army(CardSet):
     def get_target(self) -> Card | None:
         if len(self) == 0:
             return None
-        targets = [t for t in self.cards if t.taunt]
+        targets = [t for t in self.cards if t.taunt and t.revealed]
         if len(targets) == 0:
-            targets = [t for t in self.cards]
+            targets = [t for t in self.cards if t.revealed]
         target = random.choice(targets)
         return target

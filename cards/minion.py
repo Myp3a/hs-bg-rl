@@ -38,6 +38,8 @@ class Minion(Card):
         self.taunt = False
         self.magnetic = False
         self.windfury = False
+        self.stealth = False
+        self.revealed = True
         self.magnited_to = None
         self.magnited = []
         self.attacked_this_turn = False
@@ -144,6 +146,8 @@ class Minion(Card):
         self.divine_shield = self.base_divine_shield
         self.toxic = self.base_toxic
         self.rebirth = self.base_rebirth
+        if self.stealth:
+            self.revealed = False
 
     def reset_temp_bonuses(self) -> None:
         self.attack_temp_boost = 0
@@ -183,6 +187,8 @@ class Minion(Card):
             return
         if self.is_dead:
             return
+        if self.stealth:
+            self.revealed = True
         for hook in self.army.hooks["on_attack"]:
             hook(self, target)
         for hook in self.hooks["on_attack_pre"]:
