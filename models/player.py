@@ -47,6 +47,7 @@ class Player:
         self.rolls_on_turn = 0
         self.elementals_played = 0
         self.gold_spent_on_turn = 0
+        self.damaged_for_roll = False
         self.view = self.tavern.new_view(self)
 
     @property
@@ -180,6 +181,7 @@ class Player:
             self.tavern_discount += 1
             self.rolls_on_turn = 0
             self.gold_spent_on_turn = 0
+            self.free_rolls = 0
         else:
             for card in self.army.cards:
                 card.clear_hooks()
@@ -231,14 +233,18 @@ class Player:
     
     def roll(self) -> bool:
         if self.roll_possible():
-            if self.free_rolls > 0:
-                self.free_rolls -= 1
-            else:
+            self.damaged_for_roll = False
+            if self.free_rolls == 0:
                 self.gold -= self.roll_price
                 for hook in self.army.hooks["on_gold_spent"]:
                     hook(self.roll_price)
                 self.gold_spent_on_turn += self.roll_price
             self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1])
+            for c in self.army.cards:
+                for hook in c.hooks["on_roll"]:
+                    hook()
+            if self.free_rolls > 0:
+                self.free_rolls -= 1
             self.rolls_on_turn += 1
             return True
         return False
