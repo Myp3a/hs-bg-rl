@@ -30,6 +30,7 @@ class Minion(Card):
         self.base_divine_shield = False
         self.base_toxic = False
         self.base_rebirth = False
+        self.base_taunt = False
         self.is_dead = False
         self.rebirth = False
         self.reborn = False
@@ -141,11 +142,13 @@ class Minion(Card):
         self.base_divine_shield = self.divine_shield
         self.base_toxic = self.toxic
         self.base_rebirth = self.rebirth
+        self.base_taunt = self.taunt
     
     def restore_features(self) -> None:
         self.divine_shield = self.base_divine_shield
         self.toxic = self.base_toxic
         self.rebirth = self.base_rebirth
+        self.taunt = self.base_taunt
         if self.stealth:
             self.revealed = False
 
