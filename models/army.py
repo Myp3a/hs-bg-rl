@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import random
 
 from cards.minion import Minion, MinionClass
+from cards.minions.audacious_anchor import AudaciousAnchor
 from cards.minions.free_flying_feathermane import FreeFlyingFeathermane
 
 from .cardset import CardSet
@@ -30,6 +31,7 @@ class Army(CardSet):
             "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion],  # (self), bought
             "on_minion_summon": [],  # (self), summoned
             "on_gold_spent": [],  # (self), spent
+            "on_fight_start": [self.audacious_anchor_fight], # (self), friendly_army, enemy_army
         }
         self.max_len = 7
         self.cards: list[Minion] = []
@@ -62,6 +64,20 @@ class Army(CardSet):
     def boost_tavern_minion(self, bought: Minion) -> None:
         bought.attack_perm_boost += self.player.tavern_attack_boost
         bought.attack_perm_boost += self.player.tavern_health_boost
+    
+    def audacious_anchor_fight(self, friendly: Army, enemy: Army) -> None:
+        for anchor in friendly.cards:
+            if isinstance(anchor, AudaciousAnchor):
+                position = friendly.index(anchor)
+                target_index = min(position, len(enemy.cards) - 1)
+                if target_index == -1:
+                    continue
+                target = enemy.cards[target_index]
+                while target.health_value > 0 and anchor.health_value > 0:
+                    if anchor.health_value > 0:
+                        anchor.attack(target)
+                    if target.health_value > 0:
+                        target.attack(anchor)
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]

@@ -52,6 +52,10 @@ class Field:
         self.snapshot()
         self.log.debug(f"starting fight between {self.first}(v) and {self.second}(^)")
         self.log.debug("\n" + str(self))
+        for hook in self.first.army.hooks["on_fight_start"]:
+            hook(self.first.army, self.second.army)
+        for hook in self.second.army.hooks["on_fight_start"]:
+            hook(self.second.army, self.first.army)
         while len(self.first.army) > 0 and len(self.second.army) > 0:
             self.turn_flag = (self.turn_flag + 1) % 2
             match self.turn_flag:
