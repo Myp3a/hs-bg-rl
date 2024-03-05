@@ -101,7 +101,7 @@ class Minion(Card):
         if self.triplet:
             val += self.base_attack_value
         val += self.attack_temp_boost
-        return val
+        return max(0, val)
     
     @property
     def health_value(self) -> int:
