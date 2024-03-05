@@ -24,10 +24,10 @@ class MamaBear(Minion):
 
     def remove_hook(self) -> None:
         self.army.hooks["on_minion_play"].remove(self.boost_beast)
-        self.army.hooks["on_minion_summon"].append(self.boost_beast)
+        self.army.hooks["on_minion_summon"].remove(self.boost_beast)
 
     def boost_beast(self, played: Minion):
-        if MinionClass.Beast in played.classes:
+        if MinionClass.Beast in played.classes and not played is self:
             if self.triplet:
                 atk_boost = 6
                 hlt_boost = 6
