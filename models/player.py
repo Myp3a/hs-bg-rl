@@ -43,6 +43,7 @@ class Player:
         self.undead_attack_boost = 0
         self.tavern_attack_boost = 0
         self.tavern_health_boost = 0
+        self.blues_boost = 1
         self.view = self.tavern.new_view(self)
 
     @property
