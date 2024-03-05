@@ -19,11 +19,11 @@ class WildfireElemental(Minion):
         self.target_position = None
         self.target_army = None
         self.hooks["on_attack_pre"].append(self.remember_position)
-        self.hooks["on_attack_post"].append(self.attack_adjacent)
+        self.hooks["on_attack_mid"].append(self.attack_adjacent)
 
     def remember_position(self, target: Minion):
         self.target_position = target.army.index(target)
-        self.target_army = target.attack
+        self.target_army = target.army
 
     def damage_left(self, overdamage):
         self.target_army.cards[self.target_position-1].health_temp_boost -= overdamage
