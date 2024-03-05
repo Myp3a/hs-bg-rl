@@ -82,7 +82,7 @@ class Army(CardSet):
         self.log.debug(f"def: {target} chosen from {target.army}")
         self.log.debug(f"{attacker} attacks {target}")
         attacker.attack(target)
-        if attacker.windfury:
+        if attacker.windfury and attacker.health_value > 0:
             target = other.get_target()
             attacker.attack(target)
     
