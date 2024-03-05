@@ -26,5 +26,5 @@ class TreasureSeekerElise(Minion):
             self.army.player.view.remove(random.choice(self.army.player.view))
             gm = GoldenMonkey(None)
             gm.triplet = True
-            self.army.player.view.append(gm)
+            self.army.player.view.add(gm, len(self.army.player.view.cards))
             self.rolls_left = 5
