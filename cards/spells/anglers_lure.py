@@ -19,7 +19,12 @@ class AnglersLure(TargetedSpell):
     def restore(self) -> None:
         self.target.taunt = self.had_taunt
         self.target.hooks["on_turn_start"].remove(self.restore)
-        
+
+    def try_remove_hook(self) -> None:
+        try:
+            self.restore()
+        except:
+            pass        
 
     def play(self, target: Minion) -> None:
         self.target = target
@@ -33,4 +38,5 @@ class AnglersLure(TargetedSpell):
         for hook in self.player.army.hooks["on_values_change_temp"]:
             hook(target, 0, hlt_boost)
         target.hooks["on_turn_start"].append(self.restore)
+        target.hooks["on_sell"].append(self.try_remove_hook)
     

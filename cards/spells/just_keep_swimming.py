@@ -19,6 +19,12 @@ class JustKeepSwimming(TargetedSpell):
         self.target.stealth = self.had_stealth
         self.target.hooks["on_turn_start"].remove(self.restore)
 
+    def try_remove_hook(self) -> None:
+        try:
+            self.restore()
+        except:
+            pass
+
     def play(self, target: Minion) -> None:
         self.had_stealth = target.stealth
         self.target = target
@@ -34,3 +40,4 @@ class JustKeepSwimming(TargetedSpell):
             hook(target, atk_boost, hlt_boost)
         target.stealth = True
         target.hooks["on_turn_start"].append(self.restore)
+        target.hooks["on_sell"].append(self.try_remove_hook)
