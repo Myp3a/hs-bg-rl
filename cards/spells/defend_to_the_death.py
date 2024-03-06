@@ -26,16 +26,16 @@ class DefendToTheDeath(TargetedSpell):
             hlt_boost = 1
         self.target.health_temp_boost += hlt_boost
         for hook in self.player.army.hooks["on_values_change_temp"]:
-            hook(target, 0, hlt_boost)
+            hook(self.target, 0, hlt_boost)
         self.target.hooks["on_death"].append(self.add_health)
         self.target.hooks["on_turn_start"].append(self.restore)
 
-    def add_health(self, target=None):
+    def add_health(self):
         if self.triplet:
             hlt_boost = 2
         else:
             hlt_boost = 1
         self.target.attack_perm_boost += hlt_boost
         for hook in self.player.army.hooks["on_values_change_perm"]:
-            hook(target, 0, hlt_boost)
+            hook(self.target, 0, hlt_boost)
     

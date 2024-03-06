@@ -18,6 +18,7 @@ class MalchezaarPrinceOfDance(Minion):
         self.base_health_value = 3
         self.hooks["on_roll"].append(self.damage_hero)
         self.hooks["on_turn_start"].append(self.add_rolls)
+        self.hooks["on_play"].append(self.add_rolls)
 
     def add_rolls(self):
         self.army.player.free_rolls += 2

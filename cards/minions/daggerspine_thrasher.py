@@ -20,6 +20,7 @@ class DaggerspineThrasher(Minion):
         self.hooks["on_turn_start"].append(self.remove_features)
         self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_sell"].append(self.remove_features)
         self.remove_features()
 
     def remove_features(self):
