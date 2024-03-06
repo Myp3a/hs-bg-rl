@@ -25,15 +25,13 @@ class BladeCollector(Minion):
         self.target_position = target.army.index(target)
         self.target_army = target.army
 
-    def damage_left(self, damage):
+    def damage(self, target, damage):
         blade = GameEntity(self.army)
         blade.base_attack_value = damage
-        blade.attack(self.target_army.cards[self.target_position-1])
+        blade.attack(target)
 
-    def damage_right(self, damage):
-        blade = GameEntity(self.army)
-        blade.base_attack_value = damage
-        blade.attack(self.target_army.cards[self.target_position+1])
+    def get_target(self, position):
+        return self.target_army.cards[position]
 
     def check_can_be_damaged(self):
         if len(self.target_army.cards) == 0:
@@ -49,6 +47,10 @@ class BladeCollector(Minion):
     def attack_adjacent(self, target: Minion) -> None:
         allow_left, allow_right = self.check_can_be_damaged()
         if allow_left:
-            self.damage_left(self.attack_value)
+            tl = self.get_target(self.target_position - 1)
         if allow_right:
-            self.damage_right(self.attack_value)
+            tr = self.get_target(self.target_position + 1)
+        if allow_left:
+            self.damage(tl, self.attack_value)
+        if allow_right:
+            self.damage(tr, self.attack_value)

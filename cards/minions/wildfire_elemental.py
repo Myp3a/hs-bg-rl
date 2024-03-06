@@ -26,15 +26,13 @@ class WildfireElemental(Minion):
         self.target_position = target.army.index(target)
         self.target_army = target.army
 
-    def damage_left(self, overdamage):
+    def damage(self, target, damage):
         fire = GameEntity(self.army)
-        fire.base_attack_value = overdamage
-        fire.attack(self.target_army.cards[self.target_position-1])
+        fire.base_attack_value = damage
+        fire.attack(target)
 
-    def damage_right(self, overdamage):
-        fire = GameEntity(self.army)
-        fire.base_attack_value = overdamage
-        fire.attack(self.target_army.cards[self.target_position])
+    def get_target(self, position):
+        return self.target_army.cards[position]
 
     def check_can_be_damaged(self):
         if len(self.target_army.cards) == 0:
@@ -51,16 +49,20 @@ class WildfireElemental(Minion):
         overdamage = - target.health_value
         if overdamage > 0:
             allow_left, allow_right = self.check_can_be_damaged()
+            if allow_left:
+                tl = self.get_target(self.target_position - 1)
+            if allow_right:
+                tr = self.get_target(self.target_position + 1)
             if self.triplet:
                 if allow_left:
-                    self.damage_left(overdamage)
+                    self.damage(tl, overdamage)
                 if allow_right:
-                    self.damage_right(overdamage)
+                    self.damage(tr, overdamage)
             else:
                 if allow_left and allow_right:
-                    random.choice([self.damage_left, self.damage_right])(overdamage)
+                    self.damage(random.choice([tl,tr]), overdamage)
                 else:
                     if allow_left:
-                        self.damage_left(overdamage)
+                        self.damage(tl, overdamage)
                     if allow_right:
-                        self.damage_right(overdamage)
+                        self.damage(tr, overdamage)
