@@ -3,6 +3,7 @@ import random
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
+from cards.minions.game_entity import GameEntity
 
 if TYPE_CHECKING:
     from models.army import Army
@@ -26,10 +27,14 @@ class WildfireElemental(Minion):
         self.target_army = target.army
 
     def damage_left(self, overdamage):
-        self.target_army.cards[self.target_position-1].health_temp_boost -= overdamage
+        fire = GameEntity(self.army)
+        fire.base_attack_value = overdamage
+        fire.attack(self.target_army.cards[self.target_position-1])
 
     def damage_right(self, overdamage):
-        self.target_army.cards[self.target_position].health_temp_boost -= overdamage
+        fire = GameEntity(self.army)
+        fire.base_attack_value = overdamage
+        fire.attack(self.target_army.cards[self.target_position])
 
     def check_can_be_damaged(self):
         if len(self.target_army.cards) == 0:

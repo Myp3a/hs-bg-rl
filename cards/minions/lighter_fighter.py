@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
+from cards.minions.game_entity import GameEntity
 
 if TYPE_CHECKING:
     from models.army import Army
@@ -32,4 +33,6 @@ class LighterFighter(Minion):
             targets: list[Minion] = sorted(self.enemy_army.cards, key=lambda targ: targ.health_value)
             if len(targets) == 0:
                 return
-            targets[0].health_temp_boost -= damage
+            laser = GameEntity(self.army)
+            laser.base_attack_value = damage
+            laser.attack(targets[0])

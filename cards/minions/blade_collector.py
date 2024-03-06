@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
+from cards.minions.game_entity import GameEntity
 
 if TYPE_CHECKING:
     from models.army import Army
@@ -25,10 +26,14 @@ class BladeCollector(Minion):
         self.target_army = target.army
 
     def damage_left(self, damage):
-        self.target_army.cards[self.target_position-1].health_temp_boost -= damage
+        blade = GameEntity(self.army)
+        blade.base_attack_value = damage
+        blade.attack(self.target_army.cards[self.target_position-1])
 
     def damage_right(self, damage):
-        self.target_army.cards[self.target_position+1].health_temp_boost -= damage
+        blade = GameEntity(self.army)
+        blade.base_attack_value = damage
+        blade.attack(self.target_army.cards[self.target_position+1])
 
     def check_can_be_damaged(self):
         if len(self.target_army.cards) == 0:

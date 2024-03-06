@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
+from cards.minions.game_entity import GameEntity
 
 if TYPE_CHECKING:
     from models.army import Army
@@ -27,7 +28,9 @@ class TunnelBlaster(Minion):
     def damage_all(self):
         targets = [t for t in self.army.cards + self.enemy.cards]
         for t in targets:
-            t.health_temp_boost -= 3
+            tnt = GameEntity(self.army)
+            tnt.base_attack_value = 3
+            tnt.attack(t)
 
     def damage_on_death(self, position):
         if self.triplet:
