@@ -222,18 +222,23 @@ class Tavern:
             view.add(card, len(view))
         return view
     
+    def clean_card(self, card: Minion):
+        card.attack_perm_boost = 0
+        card.health_perm_boost = 0
+        card.attack_temp_boost = 0
+        card.health_temp_boost = 0
+        card.restore_features()
+        return card
+
     def buy(self, card: Minion) -> Minion:
+        self.clean_card(card)  # In case if was summoned (rylak + faceless)
         self.cards.remove(card)
         print(f"DEBUG:tavern:bought {card}", file=sys.stderr)
         return card
     
     def sell(self, card: Minion) -> None:
         print(f"DEBUG:tavern:sold {card}", file=sys.stderr)
-        card.attack_perm_boost = 0
-        card.health_perm_boost = 0
-        card.attack_temp_boost = 0
-        card.health_temp_boost = 0
-        card.restore_features()
+        self.clean_card(card)
         if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
             return
         if card.triplet:
