@@ -114,6 +114,9 @@ class Army(CardSet):
         self.log.debug(f"atk: {attacker} chosen from {attacker.army}")
         
         target = other.get_target()
+        if target is None:
+            self.log.debug(f"{attacker} found no targets")
+            return  
         self.log.debug(f"def: {target} chosen from {target.army}")
         self.log.debug(f"{attacker} attacks {target}")
         attacker.attack(target)
