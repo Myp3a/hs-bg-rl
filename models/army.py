@@ -88,6 +88,8 @@ class Army(CardSet):
                         anchor.attack(target)
                     if target.health_value > 0:
                         target.attack(anchor)
+                friendly.clean_dead()
+                enemy.clean_dead()
 
     def elemental_play(self, played):
         if MinionClass.Elemental in played.classes:
@@ -142,4 +144,4 @@ class Army(CardSet):
     def clean_dead(self):
         for c in list(self.cards):
             if c.health_value <= 0:
-                self.cards.remove(c)
+                c.death()
