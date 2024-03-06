@@ -72,6 +72,7 @@ class Minion(Card):
         self.immediate_attack = False
         self.contains = []
         self.summoned = False
+        self.in_fight = False
         self.humming_bird_boost = 0
         self.sore_loser_boost = 0
         self._attack_temp_boost = 0
@@ -160,6 +161,7 @@ class Minion(Card):
         if self.reborn:
             self.rebirth = True
             self.reborn = False
+        self.in_fight = False
 
     def death(self) -> None:
         position = self.army.index(self)

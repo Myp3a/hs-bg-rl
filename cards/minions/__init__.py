@@ -103,7 +103,7 @@ from .blade_collector import BladeCollector
 from .bream_counter import BreamCounter
 from .daggerspine_thrasher import DaggerspineThrasher
 from .deep_blue_crooner import DeepBlueCrooner
-from .disguised_robber import DisguisedRobber
+from .disguised_graverobber import DisguisedGraverobber
 from .emergent_flame import EmergentFlame
 from .floating_watcher import FloatingWatcher
 from .flourishing_frostling import FlourishingFrostling

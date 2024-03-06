@@ -137,7 +137,7 @@ class Tavern:
             [BreamCounter(None) for _ in range(11)] + \
             [DaggerspineThrasher(None) for _ in range(11)] + \
             [DeepBlueCrooner(None) for _ in range(11)] + \
-            [DisguisedRobber(None) for _ in range(11)] + \
+            [DisguisedGraverobber(None) for _ in range(11)] + \
             [EmergentFlame(None) for _ in range(11)] + \
             [FloatingWatcher(None) for _ in range(11)] + \
             [FlourishingFrostling(None) for _ in range(11)] + \

@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from models.army import Army
 
 
-class DisguisedRobber(Minion):
+class DisguisedGraverobber(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
         self.minion_id = 105
@@ -24,7 +24,8 @@ class DisguisedRobber(Minion):
             return
         target = random.choice(targets)
         self.army.cards.remove(target)
-        self.army.player.tavern.sell(target)
+        if not self.in_fight:
+            self.army.player.tavern.sell(target)
         self.army.player.gold += 3
         if self.triplet:
             self.army.player.gold += 3

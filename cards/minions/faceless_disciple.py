@@ -29,8 +29,9 @@ class FacelessDisciple(Minion):
         self.army.remove(target)
         for hook in target.hooks["on_sell"]:
             hook()
-        self.army.player.tavern.sell(target)
-        self.army.player.tavern.buy(new_minion)
+        if not self.in_fight:
+            self.army.player.tavern.sell(target)
+            self.army.player.tavern.buy(new_minion)
         new_minion.army = self.army
         for hook in new_minion.hooks["on_buy"]:
             hook()
