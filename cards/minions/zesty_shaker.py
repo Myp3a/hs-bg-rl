@@ -16,10 +16,11 @@ class ZestyShaker(Minion):
         self.level = 3
         self.base_attack_value = 3
         self.base_health_value = 4
-        self.first_spell = True
+        self.spell_count = 0
         self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_sell"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_spell)
+        self.hooks["on_play"].append(self.reset_spell)
 
     def put_hook(self) -> None:
         self.army.hooks["on_spell_cast"].append(self.get_new_copy)
@@ -28,9 +29,12 @@ class ZestyShaker(Minion):
         self.army.hooks["on_spell_cast"].remove(self.get_new_copy)
 
     def reset_spell(self):
-        self.first_spell = True
+        if self.triplet:
+            self.spell_count = 2
+        else:
+            self.spell_count = 1
 
     def get_new_copy(self, casted, target):
-        if self.first_spell and target is self:
-            self.army.player.hand.add(type(casted)(self.army.player), len(self.army.player.hand))
-            self.first_spell = False
+        if self.spell_count > 0 and target is self:
+            self.army.player.hand.add(type(casted)(self.army.player, triplet=casted.triplet), len(self.army.player.hand))
+            self.spell_count -= 1
