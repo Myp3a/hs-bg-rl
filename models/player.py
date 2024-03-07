@@ -204,9 +204,11 @@ class Player:
                     c.restore_features()
         for c in self.army.cards:
             assert c.health_value > 0, "Army minion found dead at turn start! " + str(c)
+            assert not c.in_fight, "in_fight wasn't reset for " + str(c)
         for c in self.hand.cards:
             if isinstance(c, Minion):
                 assert c.health_value > 0, "Hand minion found dead at turn start! " + str(c)
+                assert not c.in_fight, "in_fight wasn't reset for " + str(c)
 
     def end_turn(self) -> None:
         self.log.debug(f"{self} turn end")
