@@ -107,6 +107,10 @@ class Army(CardSet):
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]
         if len(available_attackers) == 0:
+            # To bypass stealth defender with no attack. Needs clarifying how it works in real game
+            if len(self.cards) > 0:
+                for c in self.cards:
+                    c.revealed = True
             return
         if len(other.cards) == 0:
             return
