@@ -17,7 +17,7 @@ from .hand import Hand
 from .tavern import Tavern
 
 class Player:
-    def __init__(self, loglevel) -> None:
+    def __init__(self, tavern: Tavern, loglevel) -> None:
         self.log = logging.getLogger("player")
         self.log.setLevel(loglevel)
         logging.basicConfig()
@@ -34,7 +34,7 @@ class Player:
         self.sell_price = 1
         self.blood_gem_attack = 1
         self.blood_gem_health = 1
-        self.tavern: Tavern = Tavern(loglevel)
+        self.tavern = tavern
         self.tavern_discount = 0
         self.free_rolls = 0
         self.turn = 0

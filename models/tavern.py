@@ -3,7 +3,6 @@ import logging
 from typing import TYPE_CHECKING
 
 import random
-import sys
 
 from cards.minion import MinionClass
 from cards.minions import *
@@ -14,19 +13,10 @@ if TYPE_CHECKING:
     from cards.minion import Minion
 
 class Tavern:
-    # TODO: find out why logs not working
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(Tavern, cls).__new__(cls)
-            cls.instance.__initialized = False
-        return cls.instance
-    
     def __init__(self, loglevel) -> None:
-        if(self.__initialized): return
         self.log = logging.getLogger("tavern")
         self.log.setLevel(loglevel)
         logging.basicConfig()
-        self.__initialized = True
         self.NOT_SELLABLE = [
             Skeleton,
             Imp,
@@ -172,7 +162,11 @@ class Tavern:
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
         self.views = []
-        self.reset()
+        self.log.info("tavern init")
+        self.available_types = random.sample(list(MinionClass), 5)
+        self.log.info(f"available types: {[t.value for t in self.available_types]}")
+        self.cards = [c for c in self.base_cards if any(t in self.available_types for t in c.classes) or len(c.classes) == 0]
+        self.views = []
 
     def check_duplicates(self) -> None:
         seen = set()
@@ -183,21 +177,8 @@ class Tavern:
             else:
                 seen.add(x)
         assert len(self.cards) == len(set(self.cards)), "Duplicate card in tavern! " + str([str(obj) for obj in dupes])
-
-    def reset(self) -> None:
-        print("INFO:tavern:tavern reset", file=sys.stderr)
-        available_types = random.sample(list(MinionClass), 5)
-        print(f"INFO:tavern:available types: {[t.value for t in available_types]}", file=sys.stderr)
-        self.cards = [c for c in self.base_cards if any(t in available_types for t in c.classes) or len(c.classes) == 0]
-        self.new_cards = []
-        # For proper hook reinstall
-        for c in self.cards:
-            card = type(c)(None)
-            self.new_cards.append(card)
-        self.cards = self.new_cards
-        self.views = []
         
-    def new_view(self, player) -> list[Minion]:
+    def new_view(self, player) -> CardSet:
         view = CardSet(player)
         view.max_len = 6
         self.views.append(view)
@@ -213,7 +194,7 @@ class Tavern:
         available_cards = [c for c in self.cards if not any(c in view.cards for view in self.views)]
         return available_cards
     
-    def roll(self, view: CardSet, count: int, level: int) -> list[Minion]:
+    def roll(self, view: CardSet, count: int, level: int) -> CardSet:
         self.check_duplicates()
         view.clear()
         available_cards = [c for c in self.available_cards() if c.level <= level]
@@ -231,7 +212,7 @@ class Tavern:
         return card
 
     def buy(self, card: Minion) -> Minion:
-        print(f"DEBUG:tavern:bought {card}", file=sys.stderr)
+        self.log.debug(f"bought {card}")
         self.clean_card(card)  # In case if was summoned (rylak + faceless)
         if isinstance(card, GoldenMonkey):  # Not in tavern, but can be bought
             return card
@@ -239,7 +220,7 @@ class Tavern:
         return card
     
     def sell(self, card: Minion) -> None:
-        print(f"DEBUG:tavern:sold {card}", file=sys.stderr)
+        self.log.debug(f"sold {card}")
         self.clean_card(card)
         if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
             return

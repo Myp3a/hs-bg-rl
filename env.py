@@ -15,10 +15,10 @@ class HSPlayer(Env):
         "name": "hearthstone_player_environment_v0",
     }
 
-    def __init__(self, loglevel) -> None:
+    def __init__(self, tavern, loglevel) -> None:
         super().__init__()
         self.loglevel = loglevel
-        self.player = Player(loglevel)
+        self.player = Player(tavern, loglevel)
         self.actions = 0
         self._observation_space = Dict({
             "player_data": Dict({
@@ -102,9 +102,8 @@ class HSPlayer(Env):
             "observations": np.array(spaces.flatten(self._observation_space, self.player.observation),dtype=np.float32)
         }
 
-    def reset(self, *, seed=None, options=None):
-        self.player.tavern.del_view(self.player.view)
-        self.player = Player(self.loglevel)
+    def reset(self, tavern, *, seed=None, options=None):
+        self.player = Player(tavern, self.loglevel)
         self.start_turn()
         return self._fix_action_mask(self.observation()), {}
 
@@ -142,7 +141,8 @@ class HSEnv(ParallelEnv):
     def __init__(self, loglevel):
         self.player_count = 8
         self.loglevel = loglevel
-        self.players = {f"player_{i}": HSPlayer(loglevel) for i in range(self.player_count)}
+        self.tavern = Tavern(loglevel)
+        self.players = {f"player_{i}": HSPlayer(self.tavern, loglevel) for i in range(self.player_count)}
         self.agents = list(self.players.keys())
         self._agent_ids = self.agents
         self.possible_agents = set(self.agents)
@@ -168,12 +168,11 @@ class HSEnv(ParallelEnv):
     def reset(self, *, seed=None, return_info=True, options=None):
         d = {}
         tav = Tavern(self.loglevel)
-        tav.reset()
         self.truncateds = set()
         self.terminateds = set()
         self.dead = set()
         for i in self.agents:
-            self.players[i].reset()
+            self.players[i].reset(tav)
             d[i] = self.players[i].observation()
         return d, {}
     
