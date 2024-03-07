@@ -76,18 +76,22 @@ class Player:
     def available_actions(self) -> list[bool]:
         actions = []
         actions.append(True) # 0, nothing
-        for tavern_index in range(6): # 1-6, buy card from tavern
-            actions.append(self.buy_possible(tavern_index))
-        for inhand_index in range(10): # 7-76, play card from hand to table position
-            for table_index in range(7):
-                actions.append(self.play_possible(inhand_index, table_index))
-        for source_position in range(7): # 77-125, reorder cards on board
-            for target_position in range(7):
-                actions.append(self.reorder_possible(source_position, target_position))
-        for table_index in range(7): # 126-132, sell minion from board
-            actions.append(self.sell_possible(table_index))
-        actions.append(self.roll_possible()) # 133, roll tavern
-        actions.append(self.upgrade_possible()) # 134, upgrade tavern
+        if self.health > 0:
+            for tavern_index in range(6): # 1-6, buy card from tavern
+                actions.append(self.buy_possible(tavern_index))
+            for inhand_index in range(10): # 7-76, play card from hand to table position
+                for table_index in range(7):
+                    actions.append(self.play_possible(inhand_index, table_index))
+            for source_position in range(7): # 77-125, reorder cards on board
+                for target_position in range(7):
+                    actions.append(self.reorder_possible(source_position, target_position))
+            for table_index in range(7): # 126-132, sell minion from board
+                actions.append(self.sell_possible(table_index))
+            actions.append(self.roll_possible()) # 133, roll tavern
+            actions.append(self.upgrade_possible()) # 134, upgrade tavern
+        else:
+            for _ in range(134):
+                actions.append(False)
         return actions
 
     @property
