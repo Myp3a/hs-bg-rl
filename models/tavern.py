@@ -231,9 +231,11 @@ class Tavern:
         return card
 
     def buy(self, card: Minion) -> Minion:
-        self.clean_card(card)  # In case if was summoned (rylak + faceless)
-        self.cards.remove(card)
         print(f"DEBUG:tavern:bought {card}", file=sys.stderr)
+        self.clean_card(card)  # In case if was summoned (rylak + faceless)
+        if isinstance(card, GoldenMonkey):  # Not in tavern, but can be bought
+            return card
+        self.cards.remove(card)
         return card
     
     def sell(self, card: Minion) -> None:
