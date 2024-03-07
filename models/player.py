@@ -219,6 +219,8 @@ class Player:
                 for c in card.magnited:
                     for hook in c.hooks["on_turn_end"]:
                         hook()
+            for hook in self.hand.hooks["on_turn_end"]:
+                hook()
 
     def upgrade_possible(self) -> bool:
         if self.level < 6:

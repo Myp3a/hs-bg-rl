@@ -13,6 +13,7 @@ class Spell(Card):
         super().__init__()
         self.player: Player = player
         self.level = 0
+        self.spellcraft = False
 
     def play(self, target: None) -> None:
         raise NotImplementedError

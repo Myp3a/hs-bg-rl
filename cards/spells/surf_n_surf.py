@@ -14,6 +14,7 @@ class SurfNSurf(TargetedSpell):
         self.spell_id = 2
         self.level = 1
         self.triplet = triplet
+        self.spellcraft = True
 
     def remove_hook(self) -> None:
         # should always fire on turn start

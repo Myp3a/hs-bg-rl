@@ -13,6 +13,7 @@ class DefendToTheDeath(TargetedSpell):
         self.level = 2
         self.triplet = triplet
         self.target = None
+        self.spellcraft = True
 
     def restore(self) -> None:
         self.target.hooks["on_death"].remove(self.add_health)

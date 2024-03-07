@@ -15,6 +15,7 @@ class AnglersLure(TargetedSpell):
         self.level = 2
         self.triplet = triplet
         self.had_taunt = None
+        self.spellcraft = True
 
     def restore(self) -> None:
         self.target.taunt = self.had_taunt

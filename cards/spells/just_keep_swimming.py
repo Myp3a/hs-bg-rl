@@ -14,6 +14,7 @@ class JustKeepSwimming(TargetedSpell):
         self.triplet = triplet
         self.target = None
         self.had_stealth = None
+        self.spellcraft = True
 
     def restore(self) -> None:
         self.target.stealth = self.had_stealth

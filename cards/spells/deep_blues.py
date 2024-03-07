@@ -12,6 +12,7 @@ class DeepBlues(TargetedSpell):
         self.spell_id = 7
         self.level = 4
         self.triplet = triplet
+        self.spellcraft = True
 
     def play(self, target: Minion) -> None:
         if self.triplet:

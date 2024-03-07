@@ -12,6 +12,7 @@ class SickRiffs(TargetedSpell):
         self.spell_id = 5
         self.level = 2
         self.triplet = triplet
+        self.spellcraft = True
 
     def play(self, target: Minion) -> None:
         if self.triplet:
