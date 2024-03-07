@@ -32,4 +32,5 @@ class ZestyShaker(Minion):
 
     def get_new_copy(self, casted, target):
         if self.first_spell and target is self:
-            self.army.player.hand.add(casted, len(self.army.player.hand))
+            self.army.player.hand.add(type(casted)(self.army.player), len(self.army.player.hand))
+            self.first_spell = False
