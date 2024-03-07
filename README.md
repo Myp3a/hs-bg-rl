@@ -12,8 +12,8 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Beast hook order
 
 # TODO
+ - Logging
  - Chain magnetic deathrattles
- - Drop spellcraft spells from hand on turn end
  - Targeted battlecry
  - Discover mechanic
  - Tier 5+ minions
