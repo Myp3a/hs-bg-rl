@@ -26,6 +26,7 @@ class Minion(Card):
     def __init__(self, army: Army) -> None:
         super().__init__()
         self.army = army
+        self.enemy_army = None
         self.hooks = {
             "on_attack_pre": [],  # (self), target
             "on_attack_post": [],  # (self), target
@@ -162,6 +163,7 @@ class Minion(Card):
             self.rebirth = True
             self.reborn = False
         self.in_fight = False
+        self.enemy_army = None
 
     def death(self) -> None:
         position = self.army.index(self)

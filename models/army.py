@@ -98,10 +98,12 @@ class Army(CardSet):
     def start_fight_all(self, friendly: Army, enemy: Army):
         for c in self.cards:
             c.in_fight = True
+            c.enemy_army = enemy
             for hook in c.hooks["on_fight_start"]:
                 hook()
 
     def mark_in_fight(self, summoned: Minion):
+        # Unset enemy_army, could lead to errors
         summoned.in_fight = True
 
     def attack(self, other: Army) -> None:

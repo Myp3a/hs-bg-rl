@@ -17,16 +17,10 @@ class TunnelBlaster(Minion):
         self.base_attack_value = 3
         self.base_health_value = 7
         self.taunt = True
-        self.enemy = None
-        self.hooks["on_attack_pre"].append(self.save_enemy)
-        self.hooks["on_defence_pre"].append(self.save_enemy)
         self.hooks["deathrattle"].append(self.damage_on_death)
 
-    def save_enemy(self, attacker):
-        self.enemy = attacker.army
-
     def damage_all(self):
-        targets = [t for t in self.army.cards + self.enemy.cards]
+        targets = [t for t in self.army.cards + self.enemy_army.cards]
         for t in targets:
             tnt = GameEntity(self.army)
             tnt.base_attack_value = 3
