@@ -52,6 +52,12 @@ class Field:
         self.snapshot()
         self.log.debug(f"starting fight between {self.first}(v) and {self.second}(^)")
         self.log.debug("\n" + str(self))
+        for c in self.first.army.cards:
+            c.in_fight = True
+            c.enemy_army = self.second.army
+        for c in self.second.army.cards:
+            c.in_fight = True
+            c.enemy_army = self.first.army
         for hook in self.first.army.hooks["on_fight_start"]:
             hook(self.first.army, self.second.army)
         for hook in self.second.army.hooks["on_fight_start"]:
