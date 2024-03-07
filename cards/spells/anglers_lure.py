@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from cards.minions.crab import Crab
 
 from cards.spell import TargetedSpell
 
@@ -9,23 +8,21 @@ if TYPE_CHECKING:
 
 class AnglersLure(TargetedSpell):
     def __init__(self, player, triplet=False) -> None:
-        super().__init__(player)
+        super().__init__(player, triplet)
         self.target = None
         self.spell_id = 3
         self.level = 2
-        self.triplet = triplet
         self.had_taunt = None
         self.spellcraft = True
 
     def restore(self) -> None:
         self.target.taunt = self.had_taunt
         self.target.hooks["on_turn_start"].remove(self.restore)
+        self.target.hooks["on_sell"].remove(self.try_remove_hook)
 
     def try_remove_hook(self) -> None:
-        try:
-            self.restore()
-        except:
-            pass        
+        if self.restore in self.target.hooks["on_turn_start"]:
+            self.restore()      
 
     def play(self, target: Minion) -> None:
         self.target = target

@@ -8,9 +8,8 @@ if TYPE_CHECKING:
 
 class SlimyShield(TargetedSpell):
     def __init__(self, player, triplet=False) -> None:
-        super().__init__(player)
+        super().__init__(player, triplet)
         self.spell_id = 4
-        self.triplet = triplet
 
     def play(self, target: Minion) -> None:
         target.taunt = True

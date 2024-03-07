@@ -8,10 +8,9 @@ if TYPE_CHECKING:
 
 class JustKeepSwimming(TargetedSpell):
     def __init__(self, player, triplet=False) -> None:
-        super().__init__(player)
+        super().__init__(player, triplet)
         self.spell_id = 8
         self.level = 4
-        self.triplet = triplet
         self.target = None
         self.had_stealth = None
         self.spellcraft = True
@@ -19,12 +18,11 @@ class JustKeepSwimming(TargetedSpell):
     def restore(self) -> None:
         self.target.stealth = self.had_stealth
         self.target.hooks["on_turn_start"].remove(self.restore)
+        self.target.hooks["on_sell"].remove(self.try_remove_hook)
 
     def try_remove_hook(self) -> None:
-        try:
+        if self.restore in self.target.hooks["on_turn_start"]:
             self.restore()
-        except:
-            pass
 
     def play(self, target: Minion) -> None:
         self.had_stealth = target.stealth

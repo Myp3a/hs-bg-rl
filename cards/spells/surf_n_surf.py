@@ -9,24 +9,22 @@ if TYPE_CHECKING:
 
 class SurfNSurf(TargetedSpell):
     def __init__(self, player, triplet=False) -> None:
-        super().__init__(player)
+        super().__init__(player, triplet)
         self.target = None
         self.spell_id = 2
         self.level = 1
-        self.triplet = triplet
         self.spellcraft = True
 
     def remove_hook(self) -> None:
         # should always fire on turn start
         self.target.hooks["deathrattle"].remove(self.summon_crab)
         self.target.hooks["on_turn_start"].remove(self.remove_hook)
+        self.target.hooks["on_sell"].remove(self.try_remove_hook)
 
     def try_remove_hook(self) -> None:
         # additional check on sell in case of played spell and then selling
-        try:
+        if self.remove_hook in self.target.hooks["on_turn_start"]:
             self.remove_hook()
-        except:
-            pass
 
     def play(self, target: Minion) -> None:
         self.target = target

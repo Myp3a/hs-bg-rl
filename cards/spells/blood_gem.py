@@ -8,8 +8,8 @@ if TYPE_CHECKING:
     from cards.minion import Minion
 
 class BloodGem(TargetedSpell):
-    def __init__(self, player) -> None:
-        super().__init__(player)
+    def __init__(self, player, triplet=False) -> None:
+        super().__init__(player, triplet)
         self.spell_id = 0
 
     def play(self, target: Minion) -> None:
