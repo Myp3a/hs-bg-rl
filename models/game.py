@@ -29,7 +29,6 @@ class Game:
                 p.act_random()
 
     def battle(self) -> None:
-        self.check_duplicates()
         player_ids = [self.players.index(p) for p in self.alive_players]
         random.shuffle(player_ids)
         if len(player_ids) % 2 == 1:
