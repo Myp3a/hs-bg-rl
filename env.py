@@ -202,7 +202,7 @@ class HSEnv(ParallelEnv):
                     continue
                 obs[i] = self.players[i].observation()
                 hmax = max([self.players[i].player.health for i in self.players])
-                rew[i] = self.players[i].player.health - hmax + 15 - self.players[i].player.turn * 0.2
+                rew[i] = self.players[i].player.health - hmax + 15 - self.players[i].player.turn
                 terminated[i] = self.players[i].player.health <= 0
                 if terminated[i]:
                     self.dead.add(i)
