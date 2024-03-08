@@ -13,6 +13,7 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
 
 # TODO
  - Health-depleting actions blocking when 1hp
+ - Split free and Malchezaar rolls
  - Logging
  - Chain magnetic deathrattles
  - Targeted battlecry

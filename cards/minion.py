@@ -187,6 +187,7 @@ class Minion(Card):
         assert self.health_value > 0, "Dead trying to attack! " + str(self)
         if target is None:
             return
+        self.attacked_this_turn = True
         if self.stealth:
             self.revealed = True
         for hook in self.army.hooks["on_attack"]:
