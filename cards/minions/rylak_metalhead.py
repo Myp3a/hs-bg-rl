@@ -21,10 +21,12 @@ class RylakMetalhead(Minion):
     def choose_and_trigger_battlecries(self, position):
         if position > 0:
             for hook in self.army.cards[position - 1].hooks["battlecry"]:
-                hook()
+                for _ in range(self.army.player.count_brann_times()):
+                    hook()
         if position < len(self.army.cards):
             for hook in self.army.cards[position].hooks["battlecry"]:
-                hook()
+                for _ in range(self.army.player.count_brann_times()):
+                    hook()
 
     def trigger_battlecries(self, position):
         if self.triplet:

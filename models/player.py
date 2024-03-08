@@ -6,6 +6,7 @@ import string
 from typing import TYPE_CHECKING, Callable
 
 from cards.minion import Minion, MinionClass
+from cards.minions.brann_bronzebeard import BrannBronzebeard
 from cards.spell import Spell, TargetedSpell
 
 if TYPE_CHECKING:
@@ -139,6 +140,16 @@ class Player:
             self.log.debug(f"{self} doing action {self.all_actions[action_id]}")
             self.all_actions[action_id]()
 
+    def count_brann_times(self):
+        times = 1
+        for c in self.army.cards:
+            if isinstance(c, BrannBronzebeard):
+                if c.triplet:
+                    times = 3
+                elif times < 2:
+                    times = 2
+        return times
+    
     def check_triplets(self) -> None:
         cards = [c for c in self.army.cards + self.hand.cards if isinstance(c, Minion) and not c.triplet]
         for card in cards:
@@ -346,7 +357,8 @@ class Player:
                             for hook in card.hooks["on_play"]:
                                 hook()
                             for hook in card.hooks["battlecry"]:
-                                hook()
+                                for _ in range(self.count_brann_times()):
+                                    hook()
                             for hook in self.army.hooks["on_minion_play"]:
                                 hook(card)
                             self.log.debug(f"{self} played {card}, magnited to {self.army[place_to_play]}")
@@ -356,7 +368,8 @@ class Player:
                 for hook in card.hooks["on_play"]:
                     hook()
                 for hook in card.hooks["battlecry"]:
-                    hook()
+                    for _ in range(self.count_brann_times()):
+                        hook()
                 for hook in self.army.hooks["on_minion_play"]:
                     hook(card)
                 return True
