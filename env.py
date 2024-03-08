@@ -209,7 +209,7 @@ class HSEnv(ParallelEnv):
                     obs.pop(i)
             self.terminateds = set()
             self.truncateds = set()
-        if len(self.dead) == self.player_count - 1:
+        if len(self.dead) >= self.player_count - 1:
             terminated["__all__"] = True
             for i in self.agents:
                 terminated[i] = True

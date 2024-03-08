@@ -12,6 +12,7 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Beast hook order
 
 # TODO
+ - Health-depleting actions blocking when 1hp
  - Logging
  - Chain magnetic deathrattles
  - Targeted battlecry
