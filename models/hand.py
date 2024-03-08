@@ -15,12 +15,10 @@ class Hand(CardSet):
     def reset_summons(self) -> None:
         for c in self.cards:
             if isinstance(c, Minion):
-                c.reset_temp_bonuses()
-                c.restore_features()
+                c.reset_turn_start()
+                c.clean_overrides()
                 if c.summoned:
                     c.summoned = False
-                    c.attack_temp_boost = 0
-                    c.health_temp_boost = 0
     
     def remove_spellcraft(self):
         for c in list(self.cards):

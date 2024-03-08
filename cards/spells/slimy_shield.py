@@ -12,7 +12,7 @@ class SlimyShield(TargetedSpell):
         self.spell_id = 4
 
     def play(self, target: Minion) -> None:
-        target.taunt = True
+        target.feature_overrides["taunt"].append({"state": True, "one_turn": False})
         if self.triplet:
             atk_boost = 2
             hlt_boost = 2

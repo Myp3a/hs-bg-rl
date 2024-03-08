@@ -23,6 +23,8 @@ class Manasaber(Minion):
             cub = Cubling(self.army)
             if self.triplet:
                 cub.triplet = True
+            for hook in cub.hooks["on_get"]:
+                hook()
             self.army.add(cub, position)
             for hook in self.army.hooks["on_minion_summon"]:
                 hook(cub)

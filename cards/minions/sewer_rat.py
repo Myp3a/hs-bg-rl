@@ -22,6 +22,8 @@ class SewerRat(Minion):
         hs = HalfShell(self.army)
         if self.triplet:
             hs.triplet = True
+        for hook in hs.hooks["on_get"]:
+            hook()
         self.army.add(hs, position)
         for hook in self.army.hooks["on_minion_summon"]:
             hook(hs)

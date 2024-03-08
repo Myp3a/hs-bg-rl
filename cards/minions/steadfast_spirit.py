@@ -15,7 +15,7 @@ class SteadfastSpirit(Minion):
         self.level = 4
         self.base_attack_value = 3
         self.base_health_value = 1
-        self.rebirth = True
+        self.base_rebirth = True
         self.hooks["deathrattle"].append(self.boost_minions)
 
     def boost_minions(self, position):

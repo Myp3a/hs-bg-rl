@@ -24,6 +24,7 @@ class PickyEater(Minion):
             return
         target = random.choice(available_targets)
         card = self.army.player.tavern.buy(target)
+        self.contains.append(card)
         self.army.player.view.remove(card)
         if self.triplet:
             atk_boost = card.attack_value * 2

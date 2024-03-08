@@ -12,22 +12,11 @@ class AnglersLure(TargetedSpell):
         self.target = None
         self.spell_id = 3
         self.level = 2
-        self.had_taunt = None
-        self.spellcraft = True
-
-    def restore(self) -> None:
-        self.target.taunt = self.had_taunt
-        self.target.hooks["on_turn_start"].remove(self.restore)
-        self.target.hooks["on_sell"].remove(self.try_remove_hook)
-
-    def try_remove_hook(self) -> None:
-        if self.restore in self.target.hooks["on_turn_start"]:
-            self.restore()      
+        self.spellcraft = True 
 
     def play(self, target: Minion) -> None:
         self.target = target
-        self.had_taunt = target.taunt
-        target.taunt = True
+        target.feature_overrides["taunt"].append({"state": True, "one_turn": True})
         if self.triplet:
             hlt_boost = 8
         else:
@@ -35,6 +24,4 @@ class AnglersLure(TargetedSpell):
         target.health_temp_boost += hlt_boost
         for hook in self.player.army.hooks["on_values_change_temp"]:
             hook(target, 0, hlt_boost)
-        target.hooks["on_turn_start"].append(self.restore)
-        target.hooks["on_sell"].append(self.try_remove_hook)
     

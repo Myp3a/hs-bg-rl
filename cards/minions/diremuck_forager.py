@@ -16,7 +16,7 @@ class DiremuckForager(Minion):
         self.level = 3
         self.base_attack_value = 3
         self.base_health_value = 4
-        self.divine_shield = True
+        self.base_divine_shield = True
         self.summon = None
         self.hooks["on_fight_start"].append(self.summon_from_hand)
 

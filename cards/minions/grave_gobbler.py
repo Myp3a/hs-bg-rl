@@ -24,9 +24,13 @@ class GraveGobbler(Minion):
             to_the_left = self.army[pos-1]
             if MinionClass.Undead in to_the_left.classes:
                 if to_the_left.rebirth:
-                    to_the_left.rebirth = False
+                    to_the_left.death()
+                    to_the_left.feature_overrides["rebirth"].append({"state": False, "one_turn": False})
                 else:
-                    self.army.remove(to_the_left)
+                    to_the_left.death()
+                    for hook in to_the_left.hooks["on_lose"]:
+                        hook()
+                    self.contains.append(to_the_left)
                 if self.triplet:
                     atk_boost = 10
                     hlt_boost = 10

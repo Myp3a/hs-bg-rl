@@ -15,4 +15,4 @@ class CracklingCyclone(Minion):
         self.level = 2
         self.base_attack_value = 3
         self.base_health_value = 1
-        self.windfury = True
+        self.base_windfury = True

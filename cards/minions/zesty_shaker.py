@@ -1,5 +1,4 @@
 from __future__ import annotations
-import random
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
@@ -18,7 +17,7 @@ class ZestyShaker(Minion):
         self.base_health_value = 4
         self.spell_count = 0
         self.hooks["on_play"].append(self.put_hook)
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_spell)
         self.hooks["on_play"].append(self.reset_spell)
 

@@ -10,8 +10,15 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Triplet hooks management
  - Spell discard mechanics
  - Beast hook order
+ - Eternal knight triplet
+ - Flourishing frostling mechanics
+ - Grave gobbler mechanics
+ - Hummingbird mechanics
+ - Sore loser mechanics
+ - Impulsive trickster infight health boost
 
 # TODO
+ - Lava Lurker feature saving
  - Health-depleting actions blocking when 1hp
  - Split free and Malchezaar rolls
  - Logging

@@ -23,13 +23,13 @@ class PeckishFeldrake(Minion):
             self.eat_minion()
 
     def eat_minion(self) -> None:
-        # TODO: make a list of eaten
         available_targets = self.army.player.view
         if len(available_targets) == 0:
             return
         target = random.choice(available_targets)
         card = self.army.player.tavern.buy(target)
         self.army.player.view.remove(card)
+        self.contains.append(card)
         if self.triplet:
             atk_boost = card.attack_value * 2
             hlt_boost = card.health_value * 2

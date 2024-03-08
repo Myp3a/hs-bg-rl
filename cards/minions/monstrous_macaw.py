@@ -18,10 +18,15 @@ class MonstrousMacaw(Minion):
         self.base_health_value = 3
         self.hooks["on_attack_mid"].append(self.trigger_deathrattle)
 
-    def trigger_deathrattle(self, position):
+    def choose_and_trigger_deathrattle(self, position):
         targets = [t for t in self.army.cards if len(t.hooks["deathrattle"]) > 0]
         if len(targets) == 0:
             return
         target = random.choice(targets)
         for hook in target.hooks["deathrattle"]:
             hook(self.army.index(target) + 1)
+
+    def trigger_deathrattle(self, position):
+        if self.triplet:
+            self.choose_and_trigger_deathrattle(position)
+        self.choose_and_trigger_deathrattle(position)

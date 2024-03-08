@@ -15,4 +15,4 @@ class HalfShell(Minion):
         self.level = 1
         self.base_attack_value = 2
         self.base_health_value = 3
-        self.taunt = True
+        self.base_taunt = True

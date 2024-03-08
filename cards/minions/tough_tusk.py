@@ -16,9 +16,8 @@ class ToughTusk(Minion):
         self.level = 2
         self.base_attack_value = 5
         self.base_health_value = 3
-        self.hooks["on_turn_start"].append(self.remove_divine_shield)
         self.hooks["on_play"].append(self.put_hook)
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
         self.army.hooks["on_spell_cast"].append(self.add_divine_shield)
@@ -29,8 +28,4 @@ class ToughTusk(Minion):
     def add_divine_shield(self, casted, target) -> None:
         if target is self:
             if isinstance(casted, BloodGem):
-                self.divine_shield = True
-
-    def remove_divine_shield(self) -> None:
-        if not self.triplet:
-            self.divine_shield = False
+                self.feature_overrides["shield"].append({"state": True, "one_turn": not self.triplet})

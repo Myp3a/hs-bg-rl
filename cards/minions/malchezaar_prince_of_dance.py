@@ -19,11 +19,17 @@ class MalchezaarPrinceOfDance(Minion):
         self.hooks["on_roll"].append(self.damage_hero)
         self.hooks["on_turn_start"].append(self.add_rolls)
         self.hooks["on_play"].append(self.add_rolls)
+        self.hooks["on_lose"].append(self.remove_rolls)
 
     def add_rolls(self):
         if self.triplet:
             self.army.player.free_rolls += 2
         self.army.player.free_rolls += 2
+
+    def remove_rolls(self):
+        if self.triplet:
+            self.army.player.free_rolls -= 2
+        self.army.player.free_rolls -= 2
 
     def damage_hero(self):
         hero_damage = 1

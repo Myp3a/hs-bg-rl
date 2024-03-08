@@ -16,7 +16,7 @@ class LegionOverseer(Minion):
         self.base_attack_value = 4
         self.base_health_value = 2
         self.hooks["on_play"].append(self.boost_tavern)
-        self.hooks["on_sell"].append(self.hinder_tavern)
+        self.hooks["on_lose"].append(self.hinder_tavern)
 
     def boost_tavern(self):
         if self.triplet:

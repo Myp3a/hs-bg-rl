@@ -15,13 +15,18 @@ class RylakMetalhead(Minion):
         self.level = 4
         self.base_attack_value = 3
         self.base_health_value = 4
-        self.taunt = True
+        self.base_taunt = True
         self.hooks["deathrattle"].append(self.trigger_battlecries)
 
-    def trigger_battlecries(self, position):
+    def choose_and_trigger_battlecries(self, position):
         if position > 0:
             for hook in self.army.cards[position - 1].hooks["battlecry"]:
                 hook()
         if position < len(self.army.cards):
             for hook in self.army.cards[position].hooks["battlecry"]:
                 hook()
+
+    def trigger_battlecries(self, position):
+        if self.triplet:
+            self.choose_and_trigger_battlecries(position)
+        self.choose_and_trigger_battlecries(position)

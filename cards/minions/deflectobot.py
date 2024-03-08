@@ -15,7 +15,7 @@ class DeflectOBot(Minion):
         self.level = 3
         self.base_attack_value = 3
         self.base_health_value = 2
-        self.divine_shield = True
+        self.base_divine_shield = True
         self.hooks["on_fight_start"].append(self.put_hook)
         self.hooks["on_turn_start"].append(self.remove_hook)
 
@@ -31,5 +31,5 @@ class DeflectOBot(Minion):
                 atk_boost = 4
             else:
                 atk_boost = 2
-            self.divine_shield = True
+            self.feature_overrides["shield"].append({"state": True, "one_turn": True})
             self.attack_temp_boost += atk_boost

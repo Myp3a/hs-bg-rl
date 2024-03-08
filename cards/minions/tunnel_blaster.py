@@ -16,7 +16,7 @@ class TunnelBlaster(Minion):
         self.level = 4
         self.base_attack_value = 3
         self.base_health_value = 7
-        self.taunt = True
+        self.base_taunt = True
         self.friendly_army = None
         self.hooks["deathrattle"].append(self.damage_on_death)
         self.hooks["on_fight_start"].append(self.set_friendly_army)

@@ -158,10 +158,7 @@ class Player:
                     perm_attack += card.attack_perm_boost
                     perm_health += card.health_perm_boost
                     self.army.remove(card)
-                    for hook in card.hooks["on_sell"]:
-                        # Proper release of all army hooks
-                        # Might have some side-effects like +6 gold when tripleting Freedealing Gambler
-                        # TODO: split "on sell" when selling by hand and "on lose" when lost by any means (selling, triplet, destruction)
+                    for hook in card.hooks["on_lose"]:
                         hook()
                     contains.append(card)
             for card in list(self.hand.cards):
@@ -174,7 +171,9 @@ class Player:
             triplet = card_type(contains[0].army)
             self.log.debug(f"{self} tripleted {triplet}")
             triplet.triplet = True
-            triplet.contains = contains                
+            triplet.contains = contains
+            for hook in triplet.hooks["on_get"]:
+                hook()
             triplet.attack_perm_boost += perm_attack
             triplet.health_perm_boost += perm_health
             self.hand.add(triplet, len(self.hand))
@@ -200,12 +199,10 @@ class Player:
                 hook()
         else:
             for c in self.army.cards:
-                c.reset_temp_bonuses()
-                c.restore_features()
+                c.reset_turn_start()
             for c in self.hand.cards:
                 if isinstance(c, Minion):
-                    c.reset_temp_bonuses()
-                    c.restore_features()
+                    c.reset_turn_start()
         for c in self.army.cards:
             assert c.health_value > 0, "Army minion found dead at turn start! " + str(c)
             assert not c.in_fight, "in_fight wasn't reset for " + str(c)
@@ -285,7 +282,7 @@ class Player:
             self.view.remove(card)
             self.hand.add(card, len(self.hand))
             self.log.debug(f"{self} bought {card}, hand = {self.hand}")
-            for hook in card.hooks["on_buy"]:
+            for hook in card.hooks["on_get"]:
                 hook()
             for hook in self.army.hooks["on_minion_buy"]:
                 hook(card)
@@ -301,6 +298,8 @@ class Player:
     def sell(self, index: int) -> bool:
         if self.sell_possible(index):
             card = self.army[index]
+            for hook in card.hooks["on_lose"]:
+                hook()
             for hook in card.hooks["on_sell"]:
                 hook()
             self.tavern.sell(card)

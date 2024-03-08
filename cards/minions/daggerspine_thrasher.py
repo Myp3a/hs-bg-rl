@@ -17,19 +17,20 @@ class DaggerspineThrasher(Minion):
         self.base_attack_value = 4
         self.base_health_value = 5
         self.available = []
-        self.hooks["on_turn_start"].append(self.remove_features)
+        self.hooks["on_turn_start"].append(self.reset_features)
         self.hooks["on_play"].append(self.put_hook)
-        self.hooks["on_sell"].append(self.remove_hook)
-        self.hooks["on_sell"].append(self.remove_features)
-        self.remove_features()
+        self.hooks["on_lose"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.reset_features)
+        self.reset_features()
 
-    def remove_features(self):
-        if self.triplet:
-            return
-        self.divine_shield = False
-        self.windfury = False
-        self.toxic = False
-        self.available = ["shield", "wind", "toxic"]
+    def reset_features(self):
+        self.available = []
+        if not self.divine_shield:
+            self.available.append("shield")
+        if not self.windfury:
+            self.available.append("wind")
+        if not self.toxic:
+            self.available.append("toxic")
 
     def put_hook(self) -> None:
         self.army.hooks["on_spell_cast"].append(self.boost_values)
@@ -43,8 +44,17 @@ class DaggerspineThrasher(Minion):
             self.available.remove(feat)
             match feat:
                 case "shield":
-                    self.divine_shield = True
+                    if self.triplet:
+                        self.feature_overrides["shield"].append({"state": True, "one_turn": False})
+                    else:
+                        self.feature_overrides["shield"].append({"state": True, "one_turn": True})
                 case "wind":
-                    self.windfury = True
+                    if self.triplet:
+                        self.feature_overrides["windfury"].append({"state": True, "one_turn": False})
+                    else:
+                        self.feature_overrides["windfury"].append({"state": True, "one_turn": True})
                 case "toxic":
-                    self.toxic = True
+                    if self.triplet:
+                        self.feature_overrides["toxic"].append({"state": True, "one_turn": False})
+                    else:
+                        self.feature_overrides["toxic"].append({"state": True, "one_turn": True})

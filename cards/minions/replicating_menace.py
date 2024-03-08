@@ -24,6 +24,8 @@ class ReplicatingMenace(Minion):
             mb = Microbot(self.army)
             if self.triplet:
                 mb.triplet = True
+            for hook in mb.hooks["on_get"]:
+                hook()
             self.army.add(mb, position)
             for hook in self.army.hooks["on_minion_summon"]:
                 hook(mb)

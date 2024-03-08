@@ -23,7 +23,7 @@ class Mummifier(Minion):
         if len(targets) == 0:
             return
         target = random.choice(targets)
-        target.rebirth = True
+        target.feature_overrides["rebirth"].append({"state": True, "one_turn": self.in_fight})
         target.reborn = False
 
     def give_rebirth(self, position):

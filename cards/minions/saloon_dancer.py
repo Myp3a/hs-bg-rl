@@ -15,5 +15,5 @@ class SaloonDancer(Minion):
         self.level = 4
         self.base_attack_value = 4
         self.base_health_value = 5
-        self.taunt = True
+        self.base_taunt = True
         # TODO: tavern spells

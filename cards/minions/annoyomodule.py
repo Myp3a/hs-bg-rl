@@ -14,6 +14,6 @@ class AnnoyOModule(Minion):
         self.level = 4
         self.base_attack_value = 2
         self.base_health_value = 4
-        self.divine_shield = True
-        self.taunt = True
+        self.base_divine_shield = True
+        self.base_taunt = True
         self.magnetic = True

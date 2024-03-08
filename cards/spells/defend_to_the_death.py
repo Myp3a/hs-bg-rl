@@ -17,7 +17,7 @@ class DefendToTheDeath(TargetedSpell):
     def restore(self) -> None:
         self.target.hooks["on_death"].remove(self.add_health)
         self.target.hooks["on_turn_start"].remove(self.restore)
-        self.target.hooks["on_sell"].remove(self.try_restore)
+        self.target.hooks["on_lose"].remove(self.try_restore)
     
     def try_restore(self):
         if self.add_health in self.target.hooks["on_death"]:
@@ -34,7 +34,7 @@ class DefendToTheDeath(TargetedSpell):
             hook(self.target, 0, hlt_boost)
         self.target.hooks["on_death"].append(self.add_health)
         self.target.hooks["on_turn_start"].append(self.restore)
-        self.target.hooks["on_sell"].append(self.try_restore)
+        self.target.hooks["on_lose"].append(self.try_restore)
 
     def add_health(self):
         if self.triplet:

@@ -22,6 +22,8 @@ class HandlessForsaken(Minion):
         h = HelpingHand(self.army)
         if self.triplet:
             h.triplet = True
+        for hook in h.hooks["on_get"]:
+            hook()
         self.army.add(h, position)
         for hook in self.army.hooks["on_minion_summon"]:
             hook(h)

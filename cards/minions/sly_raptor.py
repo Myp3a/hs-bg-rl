@@ -24,6 +24,8 @@ class SlyRaptor(Minion):
             return
         beast = random.choice(beasts)
         new_beast = type(beast)(self.army)
+        for hook in new_beast.hooks["on_get"]:
+            hook()
         new_beast.base_attack_value = 7
         new_beast.base_health_value = 7
         self.army.add(new_beast, position)

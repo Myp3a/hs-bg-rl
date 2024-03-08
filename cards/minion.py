@@ -35,19 +35,23 @@ class Minion(Card):
             "on_attack_mid": [],  # (self), target
             "on_defence_mid": [],  # (self), target
             "on_fight_start": [],  # (self)
-            "on_turn_start": [self.reset_temp_bonuses, self.restore_features],  # (self)
-            "on_turn_end": [self.snapshot_features],  # (self)
+            "on_turn_start": [self.reset_turn_start],  # (self)
+            "on_turn_end": [],  # (self)
             "on_sell": [],  # (self)
+            "on_get": [],  # (self)
             "on_play": [],  # (self)
+            "on_lose": [],  # (self)
             "on_death": [],  # (self)
-            "on_buy": [],  # (self)
+            "on_buy": [],  # (self) no more needed?
             "on_temp_values_change": [],  # (self)
             "on_kill": [],  # (self)
             "on_roll": [],  # (self)
             "battlecry": [],  # (self)
             "deathrattle": [],  # (self), position
-            "rebirth": [self.restore_features],  # (self)
+            "rebirth": [self.reset_turn_start],  # (self)
         }
+        self.feature_overrides = {}
+        self.clean_overrides()
         self.random_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         self.classes = []
         self.level = 0
@@ -57,14 +61,10 @@ class Minion(Card):
         self.base_toxic = False
         self.base_rebirth = False
         self.base_taunt = False
-        self.rebirth = False
+        self.base_windfury = False
+        self.base_stealth = False
         self.reborn = False
-        self.divine_shield = False
-        self.toxic = False
-        self.taunt = False
         self.magnetic = False
-        self.windfury = False
-        self.stealth = False
         self.revealed = True
         self.magnited_to = None
         self.magnited = []
@@ -142,28 +142,65 @@ class Minion(Card):
         for hook in self.hooks["on_temp_values_change"]:
             hook()
 
-    def snapshot_features(self) -> None:
-        self.base_divine_shield = self.divine_shield
-        self.base_toxic = self.toxic
-        self.base_rebirth = self.rebirth
-        self.base_taunt = self.taunt
+    @property
+    def rebirth(self):
+        if (overrides := self.feature_overrides["rebirth"]):
+            return overrides[-1]["state"]
+        return self.base_rebirth
     
-    def restore_features(self) -> None:
-        self.divine_shield = self.base_divine_shield
-        self.toxic = self.base_toxic
-        self.rebirth = self.base_rebirth
-        self.taunt = self.base_taunt
-        if self.stealth:
-            self.revealed = False
-
-    def reset_temp_bonuses(self) -> None:
+    @property
+    def divine_shield(self):
+        if (overrides := self.feature_overrides["shield"]):
+            return overrides[-1]["state"]
+        return self.base_divine_shield
+    
+    @property
+    def toxic(self):
+        if (overrides := self.feature_overrides["toxic"]):
+            return overrides[-1]["state"]
+        return self.base_toxic
+    
+    @property
+    def taunt(self):
+        if (overrides := self.feature_overrides["taunt"]):
+            return overrides[-1]["state"]
+        return self.base_taunt
+    
+    @property
+    def windfury(self):
+        if (overrides := self.feature_overrides["windfury"]):
+            return overrides[-1]["state"]
+        return self.base_windfury
+    
+    @property
+    def stealth(self):
+        if (overrides := self.feature_overrides["stealth"]):
+            return overrides[-1]["state"]
+        return self.base_stealth
+    
+    def reset_turn_start(self) -> None:
         self.attack_temp_boost = 0
         self.health_temp_boost = 0
-        if self.reborn:
-            self.rebirth = True
-            self.reborn = False
+        for feat in self.feature_overrides:
+            for overr in list(self.feature_overrides[feat]):
+                if overr["one_turn"]:
+                    self.feature_overrides[feat].remove(overr)
+        self.reborn = False
+        if self.stealth:
+            self.revealed = False
         self.in_fight = False
         self.enemy_army = None
+
+    def clean_overrides(self) -> None:
+        self.feature_overrides = {
+            # Latest one used
+            "rebirth": [],
+            "shield": [],
+            "toxic": [],
+            "taunt": [],
+            "windfury": [],
+            "stealth": [],
+        }
 
     def death(self) -> None:
         position = self.army.index(self)
@@ -177,8 +214,8 @@ class Minion(Card):
         if self.rebirth:
             self.attack_temp_boost = 0
             self.health_temp_boost = 0
-            self.rebirth = False
             self.reborn = True
+            self.feature_overrides["rebirth"].append({"state": False, "one_turn": True})
             self.army.add(self, position)
             for hook in self.hooks["on_play"]:
                 hook()
@@ -189,7 +226,7 @@ class Minion(Card):
             return
         self.attacked_this_turn = True
         if self.stealth:
-            self.revealed = True
+            self.feature_overrides["stealth"].append({"state": False, "one_turn": True})
         for hook in self.army.hooks["on_attack"]:
             hook(self, target)
         for hook in self.hooks["on_attack_pre"]:
@@ -205,25 +242,25 @@ class Minion(Card):
         if not self.divine_shield:
             self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
             if target.toxic:
-                target.toxic = False
+                target.feature_overrides["toxic"].append({"state": False, "one_turn": True})
                 for hook in target.hooks["on_kill"]:
                     hook()
                 self.death()
         else:
             if target.attack_value > 0:
-                self.divine_shield = False
+                self.feature_overrides["shield"].append({"state": False, "one_turn": True})
                 for hook in self.army.hooks["on_divine_shield_lost"]:
                     hook(self)
         if not target.divine_shield:
             target.health_temp_boost -= self.attack_value + self.humming_bird_boost + self.sore_loser_boost
             if self.toxic:
-                self.toxic = False
+                self.feature_overrides["toxic"].append({"state": False, "one_turn": True})
                 for hook in self.hooks["on_kill"]:
                     hook()
                 target.death()
         else:
             if self.attack_value > 0:
-                target.divine_shield = False
+                target.feature_overrides["shield"].append({"state": False, "one_turn": True})
                 for hook in target.army.hooks["on_divine_shield_lost"]:
                     hook(target)
         for hook in self.hooks["on_attack_post"]:
@@ -244,16 +281,13 @@ class Minion(Card):
         target.attack_perm_boost += self.attack_value
         target.health_perm_boost += self.health_value
         if self.taunt:
-            target.taunt = True
+            target.base_taunt = True
         if self.divine_shield:
             target.base_divine_shield = True
-            target.divine_shield = True
         if self.rebirth:
             target.base_rebirth = True
-            target.rebirth = True
         if self.windfury:
-            target.windfury = True
+            target.base_windfury = True
         if self.toxic:
             target.base_toxic = True
-            target.toxic = True
         target.magnited.append(self)

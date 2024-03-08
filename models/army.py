@@ -36,6 +36,7 @@ class Army(CardSet):
         }
         self.max_len = 7
         self.cards: list[Minion] = []
+        self.in_fight = False
 
     @property
     def power(self) -> int:
@@ -102,7 +103,8 @@ class Army(CardSet):
 
     def mark_in_fight(self, summoned: Minion):
         # Unset enemy_army, could lead to errors
-        summoned.in_fight = True
+        if self.in_fight:
+            summoned.in_fight = True
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]

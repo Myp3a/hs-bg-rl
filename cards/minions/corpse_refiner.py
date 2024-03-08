@@ -18,7 +18,7 @@ class CorpseRefiner(Minion):
         self.avenge_cntr = 4
         self.additional_gold = 0
         self.hooks["on_sell"].append(self.give_add_gold)
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_avenge)
         self.hooks["on_play"].append(self.put_hook)
 

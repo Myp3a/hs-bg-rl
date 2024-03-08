@@ -52,6 +52,8 @@ class Field:
         self.snapshot()
         self.log.debug(f"starting fight between {self.first}(v) and {self.second}(^)")
         self.log.debug("\n" + str(self))
+        self.first.army.in_fight = True
+        self.second.army.in_fight = True
         for c in self.first.army.cards:
             c.in_fight = True
             c.enemy_army = self.second.army
@@ -74,6 +76,8 @@ class Field:
                 if self.check_battle_end():
                     self.log.debug(f"fight end between {self.first}(v) and {self.second}(^)")
                     self.log.debug("\n" + str(self))
+                    self.first.army.in_fight = False
+                    self.second.army.in_fight = False
                     self.restore()
                     return
                 immediate_attacks = False
@@ -88,6 +92,8 @@ class Field:
             if self.check_battle_end():
                 self.log.debug(f"fight end between {self.first}(v) and {self.second}(^)")
                 self.log.debug("\n" + str(self))
+                self.first.army.in_fight = False
+                self.second.army.in_fight = False
                 self.restore()
                 return
         assert self.check_battle_end()

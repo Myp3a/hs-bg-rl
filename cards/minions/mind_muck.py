@@ -29,6 +29,7 @@ class MindMuck(Minion):
         target = random.choice(available_targets)
         eater = random.choice(available_eaters)
         card = self.army.player.tavern.buy(target)
+        eater.contains.append(card)
         self.army.player.view.remove(card)
         if self.triplet:
             atk_boost = card.attack_value * 2

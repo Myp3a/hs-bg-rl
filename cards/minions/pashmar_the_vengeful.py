@@ -18,7 +18,7 @@ class PashmarTheVengeful(Minion):
         self.base_attack_value = 4
         self.base_health_value = 5
         self.avenge_cntr = 3
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_avenge)
         self.hooks["on_play"].append(self.put_hook)
 

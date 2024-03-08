@@ -35,7 +35,7 @@ class SprightlyScarab(Minion):
                     hlt_boost = 1
                 target.attack_perm_boost += atk_boost
                 target.health_perm_boost += hlt_boost
-                target.rebirth = True
+                target.feature_overrides["rebirth"].append({"state": True, "one_turn": False})
                 for hook in self.army.hooks["on_values_change_perm"]:
                     hook(target, atk_boost, hlt_boost)
             case 1:
@@ -47,6 +47,6 @@ class SprightlyScarab(Minion):
                     hlt_boost = 2
                 target.attack_perm_boost += atk_boost
                 target.health_perm_boost += hlt_boost
-                target.taunt = True
+                target.feature_overrides["taunt"].append({"state": True, "one_turn": False})
                 for hook in self.army.hooks["on_values_change_perm"]:
                     hook(target, atk_boost, hlt_boost)

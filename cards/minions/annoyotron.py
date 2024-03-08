@@ -14,5 +14,5 @@ class AnnoyOTron(Minion):
         self.level = 1
         self.base_attack_value = 1
         self.base_health_value = 2
-        self.divine_shield = True
-        self.taunt = True
+        self.base_divine_shield = True
+        self.base_taunt = True

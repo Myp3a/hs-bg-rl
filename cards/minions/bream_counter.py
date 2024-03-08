@@ -15,8 +15,8 @@ class BreamCounter(Minion):
         self.level = 4
         self.base_attack_value = 5
         self.base_health_value = 5
-        self.hooks["on_buy"].append(self.put_hook)
-        self.hooks["on_play"].append(self.remove_hook)
+        self.hooks["on_get"].append(self.put_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
         self.army.hooks["on_minion_play"].append(self.boost_values)

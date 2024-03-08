@@ -16,8 +16,8 @@ class EternalKnight(Minion):
         self.base_attack_value = 4
         self.base_health_value = 1
         self.hooks["on_death"].append(self.boost_knights)
-        self.hooks["on_play"].append(self.get_boost)
-        self.hooks["on_sell"].append(self.drop_boost)
+        self.hooks["on_get"].append(self.get_boost)
+        self.hooks["on_lose"].append(self.drop_boost)
 
     def boost_knights(self) -> None:
         self.army.player.knights_died += 1

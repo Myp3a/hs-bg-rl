@@ -19,7 +19,7 @@ class SurfNSurf(TargetedSpell):
         # should always fire on turn start
         self.target.hooks["deathrattle"].remove(self.summon_crab)
         self.target.hooks["on_turn_start"].remove(self.remove_hook)
-        self.target.hooks["on_sell"].remove(self.try_remove_hook)
+        self.target.hooks["on_lose"].remove(self.try_remove_hook)
 
     def try_remove_hook(self) -> None:
         # additional check on sell in case of played spell and then selling
@@ -30,7 +30,7 @@ class SurfNSurf(TargetedSpell):
         self.target = target
         target.hooks["deathrattle"].append(self.summon_crab)
         target.hooks["on_turn_start"].append(self.remove_hook)
-        target.hooks["on_sell"].append(self.try_remove_hook)
+        target.hooks["on_lose"].append(self.try_remove_hook)
 
     def summon_crab(self, position) -> None:
         crab = Crab(self.player.army)

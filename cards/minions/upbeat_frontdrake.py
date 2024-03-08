@@ -29,6 +29,6 @@ class UpbeatFrontdrake(Minion):
             dragon = random.choice(dragons)
             dragon.army = self.army
             self.army.player.tavern.buy(dragon)
-            for hook in dragon.hooks["on_buy"]:
+            for hook in dragon.hooks["on_get"]:
                 hook()
             self.army.player.hand.add(dragon, len(self.army.player.hand))

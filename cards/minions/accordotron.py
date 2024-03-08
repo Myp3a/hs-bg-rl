@@ -18,4 +18,6 @@ class AccordOTron(Minion):
         self.hooks["on_turn_start"].append(self.give_gold)
 
     def give_gold(self) -> None:
+        if self.triplet:
+            self.army.player.gold += 1
         self.army.player.gold += 1

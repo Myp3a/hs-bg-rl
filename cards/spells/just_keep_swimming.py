@@ -12,21 +12,10 @@ class JustKeepSwimming(TargetedSpell):
         self.spell_id = 8
         self.level = 4
         self.target = None
-        self.had_stealth = None
         self.spellcraft = True
 
-    def restore(self) -> None:
-        self.target.stealth = self.had_stealth
-        self.target.hooks["on_turn_start"].remove(self.restore)
-        self.target.hooks["on_sell"].remove(self.try_remove_hook)
-
-    def try_remove_hook(self) -> None:
-        if self.restore in self.target.hooks["on_turn_start"]:
-            self.restore()
-
     def play(self, target: Minion) -> None:
-        self.had_stealth = target.stealth
-        self.target = target
+        target.feature_overrides["stealth"].append({"state": True, "one_turn": True})
         if self.triplet:
             atk_boost = 6
             hlt_boost = 10
@@ -37,6 +26,3 @@ class JustKeepSwimming(TargetedSpell):
         target.health_temp_boost += hlt_boost
         for hook in self.player.army.hooks["on_values_change_temp"]:
             hook(target, atk_boost, hlt_boost)
-        target.stealth = True
-        target.hooks["on_turn_start"].append(self.restore)
-        target.hooks["on_sell"].append(self.try_remove_hook)

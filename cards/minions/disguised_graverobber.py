@@ -23,9 +23,15 @@ class DisguisedGraverobber(Minion):
         if len(targets) == 0:
             return
         target = random.choice(targets)
-        self.army.cards.remove(target)
-        if not self.in_fight:
-            self.army.player.tavern.sell(target)
+        if target.rebirth:
+            target.death()
+            target.feature_overrides["rebirth"].append({"state": False, "one_turn": False})
+        else:
+            target.death()
+            for hook in target.hooks["on_lose"]:
+                hook()
+            if not self.in_fight:
+                self.army.player.tavern.sell(target)
         self.army.player.gold += 3
         if self.triplet:
             self.army.player.gold += 3

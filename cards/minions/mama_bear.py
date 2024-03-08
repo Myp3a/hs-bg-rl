@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-
+import sys
 from cards.minion import Minion, MinionClass
 
 if TYPE_CHECKING:
@@ -16,7 +16,7 @@ class MamaBear(Minion):
         self.base_attack_value = 3
         self.base_health_value = 3
         self.hooks["on_play"].append(self.put_hook)
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
         self.army.hooks["on_minion_play"].append(self.boost_beast)

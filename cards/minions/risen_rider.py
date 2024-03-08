@@ -14,5 +14,5 @@ class RisenRider(Minion):
         self.level = 1
         self.base_attack_value = 2
         self.base_health_value = 1
-        self.rebirth = True
-        self.taunt = True
+        self.base_rebirth = True
+        self.base_taunt = True

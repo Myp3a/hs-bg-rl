@@ -204,11 +204,8 @@ class Tavern:
         return view
     
     def clean_card(self, card: Minion):
-        card.attack_perm_boost = 0
-        card.health_perm_boost = 0
-        card.attack_temp_boost = 0
-        card.health_temp_boost = 0
-        card.restore_features()
+        card.reset_turn_start()
+        card.clean_overrides()
         return card
 
     def buy(self, card: Minion) -> Minion:
@@ -224,10 +221,10 @@ class Tavern:
         self.clean_card(card)
         if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
             return
-        if card.triplet:
-            for c in card.contains:
-                self.sell(c)
-        else:
+        for c in card.contains:
+            self.sell(c)
+        card.contains = []
+        if not card.triplet:
             self.cards.append(card)
         for c in card.magnited:
             c.magnited_to = None

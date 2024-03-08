@@ -17,6 +17,7 @@ class SoreLoser(Minion):
         self.base_attack_value = 2
         self.base_health_value = 4
         self.hooks["on_play"].append(self.put_hook_existing)
+        self.hooks["on_lose"].append(self.remove_hook)
         self.hooks["on_death"].append(self.decrease_boost)
         self.hooks["on_turn_start"].append(self.reset_boost)
         
@@ -53,3 +54,7 @@ class SoreLoser(Minion):
         for m in self.army.cards:
             if MinionClass.Undead in m.classes:
                 m.sore_loser_boost = 0
+
+    def remove_hook(self) -> None:
+        self.army.hooks["on_minion_play"].remove(self.put_hook_new)
+        # count_sore_losers is probably safe to have in any counts on any undead

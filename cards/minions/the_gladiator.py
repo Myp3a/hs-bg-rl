@@ -15,9 +15,9 @@ class TheGladIator(Minion):
         self.level = 3
         self.base_attack_value = 1
         self.base_health_value = 1
-        self.divine_shield = True
+        self.base_divine_shield = True
         self.hooks["on_play"].append(self.put_hook)
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
         self.army.hooks["on_spell_cast"].append(self.boost_attack)

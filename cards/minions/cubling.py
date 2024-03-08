@@ -13,6 +13,6 @@ class Cubling(Minion):
         self.minion_id = 8
         self.classes = [MinionClass.Undead]
         self.level = 1
-        self.taunt = True
+        self.base_taunt = True
         self.base_attack_value = 0
         self.base_health_value = 1

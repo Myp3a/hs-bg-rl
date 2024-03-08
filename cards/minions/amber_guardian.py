@@ -25,7 +25,8 @@ class AmberGuardian(Minion):
         target = random.choice(targets)
         atk_boost = 2
         hlt_boost = 2
-        target.divine_shield = True
+        if not target.divine_shield:
+            target.feature_overrides["shield"].append({"state": True, "one_turn": True})
         target.attack_temp_boost += atk_boost
         target.health_temp_boost += hlt_boost
 

@@ -18,4 +18,4 @@ class WaywardGrimscale(Minion):
         self.hooks["on_defence_pre"].append(self.get_toxic)
 
     def get_toxic(self, attacker):
-        self.toxic = True
+        self.feature_overrides["toxic"].append({"state": True, "one_turn": True})

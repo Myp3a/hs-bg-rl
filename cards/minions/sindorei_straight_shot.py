@@ -15,10 +15,10 @@ class SindoreiStraightShot(Minion):
         self.level = 4
         self.base_attack_value = 3
         self.base_health_value = 4
-        self.windfury = True
-        self.divine_shield = True
+        self.base_windfury = True
+        self.base_divine_shield = True
         self.hooks["on_attack_pre"].append(self.remove_features)
 
     def remove_features(self, target: Minion) -> None:
-        target.taunt = False
-        target.rebirth = False
+        target.feature_overrides["taunt"].append({"state": False, "one_turn": True})
+        target.feature_overrides["rebirth"].append({"state": False, "one_turn": True})

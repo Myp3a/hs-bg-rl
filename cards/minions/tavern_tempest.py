@@ -27,6 +27,8 @@ class TavernTempest(Minion):
         elemental = random.choice(elementals)
         self.army.player.tavern.buy(elemental)
         elemental.army = self.army
+        for hook in elemental.hooks["on_get"]:
+            hook()
         self.army.player.hand.add(elemental, len(self.army.player.hand.cards))
 
     def get_elemental(self):

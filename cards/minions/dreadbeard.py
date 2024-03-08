@@ -23,4 +23,6 @@ class Dreadbeard(Minion):
         self.army.player.health -= hero_damage
         for hook in self.army.hooks["on_hero_damage"]:
             hook(hero_damage)
+        if self.triplet:
+            self.army.player.hand.add(GoldCoin(self.army.player), len(self.army.player.hand))
         self.army.player.hand.add(GoldCoin(self.army.player), len(self.army.player.hand))

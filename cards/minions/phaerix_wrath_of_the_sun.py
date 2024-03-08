@@ -17,8 +17,8 @@ class PhaerixWrathOfTheSun(Minion):
         self.base_attack_value = 3
         self.base_health_value = 1
         self.avenge_cntr = 4
-        self.divine_shield = True
-        self.hooks["on_sell"].append(self.remove_hook)
+        self.base_divine_shield = True
+        self.hooks["on_lose"].append(self.remove_hook)
         self.hooks["on_turn_start"].append(self.reset_avenge)
         self.hooks["on_play"].append(self.put_hook)
 
@@ -44,7 +44,7 @@ class PhaerixWrathOfTheSun(Minion):
         if len(targets) == 0:
             return
         target = random.choice(targets)
-        target.divine_shield = True
+        target.feature_overrides["shield"].append({"state": True, "one_turn": True})
 
     def give_shield(self):
         if self.triplet:
