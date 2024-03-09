@@ -47,7 +47,8 @@ class PashmarTheVengeful(Minion):
             SurfNSurf(self.army.player),
             DefendToTheDeath(self.army.player),
             JustKeepSwimming(self.army.player),
-            DeepBlues(self.army.player)
+            DeepBlues(self.army.player),
+            GlowingCrown(self.army.player)
         ]
         available = [s for s in spells if s.level <= self.army.player.level]
         if len(available) == 0:
