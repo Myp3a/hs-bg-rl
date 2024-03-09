@@ -196,6 +196,15 @@ class Player:
             triplet.attack_perm_boost += perm_attack
             triplet.health_perm_boost += perm_health
             self.hand.add(triplet, len(self.hand))
+            discover = [c for c in self.tavern.available_cards() if c.level == min(triplet.level + 1, 4)]
+            bonus = random.choice(discover)
+            if len(self.hand.cards) == 10:
+                return
+            bonus.army = self.army
+            self.tavern.buy(bonus)
+            for hook in bonus.hooks["on_get"]:
+                hook()
+            self.hand.add(bonus, len(self.hand.cards))
 
     def start_turn(self) -> None:
         self.log.debug(f"{self} turn start")
