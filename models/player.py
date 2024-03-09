@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Callable
 
 from cards.minion import Minion, MinionClass
 from cards.minions.brann_bronzebeard import BrannBronzebeard
+from cards.minions.malchezaar_prince_of_dance import MalchezaarPrinceOfDance
 from cards.spell import Spell, TargetedSpell
 
 if TYPE_CHECKING:
@@ -150,6 +151,13 @@ class Player:
                     times = 2
         return times
     
+    def count_malchezaar_rolls(self):
+        rolls = 0
+        for c in self.army.cards:
+            if isinstance(c, MalchezaarPrinceOfDance):
+                rolls += c.rolls
+        return rolls
+    
     def check_triplets(self) -> None:
         cards = [c for c in self.army.cards + self.hand.cards if isinstance(c, Minion) and not c.triplet]
         for card in cards:
@@ -253,24 +261,27 @@ class Player:
         return False
     
     def roll_possible(self) -> bool:
-        if self.gold >= self.roll_price or self.free_rolls > 0:
+        if self.gold >= self.roll_price or self.free_rolls > 0 or (self.count_malchezaar_rolls() > 0 and self.health > 1):
             return True
         return False
     
     def roll(self) -> bool:
         if self.roll_possible():
             self.damaged_for_roll = False
-            if self.free_rolls == 0:
-                self.gold -= self.roll_price
-                for hook in self.army.hooks["on_gold_spent"]:
-                    hook(self.roll_price)
-                self.gold_spent_on_turn += self.roll_price
+            malchezaar_rolls = self.count_malchezaar_rolls()
+            if malchezaar_rolls == 0:
+                if self.free_rolls == 0:
+                    self.gold -= self.roll_price
+                    for hook in self.army.hooks["on_gold_spent"]:
+                        hook(self.roll_price)
+                    self.gold_spent_on_turn += self.roll_price
             self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1], self.level)
             for c in self.army.cards:
                 for hook in c.hooks["on_roll"]:
                     hook()
-            if self.free_rolls > 0:
-                self.free_rolls -= 1
+            if malchezaar_rolls == 0:
+                if self.free_rolls > 0:
+                    self.free_rolls -= 1
             self.rolls_on_turn += 1
             return True
         return False
