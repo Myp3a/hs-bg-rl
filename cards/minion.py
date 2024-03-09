@@ -34,6 +34,7 @@ class Minion(Card):
             "on_defence_post": [],  # (self), target
             "on_attack_mid": [],  # (self), target
             "on_defence_mid": [],  # (self), target
+            "on_take_hit_post": [],  # (self), target
             "on_fight_start": [],  # (self)
             "on_turn_start": [self.reset_turn_start],  # (self)
             "on_turn_end": [],  # (self)
@@ -241,6 +242,8 @@ class Minion(Card):
             hook(self)
         if not self.divine_shield:
             self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
+            for hook in self.hooks["on_take_hit_post"]:
+                hook(target)
             if target.toxic:
                 target.feature_overrides["toxic"].append({"state": False, "one_turn": True})
                 for hook in target.hooks["on_kill"]:
@@ -253,6 +256,8 @@ class Minion(Card):
                     hook(self)
         if not target.divine_shield:
             target.health_temp_boost -= self.attack_value + self.humming_bird_boost + self.sore_loser_boost
+            for hook in target.hooks["on_take_hit_post"]:
+                hook(self)
             if self.toxic:
                 self.feature_overrides["toxic"].append({"state": False, "one_turn": True})
                 for hook in self.hooks["on_kill"]:
