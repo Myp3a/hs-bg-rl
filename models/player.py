@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Callable
 
 from cards.minion import Minion, MinionClass
 from cards.minions.brann_bronzebeard import BrannBronzebeard
+from cards.minions.drakkari_enchanter import DrakkariEnchanter
 from cards.minions.malchezaar_prince_of_dance import MalchezaarPrinceOfDance
 from cards.spell import Spell, TargetedSpell
 
@@ -151,6 +152,16 @@ class Player:
                     times = 2
         return times
     
+    def count_drakkari_times(self):
+        times = 1
+        for c in self.army.cards:
+            if isinstance(c, DrakkariEnchanter):
+                if c.triplet:
+                    times = 3
+                elif times < 2:
+                    times = 2
+        return times
+    
     def count_malchezaar_rolls(self):
         rolls = 0
         for c in self.army.cards:
@@ -242,14 +253,15 @@ class Player:
     def end_turn(self) -> None:
         self.log.debug(f"{self} turn end")
         if self.health > 0:
-            for card in self.army.cards:
-                for hook in card.hooks["on_turn_end"]:
-                    hook()
-                for c in card.magnited:
-                    for hook in c.hooks["on_turn_end"]:
+            for _ in range(self.count_drakkari_times()):
+                for card in self.army.cards:
+                    for hook in card.hooks["on_turn_end"]:
                         hook()
-            for hook in self.hand.hooks["on_turn_end"]:
-                hook()
+                    for c in card.magnited:
+                        for hook in c.hooks["on_turn_end"]:
+                            hook()
+                for hook in self.hand.hooks["on_turn_end"]:
+                    hook()
 
     def upgrade_possible(self) -> bool:
         if self.level < 6:
