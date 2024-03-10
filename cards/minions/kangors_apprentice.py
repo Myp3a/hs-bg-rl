@@ -21,5 +21,9 @@ class KangorsApprentice(Minion):
         summoned = 0
         for c in self.army.dead:
             if summoned < 2 and MinionClass.Mech in c.classes:
-                self.army.add(type(c)(self.army), position)
+                mech = type(c)(self.army)
+                mech.enemy_army = self.enemy_army
+                for hook in mech.hooks["on_get"]:
+                    hook()
+                self.army.add(mech, position)
                 summoned += 1
