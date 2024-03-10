@@ -29,7 +29,11 @@ class TwilightEmissary(Minion):
         else:
             atk_boost = 2
             hlt_boost = 2
-        dragon.attack_perm_boost += atk_boost
-        dragon.health_perm_boost += hlt_boost
-        for hook in self.army.hooks["on_values_change_perm"]:
-            hook(dragon, atk_boost, hlt_boost)
+        if self.in_fight:
+            dragon.attack_temp_boost += atk_boost
+            dragon.health_temp_boost += hlt_boost
+        else:
+            dragon.attack_perm_boost += atk_boost
+            dragon.health_perm_boost += hlt_boost
+            for hook in self.army.hooks["on_values_change_perm"]:
+                hook(dragon, atk_boost, hlt_boost)

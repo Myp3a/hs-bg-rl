@@ -34,7 +34,11 @@ class MamaBear(Minion):
             else:
                 atk_boost = 3
                 hlt_boost = 3
-            played.attack_perm_boost += atk_boost
-            played.health_perm_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(played, atk_boost, hlt_boost)
+            if self.in_fight:
+                played.attack_temp_boost += atk_boost
+                played.health_temp_boost += hlt_boost
+            else:
+                played.attack_perm_boost += atk_boost
+                played.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(played, atk_boost, hlt_boost)

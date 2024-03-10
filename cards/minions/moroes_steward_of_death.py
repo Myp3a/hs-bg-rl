@@ -27,5 +27,11 @@ class MoroesStewardOfDeath(Minion):
                 else:
                     atk_boost = 1
                     hlt_boost = 5
-                c.attack_temp_boost += atk_boost
-                c.health_temp_boost += hlt_boost
+                if self.in_fight:
+                    c.attack_temp_boost += atk_boost
+                    c.health_temp_boost += hlt_boost
+                else:
+                    c.attack_perm_boost += atk_boost
+                    c.health_perm_boost += hlt_boost
+                    for hook in self.army.hooks["on_values_change_perm"]:
+                        hook(c, atk_boost, hlt_boost)

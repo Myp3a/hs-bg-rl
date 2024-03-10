@@ -26,6 +26,9 @@ class BloodsailCannoneer(Minion):
         else:
             atk_boost = 3
         for t in targets:
-            t.attack_perm_boost += atk_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(t, atk_boost, 0)
+            if self.in_fight:
+                t.attack_temp_boost += atk_boost
+            else:
+                t.attack_perm_boost += atk_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(t, atk_boost, 0)

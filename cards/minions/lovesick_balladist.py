@@ -23,6 +23,9 @@ class LovesickBalladist(Minion):
         if len(targets) == 0:
             return
         target = random.choice(targets)
-        target.health_perm_boost += self.army.player.gold_spent_on_turn
-        for hook in self.army.hooks["on_values_change_perm"]:
-            hook(target, 0, self.army.player.gold_spent_on_turn)
+        if self.in_fight:
+            target.health_temp_boost += self.army.player.gold_spent_on_turn
+        else:
+            target.health_perm_boost += self.army.player.gold_spent_on_turn
+            for hook in self.army.hooks["on_values_change_perm"]:
+                hook(target, 0, self.army.player.gold_spent_on_turn)

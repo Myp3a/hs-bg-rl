@@ -26,7 +26,11 @@ class StrongshellScavenger(Minion):
             else:
                 atk_boost = 2
                 hlt_boost = 2
-            t.attack_perm_boost += atk_boost
-            t.health_perm_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(t, atk_boost, hlt_boost)
+            if self.in_fight:
+                t.attack_temp_boost += atk_boost
+                t.health_temp_boost += hlt_boost
+            else:
+                t.attack_perm_boost += atk_boost
+                t.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(t, atk_boost, hlt_boost)

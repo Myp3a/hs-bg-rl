@@ -16,6 +16,7 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Hummingbird mechanics
  - Sore loser mechanics
  - Impulsive trickster infight health boost
+ - Perm / Temp values gain depending if in battle
 
 # TODO
  - Lava Lurker feature saving

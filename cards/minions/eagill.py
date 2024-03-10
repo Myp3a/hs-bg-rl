@@ -28,10 +28,14 @@ class Eagill(Minion):
         army_targets = [t for t in self.army.cards if not t is self]
         if len(army_targets) > 0:
             at = random.choice(army_targets)
-            at.attack_perm_boost += atk_boost
-            at.health_perm_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(at, atk_boost, hlt_boost)
+            if self.in_fight:
+                at.attack_temp_boost += atk_boost
+                at.health_temp_boost += hlt_boost
+            else:
+                at.attack_perm_boost += atk_boost
+                at.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(at, atk_boost, hlt_boost)
         hand_targets = [t for t in self.army.player.hand.cards if isinstance(t, Minion)]
         if len(hand_targets) > 0:
             ht = random.choice(hand_targets)

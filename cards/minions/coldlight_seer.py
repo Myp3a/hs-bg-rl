@@ -25,6 +25,9 @@ class ColdlightSeer(Minion):
                         hlt_boost = 4
                     else:
                         hlt_boost = 2
-                    minion.health_perm_boost += hlt_boost
-                    for hook in self.army.hooks["on_values_change_perm"]:
-                        hook(minion, 0, hlt_boost)
+                    if self.in_fight:
+                        minion.health_temp_boost += hlt_boost
+                    else:
+                        minion.health_perm_boost += hlt_boost
+                        for hook in self.army.hooks["on_values_change_perm"]:
+                            hook(minion, 0, hlt_boost)

@@ -20,6 +20,8 @@ class MindMuck(Minion):
 
     def other_eat_minion(self) -> None:
         # TODO: choose minion who will be eating
+        if self.in_fight:
+            return
         available_targets = self.army.player.view
         if len(available_targets) == 0:
             return

@@ -34,7 +34,11 @@ class MenagerieJug(Minion):
             else:
                 atk_boost = 2
                 hlt_boost = 2
-            target.attack_perm_boost += atk_boost
-            target.health_perm_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(target, atk_boost, hlt_boost)
+            if self.in_fight:
+                target.attack_temp_boost += atk_boost
+                target.health_temp_boost += hlt_boost
+            else:
+                target.attack_perm_boost += atk_boost
+                target.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(target, atk_boost, hlt_boost)

@@ -35,7 +35,11 @@ class MasterOfRealities(Minion):
             else:
                 atk_boost = 1
                 hlt_boost = 1
-            self.attack_perm_boost += atk_boost
-            self.health_perm_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(self, atk_boost, hlt_boost)
+            if self.in_fight:
+                self.attack_temp_boost += atk_boost
+                self.health_temp_boost += hlt_boost
+            else:
+                self.attack_perm_boost += atk_boost
+                self.health_perm_boost += hlt_boost
+                for hook in self.army.hooks["on_values_change_perm"]:
+                    hook(self, atk_boost, hlt_boost)

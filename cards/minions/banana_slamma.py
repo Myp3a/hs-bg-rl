@@ -32,7 +32,5 @@ class BananaSlamma(Minion):
             else:
                 atk_boost = played.attack_value * 2 - played.base_attack_value
                 hlt_boost = played.health_value * 2 - played.base_health_value
-            played.attack_perm_boost += atk_boost
-            played.health_perm_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(played, atk_boost, hlt_boost)
+            played.attack_temp_boost += atk_boost
+            played.health_temp_boost += hlt_boost

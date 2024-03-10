@@ -19,6 +19,8 @@ class PickyEater(Minion):
         self.hooks["battlecry"].append(self.eat_minion)
 
     def eat_minion(self) -> None:
+        if self.in_fight:
+            return
         available_targets = self.army.player.view
         if len(available_targets) == 0:
             return

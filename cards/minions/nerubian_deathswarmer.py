@@ -25,6 +25,9 @@ class NerubianDeathswarmer(Minion):
         self.army.player.undead_attack_boost += atk_boost
         for c in self.army.cards:
             if MinionClass.Undead in c.classes:
-                c.attack_perm_boost += atk_boost
-                for hook in self.army.hooks["on_values_change_perm"]:
-                    hook(c, atk_boost, 0)
+                if self.in_fight:
+                    c.attack_temp_boost += 1
+                else:
+                    c.attack_perm_boost += atk_boost
+                    for hook in self.army.hooks["on_values_change_perm"]:
+                        hook(c, atk_boost, 0)
