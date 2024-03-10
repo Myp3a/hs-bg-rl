@@ -224,6 +224,8 @@ class Player:
             self.turn += 1
             self.base_gold += 1
             self.gold = min(self.base_gold, 10)
+            for hook in self.army.hooks["on_gold_get"]:
+                hook(self.gold)
             self.view = self.tavern.roll(self.view, self.tavern.minion_count[self.level-1], self.level)
             self.tavern_discount += 1
             self.rolls_on_turn = 0
@@ -349,6 +351,8 @@ class Player:
             self.tavern.sell(card)
             card.army = None
             self.gold += self.sell_price
+            for hook in self.army.hooks["on_gold_get"]:
+                hook(self.sell_price)
             self.army.remove(card)
             self.log.debug(f"{self} sold {card}, army = {self.army}")
             return True
