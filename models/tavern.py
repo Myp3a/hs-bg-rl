@@ -28,7 +28,12 @@ class Tavern:
             HelpingHand,
             Microbot,
             Smolderwing,
-            GoldenMonkey
+            GoldenMonkey,
+            RustedReggie,
+            MagtheridonPrime,
+            Baltharak,
+            Mechorse,
+            Mechapony
         ]
         self.base_cards: list[Minion] = \
             [AnnoyOTron(None) for _ in range(18)] + \
@@ -157,7 +162,42 @@ class Tavern:
             [TreasureSeekerElise(None) for _ in range(11)] + \
             [TunnelBlaster(None) for _ in range(11)] + \
             [UtilityDrone(None) for _ in range(11)] + \
-            [WaywardGrimscale(None) for _ in range(11)]
+            [WaywardGrimscale(None) for _ in range(11)] + \
+            [AugmentedLaborer(None) for _ in range(9)] + \
+            [BananaSlamma(None) for _ in range(9)] + \
+            [BongoBopper(None) for _ in range(9)] + \
+            [BrannBronzebeard(None) for _ in range(9)] + \
+            [BristlebackKnight(None) for _ in range(9)] + \
+            [ChampionOfThePrimus(None) for _ in range(9)] + \
+            [CorruptedMyrmidon(None) for _ in range(9)] + \
+            [CritterWrangler(None) for _ in range(9)] + \
+            [DrakkariEnchanter(None) for _ in range(9)] + \
+            [EnsorcelledFungus(None) for _ in range(9)] + \
+            [GeneralDrakkisath(None) for _ in range(9)] + \
+            [GentleDjinni(None) for _ in range(9)] + \
+            [Glowscale(None) for _ in range(9)] + \
+            [HungeringAbomination(None) for _ in range(9)] + \
+            [HunterOfGatherers(None) for _ in range(9)] + \
+            [InsatiableUrzul(None) for _ in range(9)] + \
+            [KangorsApprentice(None) for _ in range(9)] + \
+            [KingBagurgle(None) for _ in range(9)] + \
+            [MadMatador(None) for _ in range(9)] + \
+            [MasterOfRealities(None) for _ in range(9)] + \
+            [MechanizedGiftHorse(None) for _ in range(9)] + \
+            [MoroesStewardOfDeath(None) for _ in range(9)] + \
+            [Murozond(None) for _ in range(9)] + \
+            [OperaticBelcher(None) for _ in range(9)] + \
+            [RapscallionRecruiter(None) for _ in range(9)] + \
+            [RecordSmuggler(None) for _ in range(9)] + \
+            [RodeoPerformer(None) for _ in range(9)] + \
+            [SandstoneDrake(None) for _ in range(9)] + \
+            [ScrapScraper(None) for _ in range(9)] + \
+            [SpellboundSeafarer(None) for _ in range(9)] + \
+            [Tichondrius(None) for _ in range(9)] + \
+            [TitusRivendare(None) for _ in range(9)] + \
+            [TortollanBlueShell(None) for _ in range(9)] + \
+            [TransmutedBramblewitch(None) for _ in range(9)] + \
+            [UnderhandedDealer(None) for _ in range(9)]
         self.cards: list[Minion] = []
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]
