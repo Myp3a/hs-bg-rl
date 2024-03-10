@@ -21,7 +21,7 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
 # TODO
  - Lava Lurker feature saving
  - Health-depleting actions blocking when 1hp
- - Split free and Malchezaar rolls
+ - Murozond
  - Logging
  - Chain magnetic deathrattles
  - Targeted battlecry

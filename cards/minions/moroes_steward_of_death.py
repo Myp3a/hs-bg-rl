@@ -13,8 +13,8 @@ class MoroesStewardOfDeath(Minion):
         self.minion_id = 164
         self.classes = [MinionClass.Undead]
         self.level = 5
-        self.base_attack_value = 6
-        self.base_health_value = 6
+        self.base_attack_value = 5
+        self.base_health_value = 1
         self.base_rebirth = True
         self.hooks["deathrattle"].append(self.boost_undead)
 

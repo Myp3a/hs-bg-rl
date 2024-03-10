@@ -14,8 +14,8 @@ class MechanizedGiftHorse(Minion):
         self.minion_id = 161
         self.classes = [MinionClass.Mech, MinionClass.Beast]
         self.level = 5
-        self.base_attack_value = 6
-        self.base_health_value = 6
+        self.base_attack_value = 4
+        self.base_health_value = 4
         self.hooks["deathrattle"].append(self.summon_mechorses)
 
     def summon_mechorses(self, position) -> None:
