@@ -234,7 +234,8 @@ class Minion(Card):
         for hook in target.army.hooks["on_defence"]:
             hook(target, self)
         for hook in target.hooks["on_defence_pre"]:
-            hook(self)
+            if hook(self):  # If returned value is True, prevent attack
+                return
         for hook in self.hooks["on_attack_mid"]:
             hook(target)
         for hook in target.hooks["on_defence_mid"]:
