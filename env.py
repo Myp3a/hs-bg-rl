@@ -3,7 +3,7 @@ import numpy as np
 from gymnasium import Env
 from gymnasium.spaces import Discrete, Box, Dict, Tuple, MultiBinary
 import gymnasium.spaces as spaces
-from pettingzoo.utils.env import ParallelEnv
+from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from models.game import Game
 
 
@@ -133,7 +133,7 @@ class HSPlayer(Env):
         self.valid_actions = np.round(obs["action_mask"])
         obs["action_mask"] = self.valid_actions
 
-class HSEnv(ParallelEnv):
+class HSEnv(MultiAgentEnv):
     metadata = {
         "name": "hearthstone_environment_v0",
     }
@@ -155,12 +155,8 @@ class HSEnv(ParallelEnv):
         self.action_spaces = {
             i: self.players[i].action_space for i in self.agents
         }
-
-    def observation_space(self, agent):
-        return self.observation_spaces[agent]
-
-    def action_space(self, agent):
-        return self.action_spaces[agent]
+        self.observation_space = self.observation_spaces["player_0"]
+        self.action_space = self.action_spaces["player_0"]
 
     def seed(self, seed):
         pass
