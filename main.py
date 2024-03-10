@@ -11,17 +11,17 @@ from ray.rllib.models import ModelCatalog
 from env import HSEnv
 from model import TorchActionMaskModel
 
-ray.init()
+ray.init(num_gpus=1)
 
 env = HSEnv(logging.DEBUG)
 env_name = "hs_env"
-register_env(env_name, lambda config: ParallelPettingZooEnv(env))
+register_env(env_name, lambda config: env)
 ModelCatalog.register_custom_model("HSModel", TorchActionMaskModel)
 
 config = (
         PPOConfig()
-        .environment(env=env_name, clip_actions=True, disable_env_checking=False)
-        .rollouts(num_rollout_workers=0, rollout_fragment_length="auto")
+        .environment(env=env_name, clip_actions=True, disable_env_checking=True)
+        .rollouts(num_rollout_workers=10, rollout_fragment_length="auto")
         .training(
             train_batch_size=2048,
             lr=2e-5,
@@ -40,7 +40,7 @@ config = (
         )
         .debugging(log_level="DEBUG")
         .framework(framework="torch")
-        .resources(num_gpus=0)
+        .resources(num_gpus=1)
     )
 
 tune.run(
