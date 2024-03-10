@@ -9,6 +9,7 @@ from cards.minion import Minion, MinionClass
 from cards.minions.brann_bronzebeard import BrannBronzebeard
 from cards.minions.drakkari_enchanter import DrakkariEnchanter
 from cards.minions.malchezaar_prince_of_dance import MalchezaarPrinceOfDance
+from cards.minions.titus_rivendare import TitusRivendare
 from cards.spell import Spell, TargetedSpell
 
 if TYPE_CHECKING:
@@ -161,6 +162,16 @@ class Player:
                     times = 3
                 elif times < 2:
                     times = 2
+        return times
+    
+    def count_rivendare_times(self):
+        times = 1
+        for c in self.army.cards:
+            if isinstance(c, TitusRivendare):
+                if c.triplet:
+                    times += 2
+                else:
+                    times += 1
         return times
     
     def count_malchezaar_rolls(self):

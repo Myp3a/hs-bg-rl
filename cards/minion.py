@@ -212,7 +212,8 @@ class Minion(Card):
         self.army.dead.append(self)
         self.army.remove(self)
         for hook in self.hooks["deathrattle"]:
-            hook(position)
+            for _ in range(self.army.player.count_rivendare_times()):
+                hook(position)
         if self.rebirth:
             self.attack_temp_boost = 0
             self.health_temp_boost = 0
