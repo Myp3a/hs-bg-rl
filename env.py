@@ -45,7 +45,7 @@ class HSPlayer(Env):
                 Dict({
                     "available": Discrete(2),
                     "type": Discrete(3),
-                    "minion_id": Discrete(140, start=-1),
+                    "minion_id": Discrete(180, start=-1),
                     "spell_id": Discrete(15, start=-1),
                     "card_class": MultiBinary(10),
                     "features": MultiBinary(8),
@@ -58,7 +58,7 @@ class HSPlayer(Env):
                 Dict({
                     "available": Discrete(2),
                     "type": Discrete(3),
-                    "minion_id": Discrete(140, start=-1),
+                    "minion_id": Discrete(180, start=-1),
                     "spell_id": Discrete(15, start=-1),
                     "card_class": MultiBinary(10),
                     "features": MultiBinary(8),
@@ -71,7 +71,7 @@ class HSPlayer(Env):
                 Dict({
                     "available": Discrete(2),
                     "type": Discrete(3),
-                    "minion_id": Discrete(140, start=-1),
+                    "minion_id": Discrete(180, start=-1),
                     "spell_id": Discrete(15, start=-1),
                     "card_class": MultiBinary(10),
                     "features": MultiBinary(8),
