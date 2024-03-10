@@ -51,6 +51,7 @@ class Player:
         self.elementals_played = 0
         self.gold_spent_on_turn = 0
         self.damaged_for_roll = False
+        self.cards_played_on_turn = 0
         self.view = self.tavern.new_view(self)
 
     @property
@@ -231,6 +232,7 @@ class Player:
             self.rolls_on_turn = 0
             self.gold_spent_on_turn = 0
             self.free_rolls = 0
+            self.cards_played_on_turn = 0
             for card in list(self.army.cards):
                 for hook in card.hooks["on_turn_start"]:
                     hook()
@@ -388,6 +390,7 @@ class Player:
             card = self.hand[card_to_play_ind]
             if isinstance(card, Minion):
                 self.hand.remove(card)
+                self.cards_played_on_turn += 1
                 if card.magnetic:
                     if place_to_play < len(self.army):
                         if MinionClass.Mech in self.army[place_to_play].classes:
@@ -422,6 +425,7 @@ class Player:
         if self.play_spell_possible(card_to_play_ind, place_to_play):
             card = self.hand[card_to_play_ind]
             self.hand.remove(card)
+            self.cards_played_on_turn += 1
             if isinstance(card, Spell):
                 if place_to_play < len(self.army):
                     target = self.army[place_to_play]
