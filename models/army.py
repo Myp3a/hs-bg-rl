@@ -37,6 +37,7 @@ class Army(CardSet):
         self.max_len = 7
         self.cards: list[Minion] = []
         self.in_fight = False
+        self.enemy = None
 
     @property
     def power(self) -> int:
@@ -102,7 +103,7 @@ class Army(CardSet):
                 hook()
 
     def mark_in_fight(self, summoned: Minion):
-        # Unset enemy_army, could lead to errors
+        summoned.enemy_army = self.enemy
         if self.in_fight:
             summoned.in_fight = True
 

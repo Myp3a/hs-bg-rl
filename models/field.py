@@ -54,6 +54,8 @@ class Field:
         self.log.debug("\n" + str(self))
         self.first.army.in_fight = True
         self.second.army.in_fight = True
+        self.first.army.enemy = self.second.army
+        self.second.army.enemy = self.first.army
         for c in self.first.army.cards:
             c.in_fight = True
             c.enemy_army = self.second.army
@@ -97,4 +99,6 @@ class Field:
                 self.restore()
                 return
         assert self.check_battle_end()
+        self.first.army.in_fight = False
+        self.second.army.in_fight = False
         self.restore()
