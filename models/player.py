@@ -53,6 +53,7 @@ class Player:
         self.gold_spent_on_turn = 0
         self.damaged_for_roll = False
         self.cards_played_on_turn = 0
+        self.lost_last_turn = False
         self.view = self.tavern.new_view(self)
 
     @property

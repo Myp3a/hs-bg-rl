@@ -40,11 +40,17 @@ class Field:
     def check_battle_end(self) -> bool:
         if len(self.first.army) == 0:
             self.first.health -= self.second.army.power + self.second.level
+            self.first.lost_last_turn = True
+            self.second.lost_last_turn = False
             return True
         if len(self.second.army) == 0:
             self.second.health -= self.first.army.power + self.first.level
+            self.first.lost_last_turn = False
+            self.second.lost_last_turn = True
             return True
         if len(self.first.army) == 0 and len(self.second.army) == 0 or self.first.army.attack_power == 0 and self.second.army.attack_power == 0:
+            self.first.lost_last_turn = True
+            self.second.lost_last_turn = True
             return True
         return False
 
