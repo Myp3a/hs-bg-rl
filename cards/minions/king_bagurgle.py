@@ -17,7 +17,7 @@ class KingBagurgle(Minion):
         self.base_health_value = 3
         self.hooks["battlecry"].append(self.boost_murloc)
 
-    def boost_murloc(self, position) -> None:
+    def boost_murloc(self) -> None:
         for c in self.army.cards:
             if MinionClass.Murloc in c.classes:
                 if self.triplet:

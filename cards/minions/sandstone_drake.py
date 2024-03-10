@@ -18,7 +18,7 @@ class SandstoneDrake(Minion):
         self.hooks["on_turn_end"].append(self.boost_attack)
 
     def boost_attack(self):
-        for _ in range(len(self.army.player.cards_played_on_turn + 1)):
+        for _ in range(self.army.player.cards_played_on_turn + 1):
             if self.triplet:
                 atk_boost = 2
             else:

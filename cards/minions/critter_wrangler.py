@@ -36,5 +36,5 @@ class CritterWrangler(Minion):
                 hlt_bonus = 2
             target.attack_perm_boost += atk_bonus
             target.health_perm_boost += hlt_bonus
-            for hook in target.hooks["on_values_change_perm"]:
+            for hook in target.army.hooks["on_values_change_perm"]:
                 hook(target, atk_bonus, hlt_bonus)
