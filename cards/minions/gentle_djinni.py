@@ -19,7 +19,7 @@ class GentleDjinni(Minion):
         self.hooks["deathrattle"].append(self.summon_and_get_elemental)
 
     def select_and_get_elemental(self, position):
-        elementals = [e for e in self.army.player.tavern.available_cards() if e.level <= self.army.player.level]
+        elementals = [e for e in self.army.player.tavern.available_cards() if e.level <= self.army.player.level and MinionClass.Elemental in e.classes]
         if len(elementals) == 0:
             return
         elemental = random.choice(elementals)
