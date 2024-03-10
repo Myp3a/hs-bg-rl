@@ -218,8 +218,6 @@ class Minion(Card):
             self.reborn = True
             self.feature_overrides["rebirth"].append({"state": False, "one_turn": True})
             self.army.add(self, position)
-            for hook in self.hooks["on_play"]:
-                hook()
 
     def attack(self, target: Minion | None) -> None:
         assert self.health_value > 0, "Dead trying to attack! " + str(self)
