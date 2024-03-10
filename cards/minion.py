@@ -209,6 +209,7 @@ class Minion(Card):
             hook(self, position)
         for hook in self.hooks["on_death"]:
             hook()
+        self.army.dead.append(self)
         self.army.remove(self)
         for hook in self.hooks["deathrattle"]:
             hook(position)

@@ -38,6 +38,7 @@ class Army(CardSet):
         self.cards: list[Minion] = []
         self.in_fight = False
         self.enemy = None
+        self.dead = []
 
     @property
     def power(self) -> int:
