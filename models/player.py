@@ -171,6 +171,7 @@ class Player:
     
     def check_triplets(self) -> None:
         cards = [c for c in self.army.cards + self.hand.cards if isinstance(c, Minion) and not c.triplet]
+        cntr = 0
         for card in cards:
             card_type = type(card)
             cntr = 0
