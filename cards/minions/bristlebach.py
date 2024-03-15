@@ -41,7 +41,7 @@ class Bristlebach(Minion):
                 self.reset_avenge()
 
     def reset_avenge(self) -> None:
-        self.avenge_cntr = 3
+        self.avenge_cntr = 2
 
     def play_blood_gem(self):
         targets = [t for t in self.army.cards if MinionClass.Quilboar in t.classes]
