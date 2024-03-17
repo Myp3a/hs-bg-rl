@@ -8,6 +8,7 @@ from cards.minion import Minion, MinionClass
 from cards.minions.audacious_anchor import AudaciousAnchor
 from cards.minions.flourishing_frostling import FlourishingFrostling
 from cards.minions.free_flying_feathermane import FreeFlyingFeathermane
+from cards.minions.zapp_slywick import ZappSlywick
 
 from .cardset import CardSet
 if TYPE_CHECKING:
@@ -134,7 +135,10 @@ class Army(CardSet):
             attacker = available_attackers[0]
         self.log.debug(f"atk: {attacker} chosen from {attacker.army}")
         
-        target = other.get_target()
+        if isinstance(attacker, ZappSlywick):
+            target = other.get_target_zapp()
+        else:
+            target = other.get_target()
         if target is None:
             self.log.debug(f"{attacker} found no targets")
             return  
@@ -159,6 +163,12 @@ class Army(CardSet):
             return None
         target = random.choice(targets)
         return target
+    
+    def get_target_zapp(self) -> Card | None:
+        if len(self) == 0:
+            return None
+        targets = sorted(self.cards, key=lambda card: card.health_value)
+        return targets[0]
     
     def clean_dead(self):
         for c in list(self.cards):
