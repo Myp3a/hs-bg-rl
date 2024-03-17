@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Callable
 from cards.minion import Minion, MinionClass
 from cards.minions.brann_bronzebeard import BrannBronzebeard
 from cards.minions.drakkari_enchanter import DrakkariEnchanter
+from cards.minions.elemental_of_surprise import ElementalOfSurprise
 from cards.minions.malchezaar_prince_of_dance import MalchezaarPrinceOfDance
 from cards.minions.titus_rivendare import TitusRivendare
 from cards.spell import Spell, TargetedSpell
@@ -189,7 +190,10 @@ class Player:
             card_type = type(card)
             cntr = 0
             for another_card in cards:
-                if isinstance(another_card, card_type):
+                if (
+                    isinstance(another_card, card_type)
+                    or MinionClass.Elemental in card.classes and isinstance(another_card, ElementalOfSurprise)
+                ):
                     cntr += 1
                 if cntr >= 3:
                     break
@@ -198,7 +202,10 @@ class Player:
             perm_attack = 0
             perm_health = 0
             for card in list(self.army.cards):
-                if isinstance(card, card_type) and not card.triplet:
+                if (
+                    isinstance(card, card_type)
+                    or MinionClass.Elemental in card.classes and isinstance(card, ElementalOfSurprise)
+                ) and not card.triplet:
                     perm_attack += card.attack_perm_boost
                     perm_health += card.health_perm_boost
                     self.army.remove(card)
@@ -207,7 +214,10 @@ class Player:
                     contains.append(card)
             for card in list(self.hand.cards):
                 if isinstance(card, Minion):
-                    if isinstance(card, card_type) and not card.triplet:
+                    if (
+                        isinstance(card, card_type)
+                        or MinionClass.Elemental in card.classes and isinstance(card, ElementalOfSurprise)
+                    ) and not card.triplet:
                         perm_attack += card.attack_perm_boost
                         perm_health += card.health_perm_boost
                         self.hand.remove(card)
