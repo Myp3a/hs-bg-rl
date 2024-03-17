@@ -27,7 +27,8 @@ class YoungMurkeye(Minion):
                 for _ in range(self.army.player.count_brann_times()):
                     hook()
 
-    def trigger_battlecries(self, position):
+    def trigger_battlecries(self):
+        position = self.army.index(self)
         if self.triplet:
             self.choose_and_trigger_battlecries(position)
         self.choose_and_trigger_battlecries(position)
