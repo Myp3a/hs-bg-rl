@@ -13,7 +13,7 @@ class FleetAdmiralTethys(Minion):
         super().__init__(army)
         self.minion_id = 189
         self.classes = [MinionClass.Pirate]
-        self.level = 3
+        self.level = 6
         self.base_attack_value = 5
         self.base_health_value = 6
         self.gold_left = 9

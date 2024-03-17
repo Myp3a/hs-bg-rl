@@ -13,7 +13,7 @@ class FoeReaper4000(Minion):
         super().__init__(army)
         self.minion_id = 190
         self.classes = [MinionClass.Mech]
-        self.level = 4
+        self.level = 6
         self.base_attack_value = 6
         self.base_health_value = 9
         self.target_position = None
