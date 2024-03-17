@@ -23,6 +23,7 @@ class GunpowderCourier(Minion):
         self.army.hooks["on_gold_spent"].append(self.boost_pirates)
         
     def remove_hook(self) -> None:
+        self.gold_left = 5
         self.army.hooks["on_gold_spent"].remove(self.boost_pirates)
 
     def boost_pirates(self, spent_amount):
