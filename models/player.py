@@ -58,6 +58,7 @@ class Player:
         self.lost_last_turn = False
         self.beast_boost_atk = 0
         self.beast_boost_hlt = 0
+        self.casted_on_turn = []
         self.view = self.tavern.new_view(self)
 
     @property
@@ -260,6 +261,7 @@ class Player:
             self.cards_played_on_turn = 0
             self.beast_boost_atk = 0
             self.beast_boost_hlt = 0
+            self.casted_on_turn = []
             for card in list(self.army.cards):
                 for hook in card.hooks["on_turn_start"]:
                     hook()
@@ -462,6 +464,7 @@ class Player:
             card = self.hand[card_to_play_ind]
             self.hand.remove(card)
             self.cards_played_on_turn += 1
+            self.casted_on_turn.append(card)
             if isinstance(card, Spell):
                 if place_to_play < len(self.army):
                     target = self.army[place_to_play]

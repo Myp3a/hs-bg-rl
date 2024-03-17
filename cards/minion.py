@@ -82,6 +82,7 @@ class Minion(Card):
         self.attack_perm_boost = 0
         self.health_perm_boost = 0
         self.not_sellable = False
+        self.immune_attack = False
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}:{self.random_id}:{self.attack_value},{self.health_value}"
@@ -244,7 +245,7 @@ class Minion(Card):
             hook(target)
         for hook in target.hooks["on_defence_mid"]:
             hook(self)
-        if not self.divine_shield:
+        if not self.divine_shield and not self.immune_attack:
             self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
             for hook in self.hooks["on_take_hit_post"]:
                 hook(target)
@@ -254,10 +255,11 @@ class Minion(Card):
                     hook()
                 self.death()
         else:
-            if target.attack_value > 0:
-                self.feature_overrides["shield"].append({"state": False, "one_turn": True})
-                for hook in self.army.hooks["on_divine_shield_lost"]:
-                    hook(self)
+            if not self.immune_attack:
+                if target.attack_value > 0:
+                    self.feature_overrides["shield"].append({"state": False, "one_turn": True})
+                    for hook in self.army.hooks["on_divine_shield_lost"]:
+                        hook(self)
         if not target.divine_shield:
             target.health_temp_boost -= self.attack_value + self.humming_bird_boost + self.sore_loser_boost
             for hook in target.hooks["on_take_hit_post"]:
