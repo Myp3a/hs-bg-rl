@@ -48,6 +48,9 @@ tune.run(
         name="PPO",
         stop={"timesteps_total": 5000000},
         checkpoint_freq=10,
-        local_dir=os.getcwd() + "/ray_results/" + env_name,
         config=config.to_dict(),
+        resume="AUTO",
+        #log_to_file=True,  # Doesn't work, logs are stored in /tmp/ray | %TEMP%\ray
+        local_dir=os.getcwd() + "/ray_results/" + env_name,  # Disable saving to ~/ray_results
+        storage_path=os.getcwd() + "/ray_results/" + env_name,  # Proper way of setting storage path
     )
