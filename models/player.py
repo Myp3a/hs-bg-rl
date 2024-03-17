@@ -425,6 +425,8 @@ class Player:
                             for hook in card.hooks["battlecry"]:
                                 for _ in range(self.count_brann_times()):
                                     hook()
+                                    for hook in self.army.hooks["on_battlecry"]:
+                                        hook(card)
                             for hook in self.army.hooks["on_minion_play"]:
                                 hook(card)
                             self.log.debug(f"{self} played {card}, magnited to {self.army[place_to_play]}")
@@ -436,6 +438,8 @@ class Player:
                 for hook in card.hooks["battlecry"]:
                     for _ in range(self.count_brann_times()):
                         hook()
+                        for hook in self.army.hooks["on_battlecry"]:
+                            hook(card)
                 for hook in self.army.hooks["on_minion_play"]:
                     hook(card)
                 return True

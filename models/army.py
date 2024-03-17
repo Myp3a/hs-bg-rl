@@ -34,6 +34,7 @@ class Army(CardSet):
             "on_gold_spent": [],  # (self), spent
             "on_fight_start": [self.start_fight_all, self.audacious_anchor_fight], # (self), friendly_army, enemy_army
             "on_gold_get": [],  # (self), got
+            "on_battlecry": []  # (self), cried
         }
         self.max_len = 7
         self.cards: list[Minion] = []
