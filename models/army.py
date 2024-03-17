@@ -30,7 +30,7 @@ class Army(CardSet):
             "on_values_change_perm": [],  # (self), target, attack_boost, health_boost
             "on_values_change_temp": [],  # (self), target, attack_boost, health_boost
             "on_minion_buy": [self.boost_undead_attack, self.boost_elemental_values, self.boost_tavern_minion, self.boost_frostling],  # (self), bought
-            "on_minion_summon": [self.mark_in_fight],  # (self), summoned
+            "on_minion_summon": [self.mark_in_fight, self.boost_beast],  # (self), summoned
             "on_gold_spent": [],  # (self), spent
             "on_fight_start": [self.start_fight_all, self.audacious_anchor_fight], # (self), friendly_army, enemy_army
             "on_gold_get": [],  # (self), got
@@ -108,6 +108,11 @@ class Army(CardSet):
         summoned.enemy_army = self.enemy
         if self.in_fight:
             summoned.in_fight = True
+
+    def boost_beast(self, summoned: Minion):
+        if MinionClass.Beast in summoned.classes:
+            summoned.attack_temp_boost += self.player.beast_boost_atk
+            summoned.health_temp_boost += self.player.beast_boost_hlt
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]

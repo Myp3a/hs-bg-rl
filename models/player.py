@@ -55,6 +55,8 @@ class Player:
         self.damaged_for_roll = False
         self.cards_played_on_turn = 0
         self.lost_last_turn = False
+        self.beast_boost_atk = 0
+        self.beast_boost_hlt = 0
         self.view = self.tavern.new_view(self)
 
     @property
@@ -255,6 +257,8 @@ class Player:
             self.gold_spent_on_turn = 0
             self.free_rolls = 0
             self.cards_played_on_turn = 0
+            self.beast_boost_atk = 0
+            self.beast_boost_hlt = 0
             for card in list(self.army.cards):
                 for hook in card.hooks["on_turn_start"]:
                     hook()
