@@ -12,7 +12,7 @@ class SlyRaptor(Minion):
     def __init__(self, army: Army) -> None:
         super().__init__(army)
         self.minion_id = 129
-        self.classes = [MinionClass.Naga]
+        self.classes = [MinionClass.Beast]
         self.level = 4
         self.base_attack_value = 3
         self.base_health_value = 4
