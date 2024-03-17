@@ -40,12 +40,15 @@ class HSPlayer(Env):
                 "rolls_on_turn": Box(low=0, high=50, dtype=np.int64),
                 "elementals_played": Box(low=0, high=100, dtype=np.int64),
                 "gold_spent_on_turn": Box(low=0, high=100, dtype=np.int64),
+                "cards_played_on_turn": Box(low=0, high=100, dtype=np.int64),
+                "lost_last_turn": Box(low=0, high=1, dtype=np.int64),
+                "spells_casted_on_turn": Box(low=0, high=100, dtype=np.int64),
             }),
             "hand_data": Tuple([
                 Dict({
                     "available": Discrete(2),
                     "type": Discrete(3),
-                    "minion_id": Discrete(180, start=-1),
+                    "minion_id": Discrete(215, start=-1),
                     "spell_id": Discrete(15, start=-1),
                     "card_class": MultiBinary(10),
                     "features": MultiBinary(8),
@@ -58,7 +61,7 @@ class HSPlayer(Env):
                 Dict({
                     "available": Discrete(2),
                     "type": Discrete(3),
-                    "minion_id": Discrete(180, start=-1),
+                    "minion_id": Discrete(215, start=-1),
                     "spell_id": Discrete(15, start=-1),
                     "card_class": MultiBinary(10),
                     "features": MultiBinary(8),
@@ -71,7 +74,7 @@ class HSPlayer(Env):
                 Dict({
                     "available": Discrete(2),
                     "type": Discrete(3),
-                    "minion_id": Discrete(180, start=-1),
+                    "minion_id": Discrete(215, start=-1),
                     "spell_id": Discrete(15, start=-1),
                     "card_class": MultiBinary(10),
                     "features": MultiBinary(8),

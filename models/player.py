@@ -126,6 +126,9 @@ class Player:
         d["rolls_on_turn"] = self.rolls_on_turn
         d["elementals_played"] = self.elementals_played
         d["gold_spent_on_turn"] = self.gold_spent_on_turn
+        d["cards_played_on_turn"] = self.cards_played_on_turn
+        d["lost_last_turn"] = int(self.lost_last_turn)
+        d["spells_casted_on_turn"] = len(self.casted_on_turn)
         return {
             "player_data": d, 
             "hand_data": self.hand.observation,

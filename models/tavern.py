@@ -197,7 +197,39 @@ class Tavern:
             [TitusRivendare(None) for _ in range(9)] + \
             [TortollanBlueShell(None) for _ in range(9)] + \
             [TransmutedBramblewitch(None) for _ in range(9)] + \
-            [UnderhandedDealer(None) for _ in range(9)]
+            [UnderhandedDealer(None) for _ in range(9)] + \
+            [AdmiralElisaGoreblade(None) for _ in range(6)] + \
+            [ArchlichKelthuzad(None) for _ in range(6)] + \
+            [Bristlebach(None) for _ in range(6)] + \
+            [Charlga(None) for _ in range(6)] + \
+            [ChoralMrrrglr(None) for _ in range(6)] + \
+            [CultistSthara(None) for _ in range(6)] + \
+            [Deadstomper(None) for _ in range(6)] + \
+            [ElementalOfSurprise(None) for _ in range(6)] + \
+            [EternalSummoner(None) for _ in range(6)] + \
+            [FamishedFelbat(None) for _ in range(6)] + \
+            [Felboar(None) for _ in range(6)] + \
+            [FleetAdmiralTethys(None) for _ in range(6)] + \
+            [FoeReaper4000(None) for _ in range(6)] + \
+            [Ghastcoiler(None) for _ in range(6)] + \
+            [GoldrinnTheGreatWolf(None) for _ in range(6)] + \
+            [HawkstriderHerald(None) for _ in range(6)] + \
+            [IgnitionSpecialist(None) for _ in range(6)] + \
+            [KalecgosArcaneAspect(None) for _ in range(6)] + \
+            [MantidQueen(None) for _ in range(6)] + \
+            [MotleyPhalanx(None) for _ in range(6)] + \
+            [Murky(None) for _ in range(6)] + \
+            [NalaaTheRedeemer(None) for _ in range(6)] + \
+            [OmegaBuster(None) for _ in range(6)] + \
+            [PolarizingBeatboxer(None) for _ in range(6)] + \
+            [RockRock(None) for _ in range(6)] + \
+            [SilivazTheVindictive(None) for _ in range(6)] + \
+            [SlitherspearLordOfGains(None) for _ in range(6)] + \
+            [TheWalkingFort(None) for _ in range(6)] + \
+            [Warpwing(None) for _ in range(6)] + \
+            [WhirlingLassOMatic(None) for _ in range(6)] + \
+            [YoungMurkeye(None) for _ in range(6)] + \
+            [ZappSlywick(None) for _ in range(6)]
         self.cards: list[Minion] = []
         self.upgrade_price = [6, 7, 8, 11, 10, 0]
         self.minion_count = [3, 4, 4, 5, 5, 6]

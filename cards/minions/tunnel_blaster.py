@@ -20,7 +20,11 @@ class TunnelBlaster(Minion):
         self.hooks["deathrattle"].append(self.damage_on_death)
 
     def damage_all(self):
-        targets = [t for t in self.army.cards + self.enemy_army.cards]
+        targets = [
+            t for t in
+            self.army.cards +
+            self.enemy_army.cards
+        ]
         for t in targets:
             tnt = GameEntity(self.army)
             tnt.base_attack_value = 3

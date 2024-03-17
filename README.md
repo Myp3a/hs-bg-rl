@@ -1,7 +1,7 @@
 # Hearthstone Battlegrounds simulator
 A project to make neural-powered Hearthstone Battlegrounds bot.
 # Features
- - Tier 1-5 minions
+ - Tier 1-6 minions
  - RLlib model training
 
 # Needs checking
@@ -26,7 +26,6 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Chain magnetic deathrattles
  - Targeted battlecry
  - Discover mechanic
- - Tier 6+ minions
  - Parallel training with multiple games
  - Tavern spells
  - Heroes
