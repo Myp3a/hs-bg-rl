@@ -81,6 +81,7 @@ class Minion(Card):
         self._health_temp_boost = 0
         self.attack_perm_boost = 0
         self.health_perm_boost = 0
+        self.not_sellable = False
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}:{self.random_id}:{self.attack_value},{self.health_value}"
@@ -284,18 +285,23 @@ class Minion(Card):
                 hook()
             target.death()
 
-    def magnet(self, target: Minion) -> None:
-        self.magnited_to = target
-        target.attack_perm_boost += self.attack_value
-        target.health_perm_boost += self.health_value
-        if self.taunt:
+    def magnet(self, target: Minion, copy=False) -> None:
+        if copy:
+            magneting = type(self)(self.army)
+            magneting.not_sellable = True
+        else:
+            magneting = self
+        magneting.magnited_to = target
+        target.attack_perm_boost += magneting.attack_value
+        target.health_perm_boost += magneting.health_value
+        if magneting.taunt:
             target.base_taunt = True
-        if self.divine_shield:
+        if magneting.divine_shield:
             target.base_divine_shield = True
-        if self.rebirth:
+        if magneting.rebirth:
             target.base_rebirth = True
-        if self.windfury:
+        if magneting.windfury:
             target.base_windfury = True
-        if self.toxic:
+        if magneting.toxic:
             target.base_toxic = True
-        target.magnited.append(self)
+        target.magnited.append(magneting)

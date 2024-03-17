@@ -10,6 +10,7 @@ from cards.minions.brann_bronzebeard import BrannBronzebeard
 from cards.minions.drakkari_enchanter import DrakkariEnchanter
 from cards.minions.elemental_of_surprise import ElementalOfSurprise
 from cards.minions.malchezaar_prince_of_dance import MalchezaarPrinceOfDance
+from cards.minions.polarizing_beatboxer import PolarizingBeatboxer
 from cards.minions.titus_rivendare import TitusRivendare
 from cards.spell import Spell, TargetedSpell
 
@@ -430,6 +431,11 @@ class Player:
                             for hook in self.army.hooks["on_minion_play"]:
                                 hook(card)
                             self.log.debug(f"{self} played {card}, magnited to {self.army[place_to_play]}")
+                            beatboxers = [b for b in self.army.cards if isinstance(b, PolarizingBeatboxer) and not b is self.army[place_to_play]]
+                            for b in beatboxers:
+                                if b.triplet:
+                                    card.magnet(b, copy=True)
+                                card.magnet(b, copy=True)
                             return card.magnet(self.army[place_to_play])
                 self.army.add(card, place_to_play)
                 self.log.debug(f"{self} played {card}, army = {self.army}")

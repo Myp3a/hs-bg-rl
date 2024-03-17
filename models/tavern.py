@@ -259,7 +259,7 @@ class Tavern:
     def sell(self, card: Minion) -> None:
         self.log.debug(f"sold {card}")
         self.clean_card(card)
-        if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]):
+        if any([isinstance(card, card_class) for card_class in self.NOT_SELLABLE]) or card.not_sellable:
             return
         for c in card.contains:
             self.sell(c)
