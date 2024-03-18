@@ -23,7 +23,7 @@ class MenagerieJug(Minion):
         for card in self.army.cards:
             diff_classes |= set(card.classes)
         if len(diff_classes) > 3:
-            target_classes = random.sample(diff_classes, k=3)
+            target_classes = random.sample(list(diff_classes), k=3)
         else:
             target_classes = list(diff_classes)
         for single_class in target_classes:

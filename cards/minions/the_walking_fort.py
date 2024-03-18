@@ -22,7 +22,7 @@ class TheWalkingFort(Minion):
         targets = [t for t in self.army.cards if t.taunt]
         if not targets:
             return
-        targets = random.sample(targets, k=min(len(targets), 4))
+        targets = random.sample(list(targets), k=min(len(targets), 4))
         for t in targets:
             if self.triplet:
                 atk_boost = 8
