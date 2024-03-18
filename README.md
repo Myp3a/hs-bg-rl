@@ -19,7 +19,6 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Perm / Temp values gain depending if in battle
 
 # TODO
- - Lava Lurker feature saving
  - Health-depleting actions blocking when 1hp
  - Murozond
  - Logging

@@ -79,7 +79,7 @@ class Army(CardSet):
 
     def boost_tavern_minion(self, bought: Minion) -> None:
         bought.attack_perm_boost += self.player.tavern_attack_boost
-        bought.attack_perm_boost += self.player.tavern_health_boost
+        bought.health_perm_boost += self.player.tavern_health_boost
     
     def audacious_anchor_fight(self, friendly: Army, enemy: Army) -> None:
         for anchor in friendly.cards:
