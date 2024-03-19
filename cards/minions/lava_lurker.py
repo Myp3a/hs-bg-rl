@@ -1,5 +1,4 @@
 from __future__ import annotations
-import sys
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
@@ -91,5 +90,4 @@ class LavaLurker(Minion):
                     for hook in self.army.player.army.hooks["on_values_change_perm"]:
                         hook(target, atk_boost, hlt_boost)
                 case SurfNSurf():
-                    print(self.hooks["on_turn_start"], file=sys.stderr)
                     self.hooks["on_turn_start"].remove(casted.remove_hook)
