@@ -37,6 +37,7 @@ class Minion(Card):
             "on_defence_mid": [],  # (self), target
             "on_take_hit_post": [],  # (self), target
             "on_fight_start": [],  # (self)
+            "on_fight_end": [],  # (self)
             "on_turn_start": [self.reset_turn_start],  # (self)
             "on_turn_end": [],  # (self)
             "on_sell": [],  # (self)

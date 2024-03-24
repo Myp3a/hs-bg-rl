@@ -36,6 +36,7 @@ class Army(CardSet):
             "on_minion_summon": [self.mark_in_fight, self.boost_beast],  # (self), summoned
             "on_gold_spent": [],  # (self), spent
             "on_fight_start": [self.start_fight_all, self.audacious_anchor_fight], # (self), friendly_army, enemy_army
+            "on_fight_end": [self.end_fight_all], # (self), friendly_army, dead
             "on_gold_get": [],  # (self), got
             "on_battlecry": []  # (self), cried
         }
@@ -111,6 +112,14 @@ class Army(CardSet):
     def start_fight_all(self, friendly: Army, enemy: Army):
         for c in self.cards:
             for hook in c.hooks["on_fight_start"]:
+                hook()
+
+    def end_fight_all(self, friendly: Army, dead: list[Minion]):
+        for c in self.cards:
+            for hook in c.hooks["on_fight_end"]:
+                hook()
+        for c in dead:
+            for hook in c.hooks["on_fight_end"]:
                 hook()
 
     def mark_in_fight(self, summoned: Minion):

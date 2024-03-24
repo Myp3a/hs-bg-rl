@@ -88,6 +88,8 @@ class Field:
                     self.log.debug("\n" + str(self))
                     self.first.army.in_fight = False
                     self.second.army.in_fight = False
+                    for hook in self.first.army.hooks["on_fight_end"]:
+                        hook(self.first.army, self.first.army.dead)
                     self.restore()
                     return
                 immediate_attacks = False
@@ -104,9 +106,13 @@ class Field:
                 self.log.debug("\n" + str(self))
                 self.first.army.in_fight = False
                 self.second.army.in_fight = False
+                for hook in self.first.army.hooks["on_fight_end"]:
+                    hook(self.first.army, self.first.army.dead)
                 self.restore()
                 return
         assert self.check_battle_end()
         self.first.army.in_fight = False
         self.second.army.in_fight = False
+        for hook in self.first.army.hooks["on_fight_end"]:
+            hook(self.first.army, self.first.army.dead)
         self.restore()
