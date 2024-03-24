@@ -19,10 +19,13 @@ class RendleTheMistermind(Minion):
 
     def choose_and_steal(self):
         targets = sorted(self.army.player.view, key=lambda m: m.level, reverse=True)
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets to steal")
             return
         if len(self.army.player.hand) == 10:
+            self.log.debug(f"{self} {self.army.player} hand is full")
             return
+        self.log.debug(f"{self} stealing {targets[0]}")
         self.army.player.tavern.buy(targets[0])
         targets[0].army = self.army
         self.army.player.view.remove(targets[0])

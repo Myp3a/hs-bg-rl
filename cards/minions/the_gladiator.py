@@ -20,12 +20,15 @@ class TheGladIator(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.boost_attack)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.boost_attack)
 
     def boost_attack(self, casted, target):
+        self.log.debug(f"{self} found casted spell, boosting self")
         if self.triplet:
             atk_boost = 2
         else:

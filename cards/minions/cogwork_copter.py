@@ -20,15 +20,18 @@ class CogworkCopter(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_divine_shield_lost")
         self.army.hooks["on_divine_shield_lost"].append(self.boost_hand_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_divine_shield_lost")
         self.army.hooks["on_divine_shield_lost"].remove(self.boost_hand_values)
 
     def boost_hand_values(self, lost) -> None:
         hand_minions = [m for m in self.army.player.hand if isinstance(m, Minion)]
         if len(hand_minions) > 0:
             rnd = random.choice(hand_minions)
+            self.log.debug(f"{self} boosting {rnd} in hand")
             rnd.attack_perm_boost += 1
             rnd.health_perm_boost += 1
             if self.triplet:

@@ -25,6 +25,7 @@ class GoldrinnTheGreatWolf(Minion):
             atk_boost = 3
             hlt_boost = 2
         curr_beasts = [b for b in self.army.cards if MinionClass.Beast in b.classes]
+        self.log.debug(f"{self} boosting {len(curr_beasts)} beasts and puts boost for this battle")
         for b in curr_beasts:
             b.attack_temp_boost += atk_boost
             b.health_temp_boost += hlt_boost

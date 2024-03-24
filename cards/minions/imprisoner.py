@@ -22,6 +22,7 @@ class Imprisoner(Minion):
         imp = Imp(self.army)
         if self.triplet:
             imp.triplet = True
+        self.log.debug(f"{self} summoning {imp}")
         for hook in imp.hooks["on_get"]:
             hook()
         self.army.add(imp, position)

@@ -33,14 +33,17 @@ class DaggerspineThrasher(Minion):
             self.available.append("toxic")
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.boost_values)
 
     def boost_values(self, casted, target):
         if len(self.available) > 0:
             feat = random.choice(self.available)
+            self.log.debug(f"{self} getting {feat}")
             self.available.remove(feat)
             match feat:
                 case "shield":

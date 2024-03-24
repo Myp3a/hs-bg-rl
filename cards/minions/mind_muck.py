@@ -21,15 +21,19 @@ class MindMuck(Minion):
     def other_eat_minion(self) -> None:
         # TODO: choose minion who will be eating
         if self.in_fight:
+            self.log.debug(f"{self} tried to eat mid-fight")
             return
         available_targets = self.army.player.view
-        if len(available_targets) == 0:
+        if not available_targets:
+            self.log.debug(f"{self} found no targets to eat")
             return
         available_eaters = [e for e in self.army.cards if MinionClass.Demon in e.classes and not e is self]
-        if len(available_eaters) == 0:
+        if not available_eaters:
+            self.log.debug(f"{self} found no eaters")
             return
         target = random.choice(available_targets)
         eater = random.choice(available_eaters)
+        self.log.debug(f"{eater} eating {target}")
         card = self.army.player.tavern.buy(target)
         eater.contains.append(card)
         self.army.player.view.remove(card)

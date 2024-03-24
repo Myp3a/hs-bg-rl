@@ -19,12 +19,15 @@ class FloatingWatcher(Minion):
         self.hooks["on_sell"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_hero_damage")
         self.army.hooks["on_hero_damage"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_hero_damage")
         self.army.hooks["on_hero_damage"].remove(self.boost_values)
 
     def boost_values(self, damage) -> None:
+        self.log.debug(f"{self} found hero damage, boosting self")
         if self.triplet:
             atk_boost = 4
             hlt_boost = 4

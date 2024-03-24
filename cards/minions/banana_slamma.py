@@ -19,13 +19,16 @@ class BananaSlamma(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_summon")
         self.army.hooks["on_minion_summon"].append(self.boost_beast)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_summon")
         self.army.hooks["on_minion_summon"].remove(self.boost_beast)
 
     def boost_beast(self, played: Minion):
-        if MinionClass.Beast in played.classes and not played is self and self.health_value > 0:
+        if self.in_fight and MinionClass.Beast in played.classes and not played is self and self.health_value > 0:
+            self.log.debug(f"{self} boosting {played}")
             if self.triplet:
                 atk_boost = played.attack_value * 3 - played.base_attack_value
                 hlt_boost = played.health_value * 3 - played.base_health_value

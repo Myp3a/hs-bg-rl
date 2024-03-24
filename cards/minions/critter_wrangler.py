@@ -5,6 +5,7 @@ from cards.minion import Minion, MinionClass
 from cards.spell import TargetedSpell
 
 if TYPE_CHECKING:
+    from cards.spell import Spell
     from models.army import Army
 
 
@@ -16,7 +17,6 @@ class CritterWrangler(Minion):
         self.level = 5
         self.base_attack_value = 5
         self.base_health_value = 7
-        self.avenge_cntr = 3
         self.hooks["on_play"].append(self.put_hook)
         self.hooks["on_lose"].append(self.remove_hook)
 
@@ -26,8 +26,9 @@ class CritterWrangler(Minion):
     def remove_hook(self) -> None:
         self.army.hooks["on_spell_cast"].remove(self.on_spell_cast)
 
-    def on_spell_cast(self, casted, target) -> None:
+    def on_spell_cast(self, casted: Spell, target: Minion) -> None:
         if isinstance(casted, TargetedSpell):
+            self.log.debug(f"{self} found casted {casted}, boosting {target}")
             if self.triplet:
                 atk_bonus = 2
                 hlt_bonus = 4

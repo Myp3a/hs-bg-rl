@@ -20,15 +20,18 @@ class MasterOfRealities(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_values_change")
         self.army.hooks["on_values_change_perm"].append(self.boost_values)
         self.army.hooks["on_values_change_temp"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_values_change")
         self.army.hooks["on_values_change_perm"].remove(self.boost_values)
         self.army.hooks["on_values_change_temp"].remove(self.boost_values)
 
-    def boost_values(self, target, atk_boost, hlt_boost):
+    def boost_values(self, target: Minion, atk_boost, hlt_boost):
         if MinionClass.Elemental in target.classes:
+            self.log.debug(f"{self} found elemental getting stats, boosting self")
             if self.triplet:
                 atk_boost = 2
                 hlt_boost = 2

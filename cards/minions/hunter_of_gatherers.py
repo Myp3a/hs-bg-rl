@@ -19,15 +19,18 @@ class HunterOfGatherers(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_values_change")
         self.army.hooks["on_values_change_perm"].append(self.boost_health)
         self.army.hooks["on_values_change_temp"].append(self.boost_health)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_values_change")
         self.army.hooks["on_values_change_perm"].remove(self.boost_health)
         self.army.hooks["on_values_change_temp"].remove(self.boost_health)
 
     def boost_health(self, target, atk_boost, hlt_boost) -> None:
         if self.health_value > 0 and atk_boost > 0 and target is self:
+            self.log.debug(f"{self} boosting army health")
             if self.triplet:
                 hlt_boost = 2
             else:

@@ -23,6 +23,7 @@ class RapscallionRecruiter(Minion):
             sw = Scallywag(self.army)
             if self.triplet:
                 sw.triplet = True
+            self.log.debug(f"{self} summoning {sw}")
             for hook in sw.hooks["on_get"]:
                 hook()
             self.army.add(sw, position)

@@ -23,15 +23,18 @@ class CorpseRefiner(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_death")
         self.army.hooks["on_minion_death"].append(self.on_another_death)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_death")
         self.army.hooks["on_minion_death"].remove(self.on_another_death)
 
     def on_another_death(self, died, position) -> None:
-        if self.health_value > 0:
+        if self.health_value > 0 and self in self.army.cards:
             if not died is self:
                 self.avenge_cntr -= 1
+            self.log.debug(f"{self} decreased avenge, new cntr {self.avenge_cntr}")
             if self.avenge_cntr == 0:
                 self.additional_gold += 1
                 self.reset_avenge()
@@ -40,6 +43,8 @@ class CorpseRefiner(Minion):
         self.avenge_cntr = 4
 
     def give_add_gold(self) -> None:
-        self.army.player.gold += self.additional_gold
+        gold = self.additional_gold
         if self.triplet:
-            self.army.player.gold += self.additional_gold
+            gold *= 2
+        self.log.debug(f"{self} giving {self.army.player} {gold} gold")
+        self.army.player.gold += gold

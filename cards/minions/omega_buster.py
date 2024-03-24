@@ -28,6 +28,7 @@ class OmegaBuster(Minion):
         else:
             mb = Microbot(self.army)
             mb.triplet = self.triplet
+            self.log.debug(f"{self} summoning {mb}")
             self.army.add(mb, position)
             for hook in mb.hooks["on_get"]:
                 hook()
@@ -37,7 +38,9 @@ class OmegaBuster(Minion):
     def boost_mechs(self):
         targets = [t for t in self.army.cards if MinionClass.Mech in t.classes]
         if not targets:
+            self.log.debug(f"{self} found no targets")
             return
+        self.log.debug(f"{self} boosting {len(targets)} mechs")
         for t in targets:
             if self.triplet:
                 atk_boost = 2

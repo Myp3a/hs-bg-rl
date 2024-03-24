@@ -29,14 +29,15 @@ class Ghastcoiler(Minion):
     def select_and_summon_deathrattle(self, position) -> None:
         dr = [d for d in self.army.player.tavern.cards if d.hooks["deathrattle"]]
         if not dr:
+            self.log.debug(f"{self} found no deathrattle minions")
             return
         minion = random.choice(dr)
         new_minion = type(minion)(self.army)
+        self.log.debug(f"{self} spawning {new_minion}")
         for hook in new_minion.hooks["on_get"]:
             hook()
-        new_minion.base_attack_value = 7
-        new_minion.base_health_value = 7
         if len(self.army) == 7:
+            self.log.debug(f"{self} found no place for {new_minion}")
             return
         self.army.add(new_minion, position)
         for hook in self.army.hooks["on_minion_summon"]:

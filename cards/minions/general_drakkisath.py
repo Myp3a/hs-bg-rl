@@ -21,10 +21,12 @@ class GeneralDrakkisath(Minion):
     def give_smolderwing(self):
         if self.triplet:
             sw = Smolderwing(self.army)
+            self.log.debug(f"{self} giving {sw}")
             for hook in sw.hooks["on_get"]:
                 hook()
             self.army.player.hand.add(sw, len(self.army.player.hand.cards))
         sw = Smolderwing(self.army)
+        self.log.debug(f"{self} giving {sw}")
         for hook in sw.hooks["on_get"]:
             hook()
         self.army.player.hand.add(sw, len(self.army.player.hand.cards))

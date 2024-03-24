@@ -18,15 +18,17 @@ class GraveGobbler(Minion):
         self.hooks["on_turn_start"].append(self.destroy_left)
 
     def destroy_left(self) -> None:
-        # TODO: find out rebirth mechanic
         pos = self.army.index(self)
         if pos > 0:
-            to_the_left = self.army[pos-1]
+            to_the_left: Minion = self.army[pos-1]
             if MinionClass.Undead in to_the_left.classes:
+                self.log.debug(f"{self} destroying {to_the_left} at position {pos-1}")
                 if to_the_left.rebirth:
+                    self.log.debug(f"{self} found rebirth at {to_the_left}, removing")
                     to_the_left.death()
                     to_the_left.feature_overrides["rebirth"].append({"state": False, "one_turn": False})
                 else:
+                    self.log.debug(f"{self} destroying {to_the_left}")
                     to_the_left.death()
                     for hook in to_the_left.hooks["on_lose"]:
                         hook()

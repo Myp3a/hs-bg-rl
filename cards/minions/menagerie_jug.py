@@ -22,12 +22,14 @@ class MenagerieJug(Minion):
         diff_classes = set()
         for card in self.army.cards:
             diff_classes |= set(card.classes)
+        self.log.debug(f"{self} found {len(diff_classes)} diff classes")
         if len(diff_classes) > 3:
             target_classes = random.sample(list(diff_classes), k=3)
         else:
             target_classes = list(diff_classes)
         for single_class in target_classes:
             target = random.choice([c for c in self.army.cards if single_class in c.classes])
+            self.log.debug(f"{self} boosting {target}")
             if self.triplet:
                 atk_boost = 4
                 hlt_boost = 4

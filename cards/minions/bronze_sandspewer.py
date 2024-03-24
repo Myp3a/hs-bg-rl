@@ -19,6 +19,7 @@ class BronzeSandspewer(Minion):
 
     def boost_values(self) -> None:
         if len(self.army) == 7:
+            self.log.debug(f"{self} found 7 minions, boosting self")
             if self.triplet:
                 atk_boost = 2
                 hlt_boost = 2

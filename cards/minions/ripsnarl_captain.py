@@ -19,13 +19,16 @@ class RipsnarlCaptain(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_attack")
         self.army.hooks["on_attack"].append(self.boost_pirate_attack)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_attack")
         self.army.hooks["on_attack"].remove(self.boost_pirate_attack)
 
     def boost_pirate_attack(self, attacker: Minion, target) -> None:
         if MinionClass.Pirate in attacker.classes:
+            self.log.debug(f"{self} boosting pirate attack")
             if self.triplet:
                 atk_boost = 6
             else:

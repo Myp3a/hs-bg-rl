@@ -20,11 +20,14 @@ class TavernTempest(Minion):
 
     def select_and_get_elemental(self):
         elementals = [e for e in self.army.player.tavern.available_cards() if e.level <= self.army.player.level]
-        if len(elementals) == 0:
+        if not elementals:
+            self.log.debug(f"{self} found no targets")
             return
         if len(self.army.player.hand.cards) == 10:
+            self.log.debug(f"{self} {self.army.player} hand is full")
             return
         elemental = random.choice(elementals)
+        self.log.debug(f"{self} getting {elemental}")
         self.army.player.tavern.buy(elemental)
         elemental.army = self.army
         for hook in elemental.hooks["on_get"]:

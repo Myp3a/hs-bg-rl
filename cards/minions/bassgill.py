@@ -19,12 +19,15 @@ class Bassgill(Minion):
 
     def choose_and_summon(self, position):
         if len(self.army) == 7:
+            self.log.debug(f"{self} found no place for summon")
             return
         to_summon = [t for t in self.army.player.hand if isinstance(t, Minion) and not t.summoned and MinionClass.Murloc in t.classes]
         if len(to_summon) == 0:
+            self.log.debug(f"{self} found no available summon")
             return
         summon = sorted(to_summon, key=lambda summ: summ.health_value, reverse=True)[0]
         summon.summoned = True
+        self.log.debug(f"{self} summoning {summon}")
         self.army.add(summon, position)
         for hook in self.army.hooks["on_minion_summon"]:
             hook(summon)

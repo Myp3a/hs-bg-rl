@@ -22,8 +22,10 @@ class Yrel(Minion):
         diff_classes = set()
         for card in self.army.cards:
             diff_classes |= set(card.classes)
+        self.log.debug(f"{self} found {len(diff_classes)} diff classes")
         for single_class in diff_classes:
             target = random.choice([c for c in self.army.cards if single_class in c.classes])
+            self.log.debug(f"{self} boosting {target}")
             if self.triplet:
                 atk_boost = 2
                 hlt_boost = 4

@@ -28,6 +28,7 @@ class Eagill(Minion):
         army_targets = [t for t in self.army.cards if not t is self]
         if len(army_targets) > 0:
             at = random.choice(army_targets)
+            self.log.debug(f"{self} boosting {at} in army")
             if self.in_fight:
                 at.attack_temp_boost += atk_boost
                 at.health_temp_boost += hlt_boost
@@ -39,5 +40,6 @@ class Eagill(Minion):
         hand_targets = [t for t in self.army.player.hand.cards if isinstance(t, Minion)]
         if len(hand_targets) > 0:
             ht = random.choice(hand_targets)
+            self.log.debug(f"{self} boosting {ht} in hand")
             ht.attack_perm_boost += atk_boost
             ht.health_perm_boost += hlt_boost

@@ -19,11 +19,14 @@ class RecyclingWraith(Minion):
         self.hooks["on_sell"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.free_roll)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.free_roll)
 
     def free_roll(self, played):
         if MinionClass.Elemental in played.classes:
+            self.log.debug(f"{self} making next roll free")
             self.army.player.free_rolls = 1

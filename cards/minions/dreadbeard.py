@@ -20,6 +20,7 @@ class Dreadbeard(Minion):
 
     def damage_hero(self) -> None:
         hero_damage = 1
+        self.log.debug(f"{self} damaging {self.army.player}")
         self.army.player.health -= hero_damage
         for hook in self.army.hooks["on_hero_damage"]:
             hook(hero_damage)

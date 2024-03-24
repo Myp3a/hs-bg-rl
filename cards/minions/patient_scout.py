@@ -27,11 +27,14 @@ class PatientScout(Minion):
     def discover(self) -> None:
         # TODO: make discover mechanic
         available_cards = [c for c in self.army.player.tavern.available_cards() if c.level <= self.tier]
-        if len(available_cards) == 0:
+        if not available_cards:
+            self.log.debug(f"{self} no available cards")
             return
         if len(self.army.player.hand) == 10:
+            self.log.debug(f"{self} {self.army.player.hand} is full")
             return
         discovered = random.choice(available_cards)
+        self.log.debug(f"{self} discovered {discovered}")
         card = self.army.player.tavern.buy(discovered)
         card.army = self.army
         for hook in card.hooks["on_get"]:

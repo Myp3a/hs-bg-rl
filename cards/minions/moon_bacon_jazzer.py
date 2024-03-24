@@ -18,6 +18,9 @@ class MoonBaconJazzer(Minion):
         self.hooks["battlecry"].append(self.boost_blood_gem_health)
 
     def boost_blood_gem_health(self) -> None:
-        self.army.player.blood_gem_health += 1
         if self.triplet:
-            self.army.player.blood_gem_health += 1
+            hlt_boost = 2
+        else:
+            hlt_boost = 1
+        self.log.debug(f"{self} boosting blood gem health by {hlt_boost}")
+        self.army.player.blood_gem_health += hlt_boost

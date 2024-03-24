@@ -19,6 +19,7 @@ class DeepSeaAngler(Minion):
         self.hooks["on_turn_start"].append(self.give_lure)
 
     def give_lure(self) -> None:
+        self.log.debug(f"{self} giving lure to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(AnglersLure(self.army.player, triplet=True), len(self.army.player.hand))
         else:

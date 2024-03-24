@@ -21,8 +21,10 @@ class TheWalkingFort(Minion):
     def boost_taunt(self):
         targets = [t for t in self.army.cards if t.taunt]
         if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         targets = random.sample(list(targets), k=min(len(targets), 4))
+        self.log.debug(f"{self} boosting {len(targets)} targets")
         for t in targets:
             if self.triplet:
                 atk_boost = 8

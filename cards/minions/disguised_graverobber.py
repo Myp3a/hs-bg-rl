@@ -21,12 +21,16 @@ class DisguisedGraverobber(Minion):
     def destroy_undead(self) -> None:
         targets = [t for t in self.army.cards if MinionClass.Undead in t.classes]
         if len(targets) == 0:
+            self.log.debug(f"{self} found no undead to destroy")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} destroying {target}")
         if target.rebirth:
+            self.log.debug(f"{self} found rebirth at {target}, removing")
             target.death()
-            target.feature_overrides["rebirth"].append({"state": False, "one_turn": False})
+            target.feature_overrides["rebirth"].append({"state": False, "one_turn": self.in_fight})
         else:
+            self.log.debug(f"{self} destroying {target}")
             target.death()
             for hook in target.hooks["on_lose"]:
                 hook()

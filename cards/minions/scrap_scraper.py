@@ -20,9 +20,11 @@ class ScrapScraper(Minion):
 
     def choose_and_get_magnetic_mech(self):
         mechs = [c for c in self.army.player.tavern.available_cards() if MinionClass.Mech in c.classes and c.magnetic]
-        if len(mechs) == 0:
+        if not mechs:
+            self.log.debug(f"{self} found no magnetic mechs")
             return
         mech = random.choice(mechs)
+        self.log.debug(f"{self} getting magnetic {mech}")
         self.army.player.tavern.buy(mech)
         mech.army = self.army
         for hook in mech.hooks["on_get"]:

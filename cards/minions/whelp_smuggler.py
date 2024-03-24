@@ -19,31 +19,25 @@ class WhelpSmuggler(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_values_change")
         self.army.hooks["on_values_change_perm"].append(self.boost_dragon)
-        self.army.hooks["on_values_change_temp"].append(self.boost_dragon_temp)
+        self.army.hooks["on_values_change_temp"].append(self.boost_dragon)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_values_change")
         self.army.hooks["on_values_change_perm"].remove(self.boost_dragon)
-        self.army.hooks["on_values_change_temp"].remove(self.boost_dragon_temp)
+        self.army.hooks["on_values_change_temp"].remove(self.boost_dragon)
 
     def boost_dragon(self, target: Minion, attack_boost, health_boost) -> None:
-        if MinionClass.Dragon in target.classes:
-            if attack_boost > 0:
-                if self.triplet:
-                    hlt_boost = 2
-                else:
-                    hlt_boost = 1
+        if MinionClass.Dragon in target.classes and attack_boost > 0:
+            self.log.debug(f"{self} found dragon with boosted attack, boosting health")
+            if self.triplet:
+                hlt_boost = 2
+            else:
+                hlt_boost = 1
+            if self.in_fight:
+                target.health_temp_boost += hlt_boost
+            else:
                 target.health_perm_boost += hlt_boost
                 for hook in self.army.hooks["on_values_change_perm"]:
                     hook(target, 0, hlt_boost)
-
-    def boost_dragon_temp(self, target: Minion, attack_boost, health_boost) -> None:
-        if MinionClass.Dragon in target.classes:
-            if attack_boost > 0:
-                if self.triplet:
-                    hlt_boost = 2
-                else:
-                    hlt_boost = 1
-                target.health_temp_boost += hlt_boost
-                for hook in self.army.hooks["on_values_change_temp"]:
-                    hook(self, 0, hlt_boost)

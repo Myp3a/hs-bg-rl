@@ -20,7 +20,9 @@ class SlitherspearLordOfGains(Minion):
     def boost_naga(self):
         targets = [t for t in self.army.cards if not t is self]
         if not targets:
+            self.log.debug(f"{self} found no targets")
             return
+        self.log.debug(f"{self} boosting {len(targets)} nagas")
         for t in targets:
             if self.triplet:
                 atk_boost = 2

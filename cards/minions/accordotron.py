@@ -19,5 +19,8 @@ class AccordOTron(Minion):
 
     def give_gold(self) -> None:
         if self.triplet:
-            self.army.player.gold += 1
-        self.army.player.gold += 1
+            gold = 2
+        else:
+            gold = 1
+        self.log.debug(f"{self} gave {self.army.player} {gold} gold")
+        self.army.player.gold += gold

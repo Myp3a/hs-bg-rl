@@ -19,4 +19,5 @@ class TortollanBlueShell(Minion):
 
     def give_gold(self):
         if self.army.player.lost_last_turn:
+            self.log.debug(f"{self} giving additional gold")
             self.army.player.gold += 4

@@ -23,6 +23,7 @@ class BongoBopper(Minion):
             count = 4
         else:
             count = 2
+        self.log.debug(f"{self} applying and giving {count} blood gems")
         for _ in range(count):
             bg = BloodGem(self.army.player)
             self.army.player.play_spell_minion(bg, self.army.index(self))

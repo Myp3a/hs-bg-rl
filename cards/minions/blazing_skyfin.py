@@ -19,13 +19,16 @@ class BlazingSkyfin(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.boost_values)
 
     def boost_values(self, played: Minion) -> None:
         if len(played.hooks["battlecry"]) > 0:
+            self.log.debug(f"{self} boosting because {played} had battlecry")
             if self.triplet:
                 atk_boost = 2
                 hlt_boost = 2

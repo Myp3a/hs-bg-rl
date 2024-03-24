@@ -20,5 +20,6 @@ class SindoreiStraightShot(Minion):
         self.hooks["on_attack_pre"].append(self.remove_features)
 
     def remove_features(self, target: Minion) -> None:
+        self.log.debug(f"{self} removing taunt and rebirth from {target}")
         target.feature_overrides["taunt"].append({"state": False, "one_turn": True})
         target.feature_overrides["rebirth"].append({"state": False, "one_turn": True})

@@ -21,8 +21,10 @@ class CultistSthara(Minion):
     def summon_demon(self, position):
         died_demons = [d for d in self.army.dead]
         if not died_demons:
+            self.log.debug(f"{self} found no demons to summon")
             return
         demon = died_demons[0]
         demon.attack_temp_boost = 0
         demon.health_temp_boost = 0
+        self.log.debug(f"{self} summoning {demon}")
         self.army.add(demon, position)

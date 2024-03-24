@@ -20,9 +20,11 @@ class Murcules(Minion):
 
     def boost_hand_values(self) -> None:
         available_targets = [t for t in self.army.player.hand.cards if isinstance(t, Minion)]
-        if len(available_targets) == 0:
+        if not available_targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(available_targets)
+        self.log.debug(f"{self} boosting {target}")
         target.attack_perm_boost += 2
         target.health_perm_boost += 2
         if self.triplet:

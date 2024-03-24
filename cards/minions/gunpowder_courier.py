@@ -20,15 +20,19 @@ class GunpowderCourier(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_gold_spent")
         self.army.hooks["on_gold_spent"].append(self.boost_pirates)
         
     def remove_hook(self) -> None:
         self.gold_left = 5
+        self.log.debug(f"{self} removed hook on_gold_spent")
         self.army.hooks["on_gold_spent"].remove(self.boost_pirates)
 
     def boost_pirates(self, spent_amount):
         self.gold_left -= spent_amount
+        self.log.debug(f"{self} decreased gold left, new cntr {self.gold_left}")
         if self.gold_left <= 0:
+            self.log.debug(f"{self} boosting pirates")
             if self.triplet:
                 atk_boost = 2
             else:

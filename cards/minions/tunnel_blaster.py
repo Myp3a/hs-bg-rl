@@ -25,9 +25,11 @@ class TunnelBlaster(Minion):
             self.army.cards +
             self.enemy_army.cards
         ]
+        self.log.debug(f"{self} attacking {len(targets)} targets")
         for t in targets:
             tnt = GameEntity(self.army)
             tnt.base_attack_value = 3
+            self.log.debug(f"{self} additionally attacking {t}")
             tnt.attack(t)
 
     def damage_on_death(self, position):

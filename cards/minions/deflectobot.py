@@ -20,13 +20,16 @@ class DeflectOBot(Minion):
         self.hooks["on_turn_start"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_summon")
         self.army.hooks["on_minion_summon"].append(self.get_shield)
         
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_summon")
         self.army.hooks["on_minion_summon"].remove(self.get_shield)
 
     def get_shield(self, summoned: Minion) -> None:
         if MinionClass.Mech in summoned.classes:
+            self.log.debug(f"{self} found summoned mech, boosting self atk and shield")
             if self.triplet:
                 atk_boost = 4
             else:

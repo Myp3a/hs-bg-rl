@@ -27,16 +27,19 @@ class ArchlichKelthuzad(Minion):
             if len(self.army) < 7:
                 self.army.add(new_minion, self.army.index(self) + 1)
 
-    def destroy(self, position) -> None:
+    def destroy(self, position: int) -> None:
         to_the_side: Minion = self.army[position]
         if MinionClass.Undead in to_the_side.classes:
+            self.log.debug(f"{self} destroying {to_the_side} at position {position}")
             t_atk = to_the_side.attack_temp_boost
             t_hlt = to_the_side.health_temp_boost
             features = list(to_the_side.feature_overrides)
             if to_the_side.rebirth:
+                self.log.debug(f"{self} found rebirth at {to_the_side}, removing")
                 to_the_side.death()
                 to_the_side.feature_overrides["rebirth"].append({"state": False, "one_turn": False})
             else:
+                self.log.debug(f"{self} destroying {to_the_side}")
                 to_the_side.death()
                 for hook in to_the_side.hooks["on_lose"]:
                     hook()
@@ -49,6 +52,7 @@ class ArchlichKelthuzad(Minion):
             new_minion.attack_temp_boost = t_atk
             new_minion.health_temp_boost = t_hlt
             new_minion.feature_overrides = features
+            self.log.debug(f"{self} spawning {new_minion}")
             for hook in new_minion.hooks["on_get"]:
                 hook()
             for hook in new_minion.hooks["on_play"]:

@@ -22,6 +22,7 @@ class EmeraldProtoWhelp(Minion):
             atk_boost = 2
         else:
             atk_boost = 1
+        self.log.debug(f"{self} getting {atk_boost} atk")
         self.attack_perm_boost += atk_boost
         for hook in self.army.hooks["on_values_change_perm"]:
             hook(self, atk_boost, 0)

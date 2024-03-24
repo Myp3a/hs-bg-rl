@@ -19,6 +19,7 @@ class LegionOverseer(Minion):
         self.hooks["on_lose"].append(self.hinder_tavern)
 
     def boost_tavern(self):
+        self.log.debug(f"{self} boosting minions in tavern")
         if self.triplet:
             atk_boost = 4
             hlt_boost = 2
@@ -29,6 +30,7 @@ class LegionOverseer(Minion):
         self.army.player.tavern_health_boost += hlt_boost
 
     def hinder_tavern(self):
+        self.log.debug(f"{self} hindering minions in tavern")
         if self.triplet:
             atk_boost = 4
             hlt_boost = 2

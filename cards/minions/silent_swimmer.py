@@ -19,6 +19,7 @@ class SilentSwimmer(Minion):
         self.hooks["on_turn_start"].append(self.give_swim)
 
     def give_swim(self) -> None:
+        self.log.debug(f"{self} giving swim to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(JustKeepSwimming(self.army.player, triplet=True), len(self.army.player.hand))
         else:

@@ -21,6 +21,7 @@ class MoroesStewardOfDeath(Minion):
     def boost_undead(self, position) -> None:
         for c in self.army.cards:
             if MinionClass.Undead in c.classes:
+                self.log.debug(f"{self} boosting {c}")
                 if self.triplet:
                     atk_boost = 2
                     hlt_boost = 10

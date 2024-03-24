@@ -20,16 +20,19 @@ class PartyElemental(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.boost_elemental)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.boost_elemental)
 
-    def boost_elemental(self, played):
+    def boost_elemental(self, played: Minion):
         # TODO: check if can buff itself
         if MinionClass.Elemental in played.classes:
             targets = [t for t in self.army.cards if MinionClass.Elemental in t.classes and not t is played]
-            if len(targets) == 0:
+            if not targets:
+                self.log.debug(f"{self} found no targets")
                 return
             if self.triplet:
                 atk_boost = 2
@@ -38,6 +41,7 @@ class PartyElemental(Minion):
                 atk_boost = 1
                 hlt_boost = 2
             target = random.choice(targets)
+            self.log.debug(f"{self} boosting {target}")
             target.attack_perm_boost += atk_boost
             target.health_perm_boost += hlt_boost
             for hook in self.army.hooks["on_values_change_perm"]:

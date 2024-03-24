@@ -18,6 +18,9 @@ class DancingBarnstormer(Minion):
         self.hooks["deathrattle"].append(self.boost_elementals)
 
     def boost_elementals(self, position) -> None:
-        self.army.player.tavern_elemental_boost += 1
         if self.triplet:
-            self.army.player.tavern_elemental_boost += 1
+            el_boost = 2
+        else:
+            el_boost = 1
+        self.log.debug(f"{self} boosting elementals by {el_boost}")
+        self.army.player.tavern_elemental_boost += el_boost

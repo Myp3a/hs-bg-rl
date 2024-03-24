@@ -20,6 +20,7 @@ class SteadfastSpirit(Minion):
 
     def boost_minions(self, position):
         targets = [t for t in self.army.cards if not t is self]
+        self.log.debug(f"{self} boosting {len(targets)} targets")
         for t in targets:
             if self.triplet:
                 atk_boost = 2

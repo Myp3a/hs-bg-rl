@@ -22,4 +22,5 @@ class Sellemental(Minion):
         drop = WaterDroplet(self.army)
         if self.triplet:
             drop.triplet = True
+        self.log.debug(f"{self} giving {drop}")
         self.army.player.hand.add(drop, len(self.army.player.hand))

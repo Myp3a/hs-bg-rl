@@ -18,6 +18,7 @@ class FreedealingGambler(Minion):
         self.hooks["on_sell"].append(self.give_gold)
 
     def give_gold(self) -> None:
+        self.log.debug(f"{self} giving additional gold")
         if self.triplet:
             self.army.player.gold += 3
         self.army.player.gold += 2

@@ -20,10 +20,12 @@ class SlyRaptor(Minion):
 
     def summon_beast(self, position) -> None:
         beasts = [b for b in self.army.player.tavern.cards if MinionClass.Beast in b.classes]
-        if len(beasts) == 0:
+        if not beasts:
+            self.log.debug(f"{self} found no beasts to summon")
             return
         beast = random.choice(beasts)
         new_beast = type(beast)(self.army)
+        self.log.debug(f"{self} summoning {new_beast}")
         for hook in new_beast.hooks["on_get"]:
             hook()
         new_beast.base_attack_value = 7

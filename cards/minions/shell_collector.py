@@ -19,6 +19,7 @@ class ShellCollector(Minion):
         self.hooks["battlecry"].append(self.give_gold_coin)
 
     def give_gold_coin(self) -> None:
+        self.log.debug(f"{self} giving gold coin to {self.army.player}")
         self.army.player.hand.add(GoldCoin(self.army.player), len(self.army.player.hand))
         if self.triplet:
             self.army.player.hand.add(GoldCoin(self.army.player), len(self.army.player.hand))

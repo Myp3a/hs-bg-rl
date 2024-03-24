@@ -21,17 +21,21 @@ class InsatiableUrzul(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.eat)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.eat)
 
     def eat(self, played) -> None:
         if MinionClass.Demon in played.classes:
             available_targets = self.army.player.view
-            if len(available_targets) == 0:
+            if not available_targets:
+                self.log.debug(f"{self} found no target to eat")
                 return
             target = random.choice(available_targets)
+            self.log.debug(f"{self} eating {target}")
             card = self.army.player.tavern.buy(target)
             self.contains.append(card)
             self.army.player.view.remove(card)

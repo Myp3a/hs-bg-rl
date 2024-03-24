@@ -19,6 +19,7 @@ class BloodsailCannoneer(Minion):
 
     def boost_pirates(self) -> None:
         targets = [t for t in self.army.cards if MinionClass.Pirate in t.classes and not t is self]
+        self.log.debug(f"{self} boosting {len(targets)} pirates")
         if len(targets) == 0:
             return
         if self.triplet:

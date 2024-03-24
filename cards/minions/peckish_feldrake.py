@@ -24,11 +24,14 @@ class PeckishFeldrake(Minion):
 
     def eat_minion(self) -> None:
         if self.in_fight:
+            self.log.debug(f"{self} tried to eat mid-fight")
             return
         available_targets = self.army.player.view
-        if len(available_targets) == 0:
+        if not available_targets:
+            self.log.debug(f"{self} found no targets to eat")
             return
         target = random.choice(available_targets)
+        self.log.debug(f"{self} eating {target}")
         card = self.army.player.tavern.buy(target)
         self.army.player.view.remove(card)
         self.contains.append(card)

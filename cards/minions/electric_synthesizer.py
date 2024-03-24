@@ -25,8 +25,7 @@ class ElectricSynthesizer(Minion):
             atk_boost = 2
             hlt_boost = 1
         targets = [t for t in self.army.cards if not t is self and MinionClass.Dragon in t.classes]
-        if len(targets) == 0:
-            return
+        self.log.debug(f"{self} boosting {len(targets)} dragons")
         for t in targets:
             if self.in_fight:
                 t.attack_temp_boost += atk_boost

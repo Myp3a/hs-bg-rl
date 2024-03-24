@@ -18,6 +18,7 @@ class RefreshingAnomaly(Minion):
         self.hooks["battlecry"].append(self.give_free_roll)
 
     def give_free_roll(self) -> None:
+        self.log.debug(f"{self} making next roll free")
         self.army.player.free_rolls += 1
         if self.triplet:
             self.army.player.free_rolls += 1

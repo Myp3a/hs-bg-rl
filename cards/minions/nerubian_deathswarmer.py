@@ -23,6 +23,7 @@ class NerubianDeathswarmer(Minion):
         else:
             atk_boost = 1
         self.army.player.undead_attack_boost += atk_boost
+        self.log.debug(f"{self} boosting {self.army.player} undead attack")
         for c in self.army.cards:
             if MinionClass.Undead in c.classes:
                 if self.in_fight:

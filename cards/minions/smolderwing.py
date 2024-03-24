@@ -20,9 +20,11 @@ class Smolderwing(Minion):
 
     def boost_dragon(self):
         targets = [t for t in self.army.cards if MinionClass.Dragon in t.classes and not t is self]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} boosting {target}")
         if self.triplet:
             atk_boost = 10
         else:

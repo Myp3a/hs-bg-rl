@@ -20,7 +20,8 @@ class SprightlyScarab(Minion):
         
     def boost_beast(self) -> None:
         targets = [t for t in self.army.cards if MinionClass.Beast in t.classes and not t is self]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(targets)
         # TODO: effect selection mechanic
@@ -33,6 +34,7 @@ class SprightlyScarab(Minion):
                 else:
                     atk_boost = 1
                     hlt_boost = 1
+                self.log.debug(f"{self} boosting and giving rebirth to {target}")
                 target.attack_perm_boost += atk_boost
                 target.health_perm_boost += hlt_boost
                 target.feature_overrides["rebirth"].append({"state": True, "one_turn": False})
@@ -45,6 +47,7 @@ class SprightlyScarab(Minion):
                 else:
                     atk_boost = 2
                     hlt_boost = 2
+                self.log.debug(f"{self} boosting and giving taunt to {target}")
                 target.attack_perm_boost += atk_boost
                 target.health_perm_boost += hlt_boost
                 target.feature_overrides["taunt"].append({"state": True, "one_turn": False})

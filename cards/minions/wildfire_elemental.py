@@ -29,6 +29,7 @@ class WildfireElemental(Minion):
     def damage(self, target, damage):
         fire = GameEntity(self.army)
         fire.base_attack_value = damage
+        self.log.debug(f"{self} additionaly attacking {target}")
         fire.attack(target)
 
     def get_target(self, position):
@@ -43,6 +44,7 @@ class WildfireElemental(Minion):
             allow_damage_left = True
         if self.target_position < 7 and self.target_position < len(self.target_army.cards) and self.target_army.cards[self.target_position].health_value > 0:
             allow_damage_right = True
+        self.log.debug(f"{self} chosen {self.target_position} minion, L/R dmg: {allow_damage_left}/{allow_damage_right}")
         return allow_damage_left, allow_damage_right
 
     def attack_adjacent(self, target: Minion) -> None:

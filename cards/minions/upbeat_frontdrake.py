@@ -21,12 +21,14 @@ class UpbeatFrontdrake(Minion):
 
     def give_dragon(self) -> None:
         self.turns_left -= 1
+        self.log.debug(f"{self} decreased end turn count, new cntr {self.turns_left}")
         if self.turns_left == 0:
             self.turns_left = 3
             dragons = [d for d in self.army.player.tavern.cards 
                        if MinionClass.Dragon in d.classes 
                        and d.level <= self.army.player.level]
             dragon = random.choice(dragons)
+            self.log.debug(f"{self} giving {dragon}")
             dragon.army = self.army
             self.army.player.tavern.buy(dragon)
             for hook in dragon.hooks["on_get"]:

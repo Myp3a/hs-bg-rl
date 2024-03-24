@@ -19,6 +19,7 @@ class ReefRiffer(Minion):
         self.hooks["on_turn_start"].append(self.give_riffs)
 
     def give_riffs(self) -> None:
+        self.log.debug(f"{self} giving riffs to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(SickRiffs(self.army.player, triplet=True), len(self.army.player.hand))
         else:

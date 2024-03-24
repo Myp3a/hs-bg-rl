@@ -25,8 +25,10 @@ class LighterFighter(Minion):
             damage = 4
         for _ in range(2):
             targets: list[Minion] = sorted(self.enemy_army.cards, key=lambda targ: targ.health_value)
-            if len(targets) == 0:
+            if not targets:
+                self.log.debug(f"{self} found no targets")
                 return
             laser = GameEntity(self.army)
             laser.base_attack_value = damage
+            self.log.debug(f"{self} attacking {targets[0]}")
             laser.attack(targets[0])

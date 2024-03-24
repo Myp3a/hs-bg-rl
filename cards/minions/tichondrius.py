@@ -19,13 +19,16 @@ class Tichondrius(Minion):
         self.hooks["on_sell"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_hero_damage")
         self.army.hooks["on_hero_damage"].append(self.boost_demons)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_hero_damage")
         self.army.hooks["on_hero_damage"].remove(self.boost_demons)
 
     def boost_demons(self, played):
         demons = [d for d in self.army.cards if MinionClass.Demon in d.classes and not d is self]
+        self.log.debug(f"{self} found hero damage, boosting {len(demons)} demons")
         for d in demons:
             if self.triplet:
                 atk_boost = 2

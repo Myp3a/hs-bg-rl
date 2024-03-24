@@ -19,6 +19,7 @@ class DeepBlueCrooner(Minion):
         self.hooks["on_turn_start"].append(self.give_blues)
 
     def give_blues(self) -> None:
+        self.log.debug(f"{self} giving blues to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(DeepBlues(self.army.player, triplet=True), len(self.army.player.hand))
         else:

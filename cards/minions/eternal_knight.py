@@ -20,6 +20,7 @@ class EternalKnight(Minion):
         self.hooks["on_lose"].append(self.drop_boost)
 
     def boost_knights(self) -> None:
+        self.log.debug(f"{self} boosting knights_died for {self.army.player}")
         self.army.player.knights_died += 1
 
     def get_boost(self) -> None:
@@ -28,6 +29,7 @@ class EternalKnight(Minion):
         if self.triplet:
             self.base_attack_value += self.army.player.knights_died
             self.base_health_value += self.army.player.knights_died
+        self.log.debug(f"{self} got boosted")
 
     def drop_boost(self) -> None:
         self.base_attack_value = 2

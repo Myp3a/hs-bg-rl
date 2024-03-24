@@ -19,13 +19,16 @@ class HungrySnapjaw(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.boost_health)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.boost_health)
         
     def boost_health(self, played) -> None:
         if MinionClass.Beast in played.classes:
+            self.log.debug(f"{self} getting boost because beast was played")
             if self.triplet:
                 hlt_boost = 2
             else:

@@ -20,17 +20,21 @@ class FamishedFelbat(Minion):
 
     def demons_eat(self):
         demons = [d for d in self.army.cards if MinionClass.Demon in d.classes]
+        self.log.debug(f"{self} forcing {len(demons)} to eat")
         random.shuffle(demons)
         for d in demons:
             self.eat_minion(d)
 
-    def eat_minion(self, eater) -> None:
+    def eat_minion(self, eater: Minion) -> None:
         if eater.in_fight:
+            self.log.debug(f"{eater} tried to eat mid-fight")
             return
         available_targets = self.army.player.view
-        if len(available_targets) == 0:
+        if not available_targets:
+            self.log.debug(f"{eater} found no one to eat")
             return
         target = random.choice(available_targets)
+        self.log.debug(f"{eater} eating {target}")
         card = self.army.player.tavern.buy(target)
         self.army.player.view.remove(card)
         eater.contains.append(card)

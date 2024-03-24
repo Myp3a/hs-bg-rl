@@ -19,6 +19,7 @@ class RazorfenGeomancer(Minion):
         self.hooks["battlecry"].append(self.give_blood_gem)
 
     def give_blood_gem(self) -> None:
+        self.log.debug(f"{self} giving blood gem to {self.army.player}")
         self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))
         if self.triplet:
             self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))

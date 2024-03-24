@@ -19,13 +19,16 @@ class Deadstomper(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_summon")
         self.army.hooks["on_minion_summon"].append(self.on_summon)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_summon")
         self.army.hooks["on_minion_summon"].remove(self.on_summon)
 
-    def on_summon(self, summoned):
+    def on_summon(self, summoned: Minion):
         if self.in_fight:
+            self.log.debug(f"{self} found summoned minion, boosting army atk")
             for t in self.army.cards:
                 if self.triplet:
                     atk_boost = 6

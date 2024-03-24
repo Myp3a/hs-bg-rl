@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+import logging
 import random
 import string
 
@@ -27,8 +28,8 @@ class Minion(Card):
         super().__init__()
         self.army = army
         self.enemy_army = None
-        self.hooks = {
-            "on_attack_pre": [],  # (self), target
+        self.hooks: dict[str, list] = {
+            "on_attack_pre": [self.count_hummingbirds],  # (self), target
             "on_attack_post": [],  # (self), target
             "on_defence_pre": [],  # (self), target
             "on_defence_post": [],  # (self), target
@@ -83,6 +84,9 @@ class Minion(Card):
         self.health_perm_boost = 0
         self.not_sellable = False
         self.immune_attack = False
+        self.log = logging.getLogger("minion")
+        self.log.setLevel(logging.DEBUG)
+        logging.basicConfig()
 
     def __str__(self) -> str:
         basename = f"{type(self).__name__}:{self.random_id}:{self.attack_value},{self.health_value}"
@@ -205,6 +209,14 @@ class Minion(Card):
             "stealth": [],
         }
 
+    def count_hummingbirds(self, target) -> None:
+        bonus = self.army.count_hummingbirds(self)
+        self.humming_bird_boost = bonus
+
+    def count_sore_losers(self, target) -> None:
+        bonus = self.army.count_sore_losers(self)
+        self.sore_loser_boost = bonus
+
     def death(self) -> None:
         position = self.army.index(self)
         for hook in self.army.hooks["on_minion_death"]:
@@ -246,7 +258,9 @@ class Minion(Card):
         for hook in target.hooks["on_defence_mid"]:
             hook(self)
         if not self.divine_shield and not self.immune_attack:
-            self.health_temp_boost -= target.attack_value + target.humming_bird_boost + target.sore_loser_boost
+            self.health_temp_boost -= (target.attack_value
+                + (target.humming_bird_boost if MinionClass.Beast in target.classes else 0)
+                + (target.sore_loser_boost if MinionClass.Undead in target.classes else 0))
             for hook in self.hooks["on_take_hit_post"]:
                 hook(target)
             if target.toxic:
@@ -261,7 +275,9 @@ class Minion(Card):
                     for hook in self.army.hooks["on_divine_shield_lost"]:
                         hook(self)
         if not target.divine_shield:
-            target.health_temp_boost -= self.attack_value + self.humming_bird_boost + self.sore_loser_boost
+            target.health_temp_boost -= (self.attack_value
+                + (self.humming_bird_boost if MinionClass.Beast in self.classes else 0)
+                + (self.sore_loser_boost if MinionClass.Undead in self.classes else 0))
             for hook in target.hooks["on_take_hit_post"]:
                 hook(self)
             if self.toxic:

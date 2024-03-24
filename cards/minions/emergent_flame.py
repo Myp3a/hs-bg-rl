@@ -20,9 +20,11 @@ class EmergentFlame(Minion):
 
     def boost_elemental(self) -> None:
         targets = [t for t in self.army.cards if MinionClass.Elemental in t.classes and not t is self]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no elemental to boost")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} boosting {target} with {self.army.player.rolls_on_turn} rolls")
         if self.triplet:
             atk_boost = (self.army.player.rolls_on_turn + 1) * 2
             hlt_boost = (self.army.player.rolls_on_turn + 1) * 2

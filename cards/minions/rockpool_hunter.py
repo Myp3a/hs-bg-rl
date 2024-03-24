@@ -20,9 +20,11 @@ class RockpoolHunter(Minion):
 
     def boost_murloc_values(self) -> None:
         available_targets = [c for c in self.army.cards if not self and MinionClass.Murloc in c.classes]
-        if len(available_targets) == 0:
+        if not available_targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(available_targets)
+        self.log.debug(f"{self} boosting {target}")
         if self.triplet:
             atk_boost = 2
             hlt_boost = 2

@@ -23,6 +23,7 @@ class Mechorse(Minion):
             h = Mechapony(self.army)
             if self.triplet:
                 h.triplet = True
+            self.log.debug(f"{self} summoning {h}")
             for hook in h.hooks["on_get"]:
                 hook()
             self.army.add(h, position)

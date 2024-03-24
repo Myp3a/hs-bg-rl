@@ -19,6 +19,7 @@ class SurfNSurf(Minion):
         self.hooks["on_turn_start"].append(self.give_crab)
 
     def give_crab(self) -> None:
+        self.log.debug(f"{self} giving crab to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(CrabSpell(self.army.player, triplet=True), len(self.army.player.hand))
         else:

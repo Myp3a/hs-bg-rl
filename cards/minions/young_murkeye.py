@@ -19,11 +19,13 @@ class YoungMurkeye(Minion):
 
     def choose_and_trigger_battlecries(self, position):
         if position > 0:
+            self.log.debug(f"{self} triggering battlecry for {self.army.cards[position - 1]}")
             for hook in self.army.cards[position - 1].hooks["battlecry"]:
                 for _ in range(self.army.player.count_brann_times()):
                     hook()
-        if position < len(self.army.cards):
-            for hook in self.army.cards[position].hooks["battlecry"]:
+        if position < len(self.army.cards) - 1:
+            self.log.debug(f"{self} triggering battlecry for {self.army.cards[position + 1]}")
+            for hook in self.army.cards[position + 1].hooks["battlecry"]:
                 for _ in range(self.army.player.count_brann_times()):
                     hook()
 

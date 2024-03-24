@@ -31,10 +31,13 @@ class LivingConstellation(Minion):
             hlt_boost = 1
         atk_boost *= len(diff_classes)
         hlt_boost *= len(diff_classes)
+        self.log.debug(f"{self} found {len(diff_classes)} different classes")
         targets = [t for t in self.army.cards if not t is self]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets to boost")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} boosting {target}")
         if self.in_fight:
             target.attack_temp_boost += atk_boost
             target.health_temp_boost += hlt_boost

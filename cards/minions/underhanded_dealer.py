@@ -19,12 +19,15 @@ class UnderhandedDealer(Minion):
         self.hooks["on_sell"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_gold_get")
         self.army.hooks["on_gold_get"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_gold_get")
         self.army.hooks["on_gold_get"].remove(self.boost_values)
 
     def boost_values(self, got):
+        self.log.debug(f"{self} found that got gold, boosting self")
         if self.triplet:
             atk_boost = 2
             hlt_boost = 2

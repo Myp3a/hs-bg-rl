@@ -308,6 +308,7 @@ class Player:
 
     def upgrade_tavern(self) -> bool:
         if self.upgrade_possible():
+            self.log.debug(f"{self} upgraded tavern to l{self.level+1}")
             tav_price = self.tavern_upgrade_price
             self.gold -= tav_price
             for hook in self.army.hooks["on_gold_spent"]:
@@ -325,6 +326,7 @@ class Player:
     
     def roll(self) -> bool:
         if self.roll_possible():
+            self.log.debug(f"{self} rolled tavern")
             self.damaged_for_roll = False
             malchezaar_rolls = self.count_malchezaar_rolls()
             if malchezaar_rolls == 0:

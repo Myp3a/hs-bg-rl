@@ -29,6 +29,7 @@ class Lullabot(Minion):
             target = self
         else:
             target = self.magnited_to
+        self.log.debug(f"{self}: magnited to {target}, boosting values")
         target.attack_perm_boost += atk_boost
         target.health_perm_boost += hlt_boost
         for hook in self.army.hooks["on_values_change_perm"]:

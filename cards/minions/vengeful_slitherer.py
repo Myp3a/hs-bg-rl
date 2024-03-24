@@ -19,6 +19,7 @@ class VengefulSlitherer(Minion):
         self.hooks["on_turn_start"].append(self.give_defend)
 
     def give_defend(self) -> None:
+        self.log.debug(f"{self} giving defend to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(DefendToTheDeath(self.army.player, triplet=True), len(self.army.player.hand))
         else:

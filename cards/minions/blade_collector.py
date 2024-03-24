@@ -28,6 +28,7 @@ class BladeCollector(Minion):
     def damage(self, target, damage):
         blade = GameEntity(self.army)
         blade.base_attack_value = damage
+        self.log.debug(f"{self} additionaly attacking {target}")
         blade.attack(target)
 
     def get_target(self, position):
@@ -42,6 +43,7 @@ class BladeCollector(Minion):
             allow_damage_left = True
         if self.target_position + 1 < 7 and self.target_position + 1 < len(self.target_army.cards) and self.target_army.cards[self.target_position + 1].health_value > 0:
             allow_damage_right = True
+        self.log.debug(f"{self} chosen {self.target_position} minion, L/R dmg: {allow_damage_left}/{allow_damage_right}")
         return allow_damage_left, allow_damage_right
 
     def attack_adjacent(self, target: Minion) -> None:

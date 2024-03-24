@@ -19,15 +19,16 @@ class ColdlightSeer(Minion):
 
     def boost_murloc(self) -> None:
         for minion in self.army.cards:
-            if MinionClass.Murloc in minion.classes:
-                if not minion is self:
-                    if self.triplet:
-                        hlt_boost = 4
-                    else:
-                        hlt_boost = 2
-                    if self.in_fight:
-                        minion.health_temp_boost += hlt_boost
-                    else:
-                        minion.health_perm_boost += hlt_boost
-                        for hook in self.army.hooks["on_values_change_perm"]:
-                            hook(minion, 0, hlt_boost)
+            if MinionClass.Murloc in minion.classes and not minion is self:
+                if self.triplet:
+                    hlt_boost = 4
+                else:
+                    hlt_boost = 2
+                if self.in_fight:
+                    self.log.debug(f"{self} temporarily boosting {minion} for {hlt_boost} hlt")
+                    minion.health_temp_boost += hlt_boost
+                else:
+                    self.log.debug(f"{self} boosting {minion} for {hlt_boost} hlt")
+                    minion.health_perm_boost += hlt_boost
+                    for hook in self.army.hooks["on_values_change_perm"]:
+                        hook(minion, 0, hlt_boost)

@@ -20,6 +20,7 @@ class SouthseaBusker(Minion):
 
     def give_gold(self) -> None:
         if not self.gave_gold:
+            self.log.debug(f"{self} giving gold")
             self.gave_gold = True
             self.army.player.gold += 1
             if self.triplet:

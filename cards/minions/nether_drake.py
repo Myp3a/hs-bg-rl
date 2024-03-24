@@ -23,6 +23,7 @@ class NetherDrake(Minion):
             atk_boost = 2
         else:
             atk_boost = 1
+        self.log.debug(f"{self} boosting {len(targets)} dragons")
         for t in targets:
             t.attack_perm_boost += atk_boost
             for hook in self.army.hooks["on_values_change_perm"]:

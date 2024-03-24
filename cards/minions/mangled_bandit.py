@@ -26,6 +26,7 @@ class MangledBandit(Minion):
             gem_count = 3
         for card in self.army.player.hand.cards:
             if isinstance(card, Spell):
+                self.log.debug(f"{self} discarding {card}, getting {gem_count} blood gems")
                 self.army.player.hand.cards.remove(card)
                 for _ in range(gem_count):
                     self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))

@@ -20,6 +20,7 @@ class KingBagurgle(Minion):
     def boost_murloc(self) -> None:
         for c in self.army.cards:
             if MinionClass.Murloc in c.classes:
+                self.log.debug(f"{self} boosting {c}")
                 if self.triplet:
                     atk_boost = 6
                     hlt_boost = 6

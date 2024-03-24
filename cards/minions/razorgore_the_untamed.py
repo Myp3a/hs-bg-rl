@@ -19,6 +19,7 @@ class RazorgoreTheUntamed(Minion):
 
     def boost_values(self) -> None:
         dragons = [d for d in self.army.cards if MinionClass.Dragon in d.classes and not d is self]
+        self.log.debug(f"{self} found {len(dragons)}, boosting self")
         for _ in range(len(dragons)):
             if self.triplet:
                 atk_boost = 2

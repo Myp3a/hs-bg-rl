@@ -19,12 +19,15 @@ class SoulRewinder(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_hero_damage")
         self.army.hooks["on_hero_damage"].append(self.rewind_damage)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_hero_damage")
         self.army.hooks["on_hero_damage"].remove(self.rewind_damage)
 
     def rewind_damage(self, damage) -> None:
+        self.log.debug(f"{self} rewinding {damage} damage for {self.army.player}")
         self.army.player.health += damage
         if self.triplet:
             hlt_boost = 2

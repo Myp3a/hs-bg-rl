@@ -20,9 +20,11 @@ class MonstrousMacaw(Minion):
 
     def choose_and_trigger_deathrattle(self, position):
         targets = [t for t in self.army.cards if len(t.hooks["deathrattle"]) > 0]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} triggering deathrattle for {target}")
         for hook in target.hooks["deathrattle"]:
             hook(self.army.index(target) + 1)
 

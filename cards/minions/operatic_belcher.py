@@ -21,9 +21,11 @@ class OperaticBelcher(Minion):
 
     def choose_and_give_toxic(self):
         targets = [t for t in self.army.cards if MinionClass.Murloc in t.classes and not t.toxic]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} giving toxic to {target}")
         target.feature_overrides["toxic"].append({"state": True, "one_turn": self.in_fight})
 
     def give_toxic(self, position):

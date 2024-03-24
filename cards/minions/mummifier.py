@@ -20,9 +20,11 @@ class Mummifier(Minion):
 
     def choose_and_give_rebirth(self):
         targets = [t for t in self.army.cards if MinionClass.Undead in t.classes and not t.rebirth]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} giving rebirth to {target}")
         target.feature_overrides["rebirth"].append({"state": True, "one_turn": self.in_fight})
         target.reborn = False
 

@@ -22,9 +22,11 @@ class ZestyShaker(Minion):
         self.hooks["on_play"].append(self.reset_spell)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.get_new_copy)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.get_new_copy)
 
     def reset_spell(self):
@@ -35,5 +37,6 @@ class ZestyShaker(Minion):
 
     def get_new_copy(self, casted, target):
         if self.spell_count > 0 and target is self:
+            self.log.debug(f"{self} duplicating {casted}")
             self.army.player.hand.add(type(casted)(self.army.player, triplet=casted.triplet), len(self.army.player.hand))
             self.spell_count -= 1

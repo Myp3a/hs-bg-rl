@@ -21,8 +21,10 @@ class AmberGuardian(Minion):
     def select_and_boost(self) -> None:
         targets = [t for t in self.army.cards if MinionClass.Dragon in t.classes and not t is self]
         if len(targets) == 0:
+            self.log.debug(f"{self} found no targets to boost")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} giving boost and shield to {target}")
         atk_boost = 2
         hlt_boost = 2
         if not target.divine_shield:

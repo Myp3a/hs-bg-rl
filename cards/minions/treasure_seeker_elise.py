@@ -22,7 +22,9 @@ class TreasureSeekerElise(Minion):
       
     def roll(self):
         self.rolls_left -= 1
+        self.log.debug(f"{self} decreased rolls, new cntr {self.rolls_left}")
         if self.rolls_left == 0:
+            self.log.debug(f"{self} adding golden monkey to tavern")
             self.army.player.view.remove(random.choice(self.army.player.view))
             gm = GoldenMonkey(None)
             gm.triplet = True

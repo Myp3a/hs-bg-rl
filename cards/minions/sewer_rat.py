@@ -24,6 +24,7 @@ class SewerRat(Minion):
             hs.triplet = True
         for hook in hs.hooks["on_get"]:
             hook()
+        self.log.debug(f"{self} summoning {hs}")
         self.army.add(hs, position)
         for hook in self.army.hooks["on_minion_summon"]:
             hook(hs)

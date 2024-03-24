@@ -21,14 +21,17 @@ class FleetAdmiralTethys(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_gold_spent")
         self.army.hooks["on_gold_spent"].append(self.get_pirate)
         
     def remove_hook(self) -> None:
         self.gold_left = 9
+        self.log.debug(f"{self} removed hook on_gold_spent")
         self.army.hooks["on_gold_spent"].remove(self.get_pirate)
 
     def get_pirate(self, spent_amount):
         self.gold_left -= spent_amount
+        self.log.debug(f"{self} decreased gold, new cntr {self.gold_left}")
         if self.gold_left <= 0:
             if self.triplet:
                 self.select_and_get_pirate()
@@ -40,6 +43,7 @@ class FleetAdmiralTethys(Minion):
         if not avail:
             return
         p = random.choice(avail)
+        self.log.debug(f"{self} getting {p}")
         self.army.player.tavern.buy(p)
         p.army = self.army
         for hook in p.hooks["on_get"]:

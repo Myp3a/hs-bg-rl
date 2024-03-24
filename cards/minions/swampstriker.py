@@ -19,13 +19,16 @@ class Swampstriker(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.boost_attack)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.boost_attack)
 
     def boost_attack(self, played: Minion) -> None:
         if MinionClass.Murloc in played.classes:
+            self.log.debug(f"{self} found played murloc, boosting self")
             if self.triplet:
                 atk_boost = 2
             else:

@@ -32,5 +32,6 @@ class MadMatador(Minion):
         if self.redirects_left > 0:
             self.redirects_left -= 1
             target = random.choice(self.enemy_army.cards)
+            self.log.debug(f"{self} redirecting {attacker} to {target}")
             attacker.attack(target)
             return True  # Prevent existing attack

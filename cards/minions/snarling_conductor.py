@@ -25,6 +25,7 @@ class SnarlingConductor(Minion):
             gold_count = 4
         for card in self.army.player.hand.cards:
             if isinstance(card, Spell):
+                self.log.debug(f"{self} discarding {card}, getting {gold_count} gold")
                 self.army.player.hand.cards.remove(card)
                 self.army.player.gold += gold_count
                 break

@@ -19,14 +19,17 @@ class HungeringAbomination(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_death")
         self.army.hooks["on_minion_death"].append(self.on_another_death)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_death")
         self.army.hooks["on_minion_death"].remove(self.on_another_death)
 
     def on_another_death(self, died, position) -> None:
         if self.health_value > 0:
             if not died is self:
+                self.log.debug(f"{self} getting boost")
                 if self.triplet:
                     atk_boost = 2
                     hlt_boost = 2

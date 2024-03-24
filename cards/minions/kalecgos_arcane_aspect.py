@@ -19,15 +19,19 @@ class KalecgosArcaneAspect(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_battlecry")
         self.army.hooks["on_battlecry"].append(self.boost_dragons)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_battlecry")
         self.army.hooks["on_battlecry"].remove(self.boost_dragons)
 
     def boost_dragons(self, cried) -> None:
         targets = [d for d in self.army.cards if MinionClass.Dragon in d.classes]
         if not targets:
+            self.log.debug(f"{self} found no dragons to boost")
             return
+        self.log.debug(f"{self} boosting {len(targets)} dragons")
         for t in targets:
             if self.triplet:
                 atk_boost = 2

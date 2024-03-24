@@ -36,7 +36,9 @@ class MantidQueen(Minion):
         diff_classes = set()
         for card in self.army.cards:
             diff_classes |= set(card.classes)
+        self.log.debug(f"{self} found {len(diff_classes)} diff classes")
         for boost in random.sample(list(available), k=min(len(diff_classes), len(available))):
+            self.log.debug(f"{self} getting {boost}")
             match boost:
                 case "wind":
                     self.feature_overrides["windfury"].append({"state": True, "one_turn": True})

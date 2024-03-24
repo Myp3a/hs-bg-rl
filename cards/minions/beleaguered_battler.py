@@ -21,6 +21,7 @@ class BeleagueredBattler(Minion):
     def decrease_attack(self) -> None:
         atk_boost = -1
         if self.base_attack_value + self.attack_perm_boost > 0:
+            self.log.debug(f"{self} losing {-atk_boost} atk")
             self.attack_perm_boost += atk_boost
             for hook in self.army.hooks["on_values_change_perm"]:
                 hook(self, atk_boost, 0)

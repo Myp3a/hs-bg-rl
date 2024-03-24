@@ -21,9 +21,11 @@ class SnailCavalry(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.boost_health)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.boost_health)
 
     def reset_first_cast(self) -> None:
@@ -31,6 +33,7 @@ class SnailCavalry(Minion):
 
     def boost_health(self, casted, target) -> None:
         if self.first_cast:
+            self.log.debug(f"{self} found casted spell, boosting self")
             self.first_cast = False
             if self.triplet:
                 hlt_boost = 4

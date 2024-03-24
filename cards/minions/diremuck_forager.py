@@ -22,9 +22,11 @@ class DiremuckForager(Minion):
 
     def summon_from_hand(self) -> None:
         if len(self.army) == 7:
+            self.log.debug(f"{self} found no place for summon")
             return
         to_summon = [t for t in self.army.player.hand if isinstance(t, Minion) and not t.summoned]
         if len(to_summon) == 0:
+            self.log.debug(f"{self} found no available summon")
             return
         summon = random.choice(to_summon)
         if self.triplet:
@@ -33,6 +35,7 @@ class DiremuckForager(Minion):
         else:
             atk_boost = 2
             hlt_boost = 2
+        self.log.debug(f"{self} summoning {summon}")
         summon.attack_perm_boost += atk_boost
         summon.health_perm_boost += hlt_boost
         summon.summoned = True

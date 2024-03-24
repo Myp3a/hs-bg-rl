@@ -21,9 +21,11 @@ class Bannerboar(Minion):
         my_pos = self.army.index(self)
         if my_pos > 0:
             bg = BloodGem(self.army.player)
+            self.log.debug(f"{self} playing blood gem on {self.army[my_pos - 1]}")
             self.army.player.play_spell_minion(bg, my_pos - 1)
         if my_pos < len(self.army.cards) - 1:
             bg = BloodGem(self.army.player)
+            self.log.debug(f"{self} playing blood gem on {self.army[my_pos + 1]}")
             self.army.player.play_spell_minion(bg, my_pos + 1)
         
     def play_blood_gem(self):

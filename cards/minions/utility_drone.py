@@ -19,6 +19,7 @@ class UtilityDrone(Minion):
 
     def boost_magnited(self):
         targets = [t for t in self.army.cards if len(t.magnited) > 0]
+        self.log.debug(f"{self} boosting {len(targets)} targets")
         for t in targets:
             if self.triplet:
                 atk_boost = 2

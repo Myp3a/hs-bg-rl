@@ -24,5 +24,6 @@ class ChoralMrrrglr(Minion):
         for t in targets:
             atk_boost += t.attack_value
             hlt_boost += t.health_value
+        self.log.debug(f"{self} found {len(targets)} minion in hand, getting {atk_boost}/{hlt_boost}")
         self.attack_temp_boost += atk_boost
         self.health_temp_boost += hlt_boost

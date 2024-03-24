@@ -20,6 +20,7 @@ class Glowscale(Minion):
         self.hooks["on_turn_start"].append(self.give_crown)
 
     def give_crown(self) -> None:
+        self.log.debug(f"{self} giving golden crown to {self.army.player}")
         if self.triplet:
             self.army.player.hand.add(GlowingCrown(self.army.player, triplet=True), len(self.army.player.hand))
         else:

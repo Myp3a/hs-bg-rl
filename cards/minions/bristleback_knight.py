@@ -28,7 +28,8 @@ class BristlebackKnight(Minion):
         else:
             self.hits_left = 1
 
-    def get_shield(self, attacker):
+    def get_shield(self, attacker: Minion):
         if self.hits_left > 0:
             if self.health_value > 0:
+                self.log.debug(f"{self} got not deadly hit, getting shield")
                 self.feature_overrides["shield"].append({"state": True, "one_turn": True})

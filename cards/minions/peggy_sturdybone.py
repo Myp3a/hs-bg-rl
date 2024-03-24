@@ -20,9 +20,11 @@ class PeggySturdybone(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_buy")
         self.army.hooks["on_minion_buy"].append(self.boost_attack)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_buy")
         self.army.hooks["on_minion_buy"].remove(self.boost_attack)
 
     def boost_attack(self, bought):
@@ -34,9 +36,11 @@ class PeggySturdybone(Minion):
             atk_boost = 1
             hlt_boost = 1
         targets = [t for t in self.army.cards if MinionClass.Pirate in t.classes and not t is self]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} boosting {target}")
         target.attack_perm_boost += atk_boost
         target.health_perm_boost += hlt_boost
         for hook in self.army.hooks["on_values_change_perm"]:

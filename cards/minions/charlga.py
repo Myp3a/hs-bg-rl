@@ -20,6 +20,7 @@ class Charlga(Minion):
 
     def play_blood_gem(self):
         targets = [t for t in self.army.cards if not t is self]
+        self.log.debug(f"{self} playing blood gem on {len(targets)}")
         for t in targets:
             bg = BloodGem(self.army.player)
             self.army.player.play_spell_minion(bg, self.army.index(t))

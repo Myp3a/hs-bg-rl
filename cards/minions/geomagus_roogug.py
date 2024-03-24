@@ -22,20 +22,23 @@ class GeomagusRoogug(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.play_blood_gem)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.play_blood_gem)
 
     def play_blood_gem(self, casted, target):
-        if target is self:
-            if isinstance(casted, BloodGem):
-                targets = [t for t in self.army.cards if not t is self]
-                if len(targets) == 0:
-                    return
-                target = random.choice(targets)
-                if self.triplet:
-                    bg = BloodGem(self.army.player)
-                    self.army.player.play_spell_minion(bg, self.army.index(target))
+        if target is self and isinstance(casted, BloodGem):
+            targets = [t for t in self.army.cards if not t is self]
+            if not targets:
+                self.log.debug(f"{self} found no other minions to play blood gem")
+                return
+            target = random.choice(targets)
+            self.log.debug(f"{self} playing blood gem on {target}")
+            if self.triplet:
                 bg = BloodGem(self.army.player)
                 self.army.player.play_spell_minion(bg, self.army.index(target))
+            bg = BloodGem(self.army.player)
+            self.army.player.play_spell_minion(bg, self.army.index(target))

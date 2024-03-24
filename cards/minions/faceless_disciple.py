@@ -20,19 +20,22 @@ class FacelessDisciple(Minion):
 
     def upgrade_minion(self) -> None:
         targets = [t for t in self.army.cards if not t is self]
-        if len(targets) == 0:
+        if not targets:
             return
         target = random.choice(targets)
         if self.triplet:
             minion_level = min(target.level + 2, 6)
         else:
             minion_level = min(target.level + 1, 6)
+        self.log.debug(f"{self} levelling up {target} to {minion_level}")
         new_minion = random.choice([m for m in self.army.player.tavern.available_cards() if m.level == minion_level])
+        self.log.debug(f"{self} changed {target} to {new_minion}")
         position = self.army.index(target)
         self.army.remove(target)
-        for hook in target.hooks["on_lose"]:
-            hook()
         if not self.in_fight:
+            self.log.debug(f"{self} applied tavern change")
+            for hook in target.hooks["on_lose"]:
+                hook()
             self.army.player.tavern.sell(target)
             self.army.player.tavern.buy(new_minion)
         new_minion.army = self.army

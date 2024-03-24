@@ -19,13 +19,16 @@ class BreamCounter(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.boost_values)
 
     def boost_values(self, played):
-        if MinionClass.Murloc in played.classes:
+        if MinionClass.Murloc in played.classes and self in self.army.player.hand.cards:
+            self.log.debug(f"{self} boosting values because murloc was played")
             if self.triplet:
                 atk_boost = 6
                 hlt_boost = 6

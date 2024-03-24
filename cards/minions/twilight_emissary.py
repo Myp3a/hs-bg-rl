@@ -20,9 +20,11 @@ class TwilightEmissary(Minion):
 
     def boost_dragon(self) -> None:
         targets = [c for c in self.army.cards if not c is self and MinionClass.Dragon in c.classes]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no targets")
             return
         dragon = random.choice(targets)
+        self.log.debug(f"{self} boosting {dragon}")
         if self.triplet:
             atk_boost = 4
             hlt_boost = 4

@@ -29,6 +29,7 @@ class MalchezaarPrinceOfDance(Minion):
     def damage_hero(self):
         hero_damage = 1
         if not self.army.player.damaged_for_roll and self.rolls > 0:
+            self.log.debug(f"{self} damaging hero for roll")
             self.rolls -= 1
             self.army.player.damaged_for_roll = True
             self.army.player.health -= hero_damage

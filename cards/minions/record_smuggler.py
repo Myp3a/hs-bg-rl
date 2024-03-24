@@ -22,6 +22,7 @@ class RecordSmuggler(Minion):
             gold = 2
         else:
             gold = 1
+        self.log.debug(f"{self} giving {gold} gold to {self.army.player}")
         for _ in range(len([t for t in self.army.cards if MinionClass.Pirate in t.classes])):
             self.army.player.gold += gold
             for hook in self.army.hooks["on_gold_get"]:

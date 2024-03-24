@@ -20,8 +20,10 @@ class BriarbackBookie(Minion):
 
     def give_blood_gem(self) -> None:
         if self.army.player.gold > 0:
-            self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))
-            self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))
             if self.triplet:
-                self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))
+                count = 4
+            else:
+                count = 2
+            self.log.debug(f"{self} found gold at end of the turn, giving {count} blood gems")
+            for _ in range(count):
                 self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))

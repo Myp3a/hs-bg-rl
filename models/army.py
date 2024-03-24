@@ -8,6 +8,8 @@ from cards.minion import Minion, MinionClass
 from cards.minions.audacious_anchor import AudaciousAnchor
 from cards.minions.flourishing_frostling import FlourishingFrostling
 from cards.minions.free_flying_feathermane import FreeFlyingFeathermane
+from cards.minions.humming_bird import HummingBird
+from cards.minions.sore_loser import SoreLoser
 from cards.minions.zapp_slywick import ZappSlywick
 
 from .cardset import CardSet
@@ -20,7 +22,7 @@ class Army(CardSet):
         self.log = logging.getLogger("army")
         self.log.setLevel(loglevel)
         logging.basicConfig()
-        self.hooks = {
+        self.hooks: dict[str, list] = {
             "on_attack": [],  # (self), attacker, defender
             "on_defence": [],  # (self), defender, attacker
             "on_minion_play": [self.elemental_play],  # (self), played
@@ -41,7 +43,7 @@ class Army(CardSet):
         self.cards: list[Minion] = []
         self.in_fight = False
         self.enemy = None
-        self.dead = []
+        self.dead: list[Minion] = []
 
     @property
     def power(self) -> int:
@@ -56,6 +58,7 @@ class Army(CardSet):
             feathermanes = [f for f in self.player.hand if isinstance(f, FreeFlyingFeathermane) and not f.summoned]
             if len(feathermanes) > 0:
                 feathermane = feathermanes[0]
+                feathermane.log.debug(f"{feathermane} summoning from hand")
                 feathermane.summoned = True
                 self.add(feathermane, position)
                 for hook in self.hooks["on_minion_summon"]:
@@ -64,11 +67,13 @@ class Army(CardSet):
     def boost_undead_attack(self, bought: Minion) -> None:
         if MinionClass.Undead in bought.classes:
             bought.attack_perm_boost += self.player.undead_attack_boost
-    
+            bought.log.debug(f"{bought} got undead boost")
+
     def boost_elemental_values(self, bought: Minion) -> None:
         if MinionClass.Elemental in bought.classes:
             bought.attack_perm_boost += self.player.tavern_elemental_boost
             bought.health_perm_boost += self.player.tavern_elemental_boost
+            bought.log.debug(f"{bought} got elemental boost")
 
     def boost_frostling(self, bought: Minion) -> None:
         if isinstance(bought, FlourishingFrostling):
@@ -76,6 +81,7 @@ class Army(CardSet):
             hlt_boost = self.player.elementals_played
             bought.attack_perm_boost += atk_boost
             bought.health_perm_boost += hlt_boost
+            bought.log.debug(f"{bought} got frostling boost")
 
     def boost_tavern_minion(self, bought: Minion) -> None:
         bought.attack_perm_boost += self.player.tavern_attack_boost
@@ -89,6 +95,7 @@ class Army(CardSet):
                 if target_index == -1:
                     continue
                 target = enemy.cards[target_index]
+                self.log.debug(f"{anchor} battling with {target}")
                 while target.health_value > 0 and anchor.health_value > 0:
                     if anchor.health_value > 0:
                         anchor.attack(target)
@@ -115,6 +122,25 @@ class Army(CardSet):
         if MinionClass.Beast in summoned.classes:
             summoned.attack_temp_boost += self.player.beast_boost_atk
             summoned.health_temp_boost += self.player.beast_boost_hlt
+            summoned.log.debug(f"{summoned} got beast boost")
+
+    def count_hummingbirds(self, asker) -> None:
+        boost = 0
+        for c in self.cards:
+            if isinstance(c, HummingBird) and not c is asker:
+                boost += 2
+                if c.triplet:
+                    boost += 2
+        return boost
+    
+    def count_sore_losers(self, asker) -> None:
+        boost = 0
+        for c in self.cards:
+            if isinstance(c, SoreLoser) and not c is asker:
+                boost += self.player.level
+                if c.triplet:
+                    boost += self.player.level
+        return boost
 
     def attack(self, other: Army) -> None:
         available_attackers = [c for c in self.cards if c.attack_value > 0]

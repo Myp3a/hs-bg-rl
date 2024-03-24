@@ -19,6 +19,7 @@ class StrongshellScavenger(Minion):
 
     def boost_taunt_minions(self):
         targets = [t for t in self.army.cards if not t is self and t.taunt]
+        self.log.debug(f"{self} boosting {len(targets)} taunt minions")
         for t in targets:
             if self.triplet:
                 atk_boost = 4

@@ -18,13 +18,16 @@ class WrathWeaver(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.boost_values)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.boost_values)
 
     def boost_values(self, played: Minion) -> None:
         if MinionClass.Demon in played.classes:
+            self.log.debug(f"{self} found played demon, damaging hero")
             hero_damage = 1
             self.army.player.health -= hero_damage
             for hook in self.army.hooks["on_hero_damage"]:

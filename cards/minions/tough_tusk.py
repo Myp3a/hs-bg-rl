@@ -20,12 +20,15 @@ class ToughTusk(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.add_divine_shield)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.add_divine_shield)
 
     def add_divine_shield(self, casted, target) -> None:
         if target is self:
             if isinstance(casted, BloodGem):
+                self.log.debug(f"{self} got casted blood gem, getting shield")
                 self.feature_overrides["shield"].append({"state": True, "one_turn": not self.triplet})

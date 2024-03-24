@@ -21,10 +21,12 @@ class EternalSummoner(Minion):
 
     def summon_knight(self, position):
         k = EternalKnight(self.army)
+        self.log.debug(f"{self} summoning {k}")
         for hook in k.hooks["on_get"]:
             hook()
         for hook in k.hooks["on_play"]:
             hook()
         if len(self.army.cards) == 7:
+            self.log.debug(f"{self} found no place for {k}")
             return
         self.army.add(k, position)

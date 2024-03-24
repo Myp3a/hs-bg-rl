@@ -21,25 +21,31 @@ class Felboar(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.on_spell_cast)
 
     def remove_hook(self) -> None:
         self.spell_cntr = 2
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.on_spell_cast)
 
     def on_spell_cast(self, casted, target) -> None:
         self.spell_cntr -= 1
+        self.log.debug(f"{self} spells casted, new cntr {self.spell_cntr}")
         if self.spell_cntr == 0:
             self.spell_cntr = 2
             self.eat_minion()
 
     def eat_minion(self) -> None:
         if self.in_fight:
+            self.log.debug(f"{self} tried to eat mid-fight")
             return
         available_targets = self.army.player.view
-        if len(available_targets) == 0:
+        if not available_targets:
+            self.log.debug(f"{self} found no one to eat")
             return
         target = random.choice(available_targets)
+        self.log.debug(f"{self} eating {target}")
         card = self.army.player.tavern.buy(target)
         self.army.player.view.remove(card)
         self.contains.append(card)

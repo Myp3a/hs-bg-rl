@@ -19,5 +19,6 @@ class HawkstriderHerald(Minion):
 
     def trigger_deathrattles(self):
         for m in self.army.cards:
+            self.log.debug(f"{self} triggering deathrattles for {m}")
             for hook in m.hooks["deathrattle"]:
                 hook(self.army.index(m))

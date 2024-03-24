@@ -28,6 +28,7 @@ class TransmutedBramblewitch(Minion):
 
     def change_values(self, defender: Minion) -> None:
         if self.changes_left > 0:
+            self.log.debug(f"{self} hindering {defender}")
             self.changes_left -= 1
             defender.attack_temp_boost -= defender.attack_value - 3
             defender.health_temp_boost -= defender.health_value - 3

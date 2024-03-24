@@ -22,11 +22,12 @@ class ImpulsiveTrickster(Minion):
     def choose_and_boost_health(self) -> None:
         hlt_boost = self.max_health
         other_minions = [m for m in self.army.cards if not m is self]
-        if len(other_minions) > 0:
-            chosen = random.choice(other_minions)
-            chosen.health_temp_boost += hlt_boost
-            for hook in self.army.hooks["on_values_change_perm"]:
-                hook(chosen, 0, hlt_boost)
+        if not other_minions:
+            self.log.debug(f"{self} found no minion to boost")
+            return
+        chosen = random.choice(other_minions)
+        self.log.debug(f"{self} giving {hlt_boost} hlt to {chosen}")
+        chosen.health_temp_boost += hlt_boost
         
     def boost_health(self, position) -> None:
         # TODO: check if boosted ingame health counts

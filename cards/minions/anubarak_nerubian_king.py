@@ -16,7 +16,10 @@ class AnubarakNerubianKing(Minion):
         self.base_health_value = 3
         self.hooks["deathrattle"].append(self.boost_undead_attack)
 
-    def boost_undead_attack(self, position):
+    def boost_undead_attack(self, position: int):
         if self.triplet:
-            self.army.player.undead_attack_boost += 1
-        self.army.player.undead_attack_boost += 1
+            atk_boost = 2
+        else:
+            atk_boost = 1
+        self.log.debug(f"{self} boosting {self.army.player} undead by {atk_boost} atk")
+        self.army.player.undead_attack_boost += atk_boost

@@ -18,6 +18,9 @@ class PricklyPiper(Minion):
         self.hooks["deathrattle"].append(self.boost_blood_gem_attack)
 
     def boost_blood_gem_attack(self, position) -> None:
-        self.army.player.blood_gem_attack += 1
         if self.triplet:
-            self.army.player.blood_gem_attack += 1
+            atk_boost = 2
+        else:
+            atk_boost = 1
+        self.log.debug(f"{self} boosting blood gem attack by {atk_boost}")
+        self.army.player.blood_gem_attack += atk_boost

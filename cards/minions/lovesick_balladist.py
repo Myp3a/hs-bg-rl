@@ -20,9 +20,11 @@ class LovesickBalladist(Minion):
 
     def boost_pirate(self):
         targets = [t for t in self.army.cards if MinionClass.Pirate in t.classes and not t is self]
-        if len(targets) == 0:
+        if not targets:
+            self.log.debug(f"{self} found no pirate to boost")
             return
         target = random.choice(targets)
+        self.log.debug(f"{self} boosting {target} by {self.army.player.gold_spent_on_turn} hlt")
         if self.in_fight:
             target.health_temp_boost += self.army.player.gold_spent_on_turn
         else:

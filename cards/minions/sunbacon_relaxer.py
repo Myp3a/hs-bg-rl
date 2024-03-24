@@ -22,5 +22,6 @@ class SunBaconRelaxer(Minion):
         count = 2
         if self.triplet:
             count = 4
+        self.log.debug(f"{self} giving {count} blood gems to {self.army.player}")
         for _ in range(count):
             self.army.player.hand.add(BloodGem(self.army.player), len(self.army.player.hand))

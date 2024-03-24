@@ -20,9 +20,11 @@ class GentleDjinni(Minion):
 
     def select_and_get_elemental(self, position):
         elementals = [e for e in self.army.player.tavern.available_cards() if e.level <= self.army.player.level and MinionClass.Elemental in e.classes]
-        if len(elementals) == 0:
+        if not elementals:
+            self.log.debug(f"{self} found no elemental to summon")
             return
         elemental = random.choice(elementals)
+        self.log.debug(f"{self} getting {elemental} from tavern and spawning it")
         self.army.player.tavern.buy(elemental)
         elemental.army = self.army
         for hook in elemental.hooks["on_get"]:

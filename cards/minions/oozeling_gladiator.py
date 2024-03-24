@@ -20,7 +20,9 @@ class OozelingGladiator(Minion):
 
     def give_slimy_shields(self) -> None:
         if self.triplet:
-            self.army.player.hand.add(SlimyShield(self.army.player, triplet=True), len(self.army.player.hand))
+            count = 4
         else:
+            count = 2
+        self.log.debug(f"{self} giving {self.army.player} {count} slimy shields")
+        for _ in range(count):
             self.army.player.hand.add(SlimyShield(self.army.player), len(self.army.player.hand))
-

@@ -24,8 +24,9 @@ class AdmiralElisaGoreblade(Minion):
     def remove_hook(self) -> None:
         self.army.hooks["on_attack"].remove(self.boost_values)
 
-    def boost_values(self, attacker, defender):
+    def boost_values(self, attacker: Minion, defender: Minion):
         if MinionClass.Pirate in attacker.classes:
+            self.log.debug(f"{self} boosting values of army")
             if self.triplet:
                 atk_boost = 6
                 hlt_boost = 2

@@ -23,9 +23,11 @@ class LavaLurker(Minion):
         self.hooks["on_lose"].append(self.remove_hook)
         
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_spell_cast")
         self.army.hooks["on_spell_cast"].append(self.permanent_bonus)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} removed hook on_spell_cast")
         self.army.hooks["on_spell_cast"].remove(self.permanent_bonus)
 
     def reset_first(self) -> None:
@@ -34,8 +36,9 @@ class LavaLurker(Minion):
         else:
             self.saved_changes = 1
 
-    def permanent_bonus(self, casted: Spell, target) -> None:
+    def permanent_bonus(self, casted: Spell, target: Minion) -> None:
         if target is self and not self.in_fight and self.saved_changes > 0 and casted.spellcraft:
+            self.log.debug(f"{self} saving {casted} effect")
             self.saved_changes -= 1
             self.attack_temp_boost = 0
             self.health_temp_boost = 0

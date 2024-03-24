@@ -21,16 +21,19 @@ class RockRock(Minion):
         self.hooks["on_play"].append(self.put_hook)
 
     def put_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].append(self.on_play)
 
     def remove_hook(self) -> None:
+        self.log.debug(f"{self} put hook on_minion_play")
         self.army.hooks["on_minion_play"].remove(self.on_play)
 
     def flip_flag(self):
         self.flag_attack = not self.flag_attack
 
-    def on_play(self, played):
+    def on_play(self, played: Minion):
         if MinionClass.Elemental in played.classes:
+            self.log.debug(f"{self} boosting {played}")
             if self.triplet:
                 boost = 4
             else:
