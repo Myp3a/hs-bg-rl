@@ -198,6 +198,7 @@ class Minion(Card):
             self.revealed = False
         self.in_fight = False
         self.enemy_army = None
+        self.attacked_this_turn = False
 
     def clean_overrides(self) -> None:
         self.feature_overrides = {
