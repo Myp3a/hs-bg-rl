@@ -1,5 +1,6 @@
 from __future__ import annotations
 import random
+from functools import partial
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
@@ -18,6 +19,9 @@ class FacelessDisciple(Minion):
         self.base_health_value = 4
         self.hooks["battlecry"].append(self.upgrade_minion)
 
+    def clear_hooks(self, target: Minion) -> None:
+        target.hooks["on_fight_end"] = []
+
     def upgrade_minion(self) -> None:
         targets = [t for t in self.army.cards if not t is self]
         if not targets:
@@ -32,12 +36,14 @@ class FacelessDisciple(Minion):
         self.log.debug(f"{self} changed {target} to {new_minion}")
         position = self.army.index(target)
         self.army.remove(target)
+        self.army.dead.append(target)
         for hook in target.hooks["on_lose"]:
             hook()
         if self.in_fight:
             if getattr(target, "put_hook", False):
                 self.log.debug(f"{self} found put_hook on {target}, calling at the fight end")
                 target.hooks["on_fight_end"].append(target.put_hook)
+                target.hooks["on_fight_end"].append(partial(self.clear_hooks, target))
         if not self.in_fight:
             self.log.debug(f"{self} applied tavern change")
             self.army.player.tavern.sell(target)
@@ -47,6 +53,7 @@ class FacelessDisciple(Minion):
             if getattr(new_minion, "remove_hook", False):
                 self.log.debug(f"{self} found remove_hook on {new_minion}, calling at the fight end")
                 new_minion.hooks["on_fight_end"].append(new_minion.remove_hook)
+                new_minion.hooks["on_fight_end"].append(partial(self.clear_hooks, new_minion))
         for hook in new_minion.hooks["on_get"]:
             hook()
         self.army.add(new_minion, position)
