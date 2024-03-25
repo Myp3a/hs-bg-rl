@@ -32,7 +32,7 @@ class ArchlichKelthuzad(Minion):
         self.log.debug(f"{self} destroying {to_the_side} at position {position}")
         t_atk = to_the_side.attack_temp_boost
         t_hlt = to_the_side.health_temp_boost
-        features = list(to_the_side.feature_overrides)
+        features = dict(to_the_side.feature_overrides)
         if to_the_side.rebirth:
             self.log.debug(f"{self} found rebirth at {to_the_side}, removing")
             to_the_side.death()
