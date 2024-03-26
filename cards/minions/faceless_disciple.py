@@ -36,13 +36,15 @@ class FacelessDisciple(Minion):
         self.log.debug(f"{self} changed {target} to {new_minion}")
         position = self.army.index(target)
         self.army.remove(target)
-        self.army.dead.append(target)
+        if self.in_fight:
+            self.army.dead.append(target)
         for hook in target.hooks["on_lose"]:
             hook()
         if self.in_fight:
             if getattr(target, "put_hook", False):
                 self.log.debug(f"{self} found put_hook on {target}, calling at the fight end")
-                target.hooks["on_fight_end"].append(target.put_hook)
+                # Prepend in case of double-levelling with rylak and rivendare - first call put_hook, then remove it
+                target.hooks["on_fight_end"].insert(0, target.put_hook)
                 target.hooks["on_fight_end"].append(partial(self.clear_hooks, target))
         if not self.in_fight:
             self.log.debug(f"{self} applied tavern change")
@@ -52,7 +54,7 @@ class FacelessDisciple(Minion):
         if self.in_fight:
             if getattr(new_minion, "remove_hook", False):
                 self.log.debug(f"{self} found remove_hook on {new_minion}, calling at the fight end")
-                new_minion.hooks["on_fight_end"].append(new_minion.remove_hook)
+                new_minion.hooks["on_fight_end"].insert(0, new_minion.remove_hook)
                 new_minion.hooks["on_fight_end"].append(partial(self.clear_hooks, new_minion))
         for hook in new_minion.hooks["on_get"]:
             hook()
