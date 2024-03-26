@@ -118,7 +118,7 @@ class Army(CardSet):
         for c in self.cards:
             for hook in c.hooks["on_fight_end"]:
                 hook()
-        for c in dead:
+        for c in self.dead:
             for hook in c.hooks["on_fight_end"]:
                 hook()
 
