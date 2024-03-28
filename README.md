@@ -11,6 +11,7 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Eternal knight triplet / boost existing
  - Impulsive trickster infight health boost
  - Perm / Temp values gain depending if in battle
+ - Mad matador mechanics
 
 # TODO
  - Shadow classes

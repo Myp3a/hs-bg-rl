@@ -3,6 +3,7 @@ import random
 from typing import TYPE_CHECKING
 
 from cards.minion import Minion, MinionClass
+from cards.minions.game_entity import GameEntity
 
 if TYPE_CHECKING:
     from models.army import Army
@@ -29,9 +30,10 @@ class MadMatador(Minion):
             self.redirects_left = 1
 
     def redirect_attack(self, attacker: Minion) -> None:
-        if self.redirects_left > 0:
-            self.redirects_left -= 1
-            target = random.choice(self.enemy_army.cards)
-            self.log.debug(f"{self} redirecting {attacker} to {target}")
-            attacker.attack(target)
-            return True  # Prevent existing attack
+        if not isinstance(attacker, GameEntity):
+            if self.redirects_left > 0:
+                self.redirects_left -= 1
+                target = random.choice(self.enemy_army.cards)
+                self.log.debug(f"{self} redirecting {attacker} to {target}")
+                attacker.attack(target)
+                return True  # Prevent existing attack
