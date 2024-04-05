@@ -54,6 +54,10 @@ class Army(CardSet):
     def attack_power(self) -> int:
         return sum([c.attack_value for c in self.cards])
     
+    @property
+    def health_power(self) -> int:
+        return sum([c.health_value for c in self.cards])
+    
     def summon_feathermane(self, dead: Minion, position) -> None:
         if MinionClass.Beast in dead.classes:
             feathermanes = [f for f in self.player.hand if isinstance(f, FreeFlyingFeathermane) and not f.summoned]
