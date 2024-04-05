@@ -201,7 +201,9 @@ class HSEnv(MultiAgentEnv):
                     continue
                 obs[i] = self.players[i].observation()
                 hmax = max([self.players[i].player.health for i in self.players])
-                rew[i] = self.players[i].player.health - hmax + 15 - self.players[i].player.turn
+                rew[i] = (self.players[i].player.health - hmax + 15
+                          - self.players[i].player.turn * 0.2
+                          + (self.players[i].player.army.attack_power + self.players[i].player.army.health_power) * 0.025)
                 terminated[i] = self.players[i].player.health <= 0
                 if terminated[i]:
                     self.dead.add(i)
