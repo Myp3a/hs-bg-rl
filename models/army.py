@@ -155,23 +155,29 @@ class Army(CardSet):
                     boost += self.player.level
         return boost
 
-    def attack(self, other: Army) -> None:
-        available_attackers = [c for c in self.cards if c.attack_value > 0]
-        if len(available_attackers) == 0:
-            # To bypass stealth defender with no attack. Needs clarifying how it works in real game
-            if len(self.cards) > 0:
-                for c in self.cards:
-                    c.revealed = True
-            return
-        if len(other.cards) == 0:
-            return
-        for attacker in available_attackers:
-            if not attacker.attacked_this_turn:
-                break
-        if attacker.attacked_this_turn:
-            for attacker in available_attackers:
-                attacker.attacked_this_turn = False
+    def attack(self, other: Army, immediate: bool = False) -> None:
+        if immediate:
+            available_attackers = [c for c in self.cards if c.immediate_attack]
+            if not available_attackers:
+                return
             attacker = available_attackers[0]
+        else:
+            available_attackers = [c for c in self.cards if c.attack_value > 0]
+            if len(available_attackers) == 0:
+                # To bypass stealth defender with no attack. Needs clarifying how it works in real game
+                if len(self.cards) > 0:
+                    for c in self.cards:
+                        c.revealed = True
+                return
+            if len(other.cards) == 0:
+                return
+            for attacker in available_attackers:
+                if not attacker.attacked_this_turn:
+                    break
+            if attacker.attacked_this_turn:
+                for attacker in available_attackers:
+                    attacker.attacked_this_turn = False
+                attacker = available_attackers[0]
         self.log.debug(f"atk: {attacker} chosen from {attacker.army}")
         
         if isinstance(attacker, ZappSlywick):

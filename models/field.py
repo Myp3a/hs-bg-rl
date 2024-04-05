@@ -95,14 +95,21 @@ class Field:
                     self.restore()
                     return
                 immediate_attacks = False
-                for card in self.first.army.cards:
-                    if card.immediate_attack:
-                        immediate_attacks = True
-                        card.attack(self.second.army.get_target())
-                for card in self.second.army.cards:
-                    if card.immediate_attack:
-                        immediate_attacks = True
-                        card.attack(self.first.army.get_target())
+                if self.turn_flag == 0:
+                    for card in self.first.army.cards:
+                        if card.immediate_attack:
+                            self.first.army.attack(self.second.army, immediate=True)
+                    for card in self.second.army.cards:
+                        if card.immediate_attack:
+                            self.second.army.attack(self.first.army, immediate=True)
+                else:
+                    # Same but in other direction
+                    for card in self.second.army.cards:
+                        if card.immediate_attack:
+                            self.second.army.attack(self.first.army, immediate=True)
+                    for card in self.first.army.cards:
+                        if card.immediate_attack:
+                            self.first.army.attack(self.second.army, immediate=True)
             if self.check_battle_end():
                 self.log.debug(f"fight end between {self.first}(v) and {self.second}(^)")
                 self.log.debug("\n" + str(self))
