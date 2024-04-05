@@ -90,6 +90,8 @@ class Field:
                     self.second.army.in_fight = False
                     for hook in self.first.army.hooks["on_fight_end"]:
                         hook(self.first.army, self.first.army.dead)
+                    for hook in self.second.army.hooks["on_fight_end"]:
+                        hook(self.second.army, self.second.army.dead)
                     self.restore()
                     return
                 immediate_attacks = False
@@ -108,6 +110,8 @@ class Field:
                 self.second.army.in_fight = False
                 for hook in self.first.army.hooks["on_fight_end"]:
                     hook(self.first.army, self.first.army.dead)
+                for hook in self.second.army.hooks["on_fight_end"]:
+                    hook(self.second.army, self.second.army.dead)
                 self.restore()
                 return
         assert self.check_battle_end()
@@ -115,4 +119,6 @@ class Field:
         self.second.army.in_fight = False
         for hook in self.first.army.hooks["on_fight_end"]:
             hook(self.first.army, self.first.army.dead)
+        for hook in self.second.army.hooks["on_fight_end"]:
+            hook(self.second.army, self.second.army.dead)
         self.restore()
