@@ -16,8 +16,9 @@ class DeflectOBot(Minion):
         self.base_attack_value = 3
         self.base_health_value = 2
         self.base_divine_shield = True
-        self.hooks["on_turn_end"].append(self.put_hook)
-        self.hooks["on_turn_start"].append(self.remove_hook)
+        # Probably safe to set to default play/lose, cause no mechs should be summoned outside of fight
+        self.hooks["on_play"].append(self.put_hook)
+        self.hooks["on_lose"].append(self.remove_hook)
 
     def put_hook(self) -> None:
         self.log.debug(f"{self} put hook on_minion_summon")

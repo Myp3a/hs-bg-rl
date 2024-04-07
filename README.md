@@ -14,6 +14,7 @@ A project to make neural-powered Hearthstone Battlegrounds bot.
  - Mad matador mechanics
 
 # TODO
+ - Unify hook function names for getattr
  - Shadow classes
  - Health-depleting actions blocking when 1hp
  - Murozond
