@@ -20,7 +20,7 @@ ModelCatalog.register_custom_model("HSModel", TorchActionMaskModel)
 
 config = (
         PPOConfig()
-        .environment(env=env_name, clip_actions=True, disable_env_checking=True)
+        .environment(env=env_name, clip_actions=True)
         .rollouts(num_rollout_workers=5, rollout_fragment_length="auto")
         .training(
             train_batch_size=1024,
